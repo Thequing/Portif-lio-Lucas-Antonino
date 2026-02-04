@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lucas Vinicius de Santana Antonino | Game Developer</title>
+  <style>
+    :root {
+      --black: #0b0b0f;
+      --purple: #7b2cbf;
+      --blue-dark: #1f2a44;
+      --text: #eaeaf0;
+      --gray: #9aa0b3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--black), var(--blue-dark));
+      color: var(--text);
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: rgba(11, 11, 15, 0.9);
+      border: 2px solid var(--purple);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 0 40px rgba(123, 44, 191, 0.4);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      color: var(--purple);
+      letter-spacing: 2px;
+    }
+
+    header h2 {
+      font-size: 1.2rem;
+      color: var(--gray);
+      margin-top: 10px;
+    }
+
+    .line {
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+      margin: 30px 0;
+    }
+
+    section {
+      margin-bottom: 35px;
+    }
+
+    section h3 {
+      font-size: 1.6rem;
+      color: var(--purple);
+      margin-bottom: 15px;
+      border-left: 4px solid var(--purple);
+      padding-left: 12px;
+    }
+
+    p, li {
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    ul li::before {
+      content: "▸";
+      color: var(--purple);
+      margin-right: 8px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #12121a, #0b0b0f);
+      border: 1px solid var(--blue-dark);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: inset 0 0 15px rgba(31, 42, 68, 0.6);
+    }
+
+    a {
+      color: #4ea8de;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-shadow: 0 0 10px #4ea8de;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+  
+    /* === Carousel === */
+.carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  margin: 25px auto 40px;
+  border: 1px solid var(--purple);
+  box-shadow: 0 0 25px rgba(123,44,191,0.35);
+  max-width: 720px;      /* largura reduzida */
+  aspect-ratio: 16 / 9;  /* proporção correta */
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.45s ease;
+}
+
+.carousel img {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  object-fit: contain; /* evita corte da imagem */
+  background: #000;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(11,11,15,0.85);
+  border: 1px solid var(--purple);
+  color: var(--text);
+  font-size: 2rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 10px;
+}
+
+.carousel-btn:hover {
+  box-shadow: 0 0 15px rgba(123,44,191,0.8);
+}
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Lucas Vinicius de Santana Antonino</h1>
+      <h2>Game Developer | Unity & Unreal Engine</h2>
+    </header>
+
+    <div class="line"></div>
+
+    <section>
+      <h3>Sobre Mim</h3>
+      <p>
+        Sou desenvolvedor de jogos com foco em <strong>programação de gameplay</strong>, sistemas e mecânicas,
+        atuando com <strong>Unity</strong> e <strong>Unreal Engine 5</strong>. Tenho experiência prática em
+        <strong>C#</strong>, <strong>Blueprints</strong> e <strong>C++</strong>, sempre buscando equilibrar
+        performance, jogabilidade e impacto visual.
+      </p>
+      <p>
+        Possuo <strong>1 jogo publicado na Steam</strong> e outros em desenvolvimento, participando ativamente
+        de todas as etapas de produção, desde prototipagem até polimento final.
+      </p>
+    </section>
+
+    <div class="line"></div>
+
+    <section>
+      <h3>Portfólio de Jogos</h3>
+
+      <div class="carousel">
+        <button class="carousel-btn prev">‹</button>
+        <div class="carousel-track">
+          <img src="Imagens/1753233757734.jpg" alt="Pixel Art Scene">
+          <img src="Imagens/image.png" alt="Gameplay System Code">
+          <img src="Imagens/image (1).png" alt="Unreal Engine Scene">
+          <img src="Imagens/KuroNekoGif.gif" alt="KuroNeko Visual Novel">
+          <img src="Imagens/Screenshot_1.png" alt="KuroNeko Dialogue UI">
+        </div>
+        <button class="carousel-btn next">›</button>
+      </div>
+
+      <div class="card" style="margin-bottom:25px;">
+        <h4>🏆 Steam Veins <span style="font-size:0.9rem; color:var(--gray);">(Publicado na Steam)</span></h4>
+        <p>
+          Jogo desenvolvido em equipe na <strong>Kimu Studios</strong>, lançado oficialmente na Steam.
+        </p>
+        <ul>
+          <li>Programação de sistemas de gameplay</li>
+          <li>Implementação de mecânicas principais</li>
+          <li>Efeitos visuais e funcionalidades gerais</li>
+          <li>Trabalho focado em qualidade e performance</li>
+        </ul>
+        <p>
+          🔗 <a href="https://store.steampowered.com/app/3201780/Steam_Veins/" target="_blank">Página na Steam</a>
+        </p>
+        <span style="display:inline-block; margin-top:10px; background:linear-gradient(135deg,#1f6feb,#7b2cbf); padding:6px 12px; border-radius:999px; font-size:0.85rem; font-weight:bold;">🏆 Steam Published Game</span>
+      </div>
+
+      <div class="card" style="margin-bottom:25px;">
+        <h4>🦖 Dino Girls <span style="font-size:0.9rem; color:var(--gray);">(Em desenvolvimento)</span></h4>
+        <p>
+          Projeto em desenvolvimento com publicação prevista na Steam, no qual participo ativamente da produção.
+        </p>
+        <ul>
+          <li>Participação no desenvolvimento de gameplay</li>
+          <li>Criação e integração de sistemas</li>
+          <li>Colaboração em decisões técnicas e criativas</li>
+        </ul>
+        <p>
+          🔗 <a href="https://store.steampowered.com/app/3495120/Dino_Girls/" target="_blank">Página na Steam</a>
+        </p>
+      </div>
+
+      <div class="card" style="margin-bottom:25px;">
+        <h4>🐱 KuroNeko <span style="font-size:0.9rem; color:var(--gray);">(Visual Novel • Projeto Solo)</span></h4>
+        <p>
+          Visual Novel desenvolvida como <strong>projeto solo</strong>, utilizando <strong>Unity</strong>.
+          Todo o sistema de <strong>parser narrativo</strong> foi programado em <strong>C#</strong>, permitindo
+          controle de diálogos, escolhas, fluxo de cenas e eventos.
+        </p>
+        <ul>
+          <li>Desenvolvimento completo do projeto (solo)</li>
+          <li>Criação de sistema de parser narrativo em C#</li>
+          <li>Integração do parser com Unity</li>
+          <li>Implementação de sistemas de escolha e progressão</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h4>🌌 MidNight Memories <span style="font-size:0.9rem; color:var(--gray);">(Projeto Solo)</span></h4>
+        <p>
+          Jogo FPS estilo Doom/PSX desenvolvido de forma independente em <strong>Unreal Engine</strong>,
+          com foco em atmosfera, narrativa enigmática e gameplay clássico.
+        </p>
+        <ul>
+          <li>Desenvolvimento completo do projeto (solo)</li>
+          <li>Programação de movimentação e combate</li>
+          <li>Sistemas de gameplay e UI</li>
+          <li>Design técnico e implementação geral</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="line"></div>
+
+    <section>
+      <h3>Artes</h3>
+
+      <div class="carousel">
+        <button class="carousel-btn prev">‹</button>
+        <div class="carousel-track">
+          <img src="Imagens/DracularaWave-Sheet.gif" alt="Wave">
+          <img src="Imagens/Kunai_Explosion-Sheet.gif" alt="Kunai">
+          <img src="Imagens/Estátua2.0.png" alt="Estátua2">
+          <img src="Imagens/Scene1_Street.png" alt="Scene1">
+          <img src="Imagens/Scene2_Street.png" alt="Scene2">
+          <img src="Imagens/ShrineWithSnow.png" alt="Shrine">
+          <img src="Imagens/Sprite-0001.png" alt="LucasSteamVeins">
+        </div>
+        <button class="carousel-btn next">›</button>
+      </div>
+    </section>
+
+    <div class="line"></div>
+
+    <section>
+      <h3>Conhecimentos & Formação</h3>
+      <div class="grid">
+        <div class="card">
+          <h4>🎓 Bacharelado</h4>
+          <p>Bacharelado em Tecnologia da Informação – UFRN</p>
+        </div>
+        <div class="card">
+          <h4>🎮 Game Design</h4>
+          <p>Curso de Game Design – Udemy</p>
+        </div>
+        <div class="card">
+          <h4>🗄️ Banco de Dados</h4>
+          <p>Curso de Administrador de Banco de Dados – IFRS</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="line"></div>
+
+    <section>
+      <h3>Contato & Links</h3>
+      <ul>
+        <li>💻 GitHub: <a href="https://github.com/Thequing" target="_blank">github.com/Thequing</a></li>
+        <li>🔗 LinkedIn: <a href="https://www.linkedin.com/in/lucas-antonino-7401b7201/" target="_blank">linkedin.com/in/lucas-antonino</a></li>
+        <li>✉️ Email: lvantonino@hotmail.com</li>
+      </ul>
+    </section>
+
+    
+  </div>
+  <script>
+    document.querySelectorAll('.carousel').forEach(carousel => {
+      const track = carousel.querySelector('.carousel-track');
+      const slides = track.children;
+      let index = 0;
+
+      const update = () => {
+        track.style.transform = `translateX(-${index * 100}%)`;
+      };
+
+      carousel.querySelector('.next').addEventListener('click', () => {
+        index = (index + 1) % slides.length;
+        update();
+      });
+
+      carousel.querySelector('.prev').addEventListener('click', () => {
+        index = (index - 1 + slides.length) % slides.length;
+        update();
+      });
+    });
+  </script>
+</body>
+</html>
