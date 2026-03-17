@@ -248,13 +248,21 @@ incluindo <b>sistemas de combate, UI, narrativa e gameplay</b>.
 
 <h3>Gameplay Showcase</h3>
 
-<div class="gif-showcase">
+<div class="carousel">
+
+<button class="carousel-btn prev">‹</button>
+
+<div class="carousel-track">
 
 <img src="Gifs/1SteamVeinsGif2.gif" loading="lazy">
 <img src="Gifs/2SteamVeinsGif3.gif" loading="lazy">
 <img src="Gifs/3SteamVeinsGif4.gif" loading="lazy">
 <img src="Gifs/4MidNightMemories1.gif" loading="lazy">
 <img src="Gifs/5KuroNekoDemo_ToLinkedin_1.gif" loading="lazy">
+
+</div>
+
+<button class="carousel-btn next">›</button>
 
 </div>
 
@@ -310,16 +318,47 @@ incluindo <b>sistemas de combate, UI, narrativa e gameplay</b>.
 <h4>Dialogue Parser (C#)</h4>
 
 <pre>
-public void ParseDialogue(string line)
+public override void RespondTakeDamage(int typeDamage, float AditionalknockbackForceX, float AditionalknockbackForceY)
 {
-    if(line.StartsWith("CHAR:"))
-    {
-        currentCharacter = line.Replace("CHAR:","");
-    }
+    if (isInvulnerable || isDead) return;
 
-    if(line.StartsWith("TEXT:"))
+    GetComponentInChildren<IgnoreCollisionOnDamage>()?.TriggerIgnoreCollision();
+
+    EventInstance soundInstance = RuntimeManager.CreateInstance(typeDamage == 2 ? soundShoot : soundSlash);
+
+    switch (typeDamage)
     {
-        DisplayText(line.Replace("TEXT:",""));
+        case 0:
+            // hit crouch melee
+            break;
+        case 1:
+            // hit normal melee
+            soundInstance.setPitch(UnityEngine.Random.Range(0.8f, 1.2f));
+            soundInstance.start();
+            soundInstance.release();
+            break;
+        case 2:
+            // shoot
+            soundInstance.start();
+            soundInstance.release();
+            break;
+    }
+    if (!isRained && enemyStats.hp <= enemyStats.maxHp / 2)
+    {
+        if (!isAttacking && !isTransitioning) { StartCoroutine(DropHat()); }
+        else { shouldTransition = true; }
+    }
+    if (enemyStats.hp <= 0)
+    {
+        isDead = true;
+        if (enemyStats.isExecutavel && !isExecutada)
+        {
+            StartCoroutine(ExecutavelPosAtk());
+        }
+        else if (enemyStats.isDefeated && isExecutada)
+        {
+            animator.SetTrigger("Derrotado");
+        }
     }
 }
 </pre>
@@ -402,20 +441,6 @@ font-weight:bold;">
 <h4>🦖 Dino Girls 
 <span style="font-size:0.9rem;color:var(--gray);">(Em desenvolvimento)</span>
 </h4>
-
-<div class="carousel project-carousel">
-
-<button class="carousel-btn prev">‹</button>
-
-<div class="carousel-track">
-
-<img src="Gifs/2SteamVeinsGif3.gif" loading="lazy">
-
-</div>
-
-<button class="carousel-btn next">›</button>
-
-</div>
 
 <p>
 Projeto em desenvolvimento com publicação prevista na Steam, no qual participo ativamente da produção.
