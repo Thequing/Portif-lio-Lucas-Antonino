@@ -336,19 +336,27 @@ Ver mais código no GitHub
 
 <section>
 
+<section>
+
 <h3>Portfólio de Jogos</h3>
 
-<div class="carousel">
+<!-- STEAM VEINS -->
+
+<div class="card" style="margin-bottom:30px;">
+
+<h4>🏆 Steam Veins 
+<span style="font-size:0.9rem;color:var(--gray);">(Publicado na Steam)</span>
+</h4>
+
+<div class="carousel project-carousel">
 
 <button class="carousel-btn prev">‹</button>
 
 <div class="carousel-track">
 
-<img src="Imagens/1753233757734.jpg" loading="lazy">
-<img src="Imagens/image.png" loading="lazy">
-<img src="Imagens/image (1).png" loading="lazy">
-<img src="Imagens/KuroNekoGif.gif" loading="lazy">
-<img src="Imagens/Screenshot_1.png" loading="lazy">
+<img src="Gifs/1SteamVeinsGif2.gif" loading="lazy">
+<img src="Gifs/2SteamVeinsGif3.gif" loading="lazy">
+<img src="Gifs/3SteamVeinsGif4.gif" loading="lazy">
 
 </div>
 
@@ -356,11 +364,153 @@ Ver mais código no GitHub
 
 </div>
 
+<p>
+Jogo desenvolvido em equipe na <strong>Kimu Studios</strong>, lançado oficialmente na Steam.
+</p>
+
+<ul>
+<li>Programação de sistemas de gameplay</li>
+<li>Implementação de mecânicas principais</li>
+<li>Criação e integração de efeitos visuais</li>
+<li>Otimização de funcionalidades e performance</li>
+</ul>
+
+<p>
+🔗 <a href="https://store.steampowered.com/app/3201780/Steam_Veins/" target="_blank">
+Página na Steam
+</a>
+</p>
+
+<span style="
+display:inline-block;
+margin-top:10px;
+background:linear-gradient(135deg,#1f6feb,#7b2cbf);
+padding:6px 12px;
+border-radius:999px;
+font-size:0.85rem;
+font-weight:bold;">
+🏆 Steam Published Game
+</span>
+
+</div>
+
+
+<!-- DINO GIRLS -->
+
+<div class="card" style="margin-bottom:30px;">
+
+<h4>🦖 Dino Girls 
+<span style="font-size:0.9rem;color:var(--gray);">(Em desenvolvimento)</span>
+</h4>
+
+<div class="carousel project-carousel">
+
+<button class="carousel-btn prev">‹</button>
+
+<div class="carousel-track">
+
+<img src="Gifs/2SteamVeinsGif3.gif" loading="lazy">
+
+</div>
+
+<button class="carousel-btn next">›</button>
+
+</div>
+
+<p>
+Projeto em desenvolvimento com publicação prevista na Steam, no qual participo ativamente da produção.
+</p>
+
+<ul>
+<li>Participação no desenvolvimento de gameplay</li>
+<li>Criação e integração de sistemas</li>
+<li>Implementação de mecânicas</li>
+<li>Colaboração em decisões técnicas e criativas</li>
+</ul>
+
+<p>
+🔗 <a href="https://store.steampowered.com/app/3495120/Dino_Girls/" target="_blank">
+Página na Steam
+</a>
+</p>
+
+</div>
+
+
+<!-- KURONEKO -->
+
+<div class="card" style="margin-bottom:30px;">
+
+<h4>🐱 KuroNeko 
+<span style="font-size:0.9rem;color:var(--gray);">(Visual Novel • Projeto Solo)</span>
+</h4>
+
+<div class="carousel project-carousel">
+
+<button class="carousel-btn prev">‹</button>
+
+<div class="carousel-track">
+
+<img src="Gifs/5KuroNekoDemo_ToLinkedin_1.gif" loading="lazy">
+
+</div>
+
+<button class="carousel-btn next">›</button>
+
+</div>
+
+<p>
+Visual Novel desenvolvida como <strong>projeto solo</strong>, utilizando <strong>Unity</strong>.
+Todo o sistema de <strong>parser narrativo</strong> foi programado em <strong>C#</strong>.
+</p>
+
+<ul>
+<li>Desenvolvimento completo do projeto</li>
+<li>Criação de sistema de parser narrativo em C#</li>
+<li>Integração do parser com Unity</li>
+<li>Implementação de sistemas de escolha e progressão narrativa</li>
+</ul>
+
+</div>
+
+
+<!-- MIDNIGHT MEMORIES -->
+
+<div class="card">
+
+<h4>🌌 MidNight Memories 
+<span style="font-size:0.9rem;color:var(--gray);">(Projeto Solo)</span>
+</h4>
+
+<div class="carousel project-carousel">
+
+<button class="carousel-btn prev">‹</button>
+
+<div class="carousel-track">
+
+<img src="Gifs/4MidNightMemories1.gif" loading="lazy">
+
+</div>
+
+<button class="carousel-btn next">›</button>
+
+</div>
+
+<p>
+FPS estilo Doom/PSX desenvolvido de forma independente em <strong>Unreal Engine</strong>,
+com foco em atmosfera, narrativa enigmática e gameplay clássico.
+</p>
+
+<ul>
+<li>Programação de movimentação e combate</li>
+<li>Sistemas de gameplay e UI</li>
+<li>Design técnico e implementação geral</li>
+<li>Desenvolvimento completo do projeto</li>
+</ul>
+
+</div>
+
 </section>
-
-<div class="line"></div>
-
-<section>
 
 <h3>Conhecimentos & Formação</h3>
 
@@ -418,29 +568,36 @@ lvantonino@hotmail.com
 
 document.querySelectorAll('.carousel').forEach(carousel=>{
 
-const track=carousel.querySelector('.carousel-track');
-const slides=track.children;
+const track = carousel.querySelector('.carousel-track');
+const slides = track.children;
 
-let index=0;
+let index = 0;
 
 function update(){
-track.style.transform=`translateX(-${index*100}%)`;
+track.style.transform = `translateX(-${index*100}%)`;
 }
 
-carousel.querySelector('.next').onclick=()=>{
+const nextBtn = carousel.querySelector('.next');
+const prevBtn = carousel.querySelector('.prev');
+
+if(nextBtn){
+nextBtn.onclick=()=>{
 index=(index+1)%slides.length;
 update();
 };
+}
 
-carousel.querySelector('.prev').onclick=()=>{
+if(prevBtn){
+prevBtn.onclick=()=>{
 index=(index-1+slides.length)%slides.length;
 update();
 };
+}
 
 setInterval(()=>{
 index=(index+1)%slides.length;
 update();
-},4000);
+},5000);
 
 });
 
