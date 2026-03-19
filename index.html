@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Put your HTML text here<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -35,6 +35,10 @@ border:2px solid var(--purple);
 border-radius:16px;
 padding:40px;
 box-shadow:0 0 40px rgba(123,44,191,0.4);
+}
+
+.container{
+    position: relative;
 }
 
 header{
@@ -182,6 +186,29 @@ border-radius:12px;
 border:1px solid var(--purple);
 }
 
+.lang-switch{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:10px;
+    gap:10px;
+}    
+
+.lang-switch button{
+    background:none;
+    border:1px solid var(--gray);
+    color:var(--gray);
+    padding:4px 10px;
+    border-radius:6px;
+    font-size:0.8rem;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.lang-switch button:hover{
+    color:var(--purple);
+    border-color:var(--purple);
+}    
+
 pre{
 background:#12121a;
 padding:15px;
@@ -210,14 +237,14 @@ align-items:center;
 <body>
 
 <div class="container">
-
-<header style="display:flex; flex-direction:column; align-items:center; position:relative;">
     
 <div style="position:absolute; right:0; top:0;">
     <button onclick="setLanguage('pt')" class="btn">PT</button>
     <button onclick="setLanguage('en')" class="btn">EN</button>
 </div>
-
+    
+<header style="display:flex; flex-direction:column; align-items:center; position:relative;">
+    
 <h1>Lucas Vinicius de Santana Antonino</h1>
 <h2 
 data-pt="Programador de Gameplay | Unity • Unreal Engine • C# • C++"
