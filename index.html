@@ -38,8 +38,9 @@ box-shadow:0 0 40px rgba(123,44,191,0.4);
 }
 
 header{
-text-align:center;
-margin-bottom:40px;
+    text-align:center;
+    margin-bottom:40px;
+    position:relative; 
 }
 
 header h1{
@@ -210,14 +211,13 @@ align-items:center;
 
 <div class="container">
 
-<header>
+<header style="display:flex; flex-direction:column; align-items:center; position:relative;">
     
-<div style="position:absolute; right:40px; top:40px;">
+<div style="position:absolute; right:0; top:0;">
     <button onclick="setLanguage('pt')" class="btn">PT</button>
     <button onclick="setLanguage('en')" class="btn">EN</button>
 </div>
 
-<h1>Lucas Vinicius de Santana Antonino</h1>
 <h1>Lucas Vinicius de Santana Antonino</h1>
 <h2 
 data-pt="Programador de Gameplay | Unity • Unreal Engine • C# • C++"
@@ -826,6 +826,10 @@ function setLanguage(lang){
         el.innerHTML = el.getAttribute(`data-${lang}`);
     });
 }
+    window.onload = () => {
+    const savedLang = localStorage.getItem('lang') || 'pt';
+    setLanguage(savedLang);
+};
     
 </script>
 
