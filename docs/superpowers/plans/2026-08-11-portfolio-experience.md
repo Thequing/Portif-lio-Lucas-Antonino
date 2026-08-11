@@ -426,7 +426,10 @@ git commit -m "Add asset and i18n consistency checker with tests"
 ### Task 3: Foundation — document shell, tokens, type
 
 **Files:**
-- Create: `index.html` (replacing the old one wholesale in Task 12; for now build alongside as the new file)
+- Modify: `index.html` — **replace its contents entirely, in place.** The previous
+  version is preserved in git history, and the one fragment later tasks still need (the
+  C# sample) has already been extracted to `docs/legacy/RespondTakeDamage.cs`. Do not
+  create a second HTML file; there is exactly one `index.html` throughout.
 - Create: `css/base.css`
 - Create: `media/font/` (vendored WOFF2)
 
@@ -1517,7 +1520,14 @@ Each image gets `loading="lazy"`, real `alt` text, and `data-parallax` for Task 
 
 - [ ] **Step 2: Build the code section**
 
-Wrap each source line of `RespondTakeDamage` in `<span class="line">` so lines can be staggered. Copy the method body verbatim from the current `index.html:396-438`.
+Wrap each source line of `RespondTakeDamage` in `<span class="line">` so lines can be
+staggered. The method body is preserved verbatim at `docs/legacy/RespondTakeDamage.cs`
+(43 lines) — read it from there. Do **not** try to recover it from `index.html`, which
+was replaced in Task 3.
+
+HTML-escape the source when embedding it: the method contains
+`GetComponentInChildren<IgnoreCollisionOnDamage>()`, and an unescaped `<` opens a bogus
+tag that swallows the rest of the block. Escape `<` as `&lt;` and `>` as `&gt;`.
 
 - [ ] **Step 3: Add `typeCode` and parallax to `js/scroll.js`**
 
@@ -1634,8 +1644,10 @@ git commit -m "Add magnetic cursor for fine pointers"
 ### Task 12: Retire the old page, final QA sweep
 
 **Files:**
-- Delete: nothing — `index.html` was replaced in place across Tasks 3–10
-- Modify: `README.md` (create)
+- Delete: `docs/legacy/` — the scaffolding that carried the C# sample across the rebuild;
+  the sample now lives in `index.html` and the original is in git history
+- Modify: `index.html` (replaced in place across Tasks 3–10; verify only)
+- Create: `README.md`
 
 **Interfaces:** none — this task ships.
 
