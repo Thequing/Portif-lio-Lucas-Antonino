@@ -254,7 +254,7 @@ the current failure mode.
 
 This duplicates the English strings in two places, which is a deliberate trade: it is what
 lets the page read correctly with JavaScript disabled or still loading, rather than
-flashing empty. `scripts/check-assets.sh` guards the duplication by asserting that every
+flashing empty. `scripts/check.mjs` guards the duplication by asserting that every
 `data-i18n` element's inline text matches its `copy.en` entry, and that every key present
 in `en` is also present in `pt`. Drift fails the check rather than shipping silently.
 
@@ -308,7 +308,10 @@ with a visible focus ring in the active accent. All media carries alt text or an
 No test framework exists in this repository and a static site does not warrant adding
 one. Verification is two parts.
 
-**Automated —** `scripts/check-assets.sh` fails with a non-zero exit on any of:
+**Automated —** `scripts/check.mjs` runs on Node's built-in runtime with **no npm
+packages**, and its own unit tests run under `node --test`. Node is a development-time
+tool here only; the served site remains dependency-free. It fails with a non-zero exit on
+any of:
 
 1. A `src` or `href` in `index.html` pointing at a local path that does not exist on disk
    — the "works locally, 404s on Pages" failure, most likely for a media-heavy static site.
@@ -327,7 +330,7 @@ one. Verification is two parts.
 - [ ] 375 px and 1440 px viewports both render without horizontal overflow
 - [ ] CV PDF downloads
 - [ ] All external links resolve (Steam ×2, GitHub, LinkedIn, Drive ×2)
-- [ ] `scripts/check-assets.sh` exits 0
+- [ ] `node scripts/check.mjs` exits 0
 
 **Budget: under 4 MB for a complete cold scroll**, from 349 MB today.
 
