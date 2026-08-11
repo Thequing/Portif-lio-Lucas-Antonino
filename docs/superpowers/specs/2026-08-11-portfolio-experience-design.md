@@ -99,18 +99,32 @@ All outputs are silent (`-an`); the sources have no audio track.
 Source filenames are renamed to semantic slugs on the way out, so the markup reads
 clearly and ordering is not encoded in the name:
 
-| Source | Slug |
-| --- | --- |
-| `1SteamVeinsGif2.gif` | `steam-veins-title` |
-| `2SteamVeinsGif3.gif` | `steam-veins-combat` |
-| `3SteamVeinsGif4.gif` | `steam-veins-boss` |
-| `4MidNightMemories1.gif` | `midnight-memories` |
-| `5KuroNekoDemo_ToLinkedin_1.gif` | `kuroneko` |
-| `JohnnyG1.gif` | `johnny-g` |
+| Source | Slug | Content (confirmed from extracted frames) |
+| --- | --- | --- |
+| `1SteamVeinsGif2.gif` | `steam-veins-title` | Title screen, deep red, PT menu |
+| `2SteamVeinsGif3.gif` | `steam-veins-chapel` | Chapel interior, NPC, exploration |
+| `3SteamVeinsGif4.gif` | `steam-veins-combat` | Combat — HP bar, ammo HUD, hit VFX |
+| `4MidNightMemories1.gif` | `midnight-memories` | Foggy street, first-person |
+| `5KuroNekoDemo_ToLinkedin_1.gif` | `kuroneko` | VN dialogue scene |
+| `JohnnyG1.gif` | `johnny-g` | Grappler traversal, amber sky |
 
-The `steam-veins-combat` and `steam-veins-boss` slugs are provisional — the
-implementation should confirm each clip's actual content from a extracted frame and
-rename to match before wiring the markup.
+### Required crops
+
+Two clips are Unity Editor screen recordings and must be cropped to the Game view
+before use. Shipping editor chrome would frame the work as unfinished capture rather
+than as a game.
+
+| Slug | Crop filter | Removes |
+| --- | --- | --- |
+| `kuroneko` | `crop=1604:856:156:136` | Editor toolbar, menus, Game tab, dark gutters |
+| `midnight-memories` | `crop=1192:638:362:134` | Editor chrome **and a red console error** reading "The referenced script (Unknown) on this Behaviour is missing!" |
+
+Both crop values were derived by extracting frames and visually verifying the result.
+The crop filter must run **before** `scale` in the ffmpeg filter chain.
+
+The `kuroneko` clip retains a visible mouse cursor and in-game Portuguese dialogue.
+Both are acceptable: the cursor is unobtrusive at final display size, and the
+Portuguese text is authentic to the project rather than an error.
 
 Measured result at 1280 px H.264 CRF 24, all six clips: **3.1 MB total**, versus 349 MB
 of GIF. A frame extracted from the converted Steam Veins clip was inspected and shows
@@ -140,10 +154,10 @@ decode at once. Nothing downloads until its section is near.
                     role line, scroll cue, PT/EN toggle, CV button
 02  POSITIONING     short first-person statement; scroll-velocity skew
 03  MARQUEE         UNITY · UNREAL ENGINE 5 · C# · C++ · BLUEPRINTS · FMOD
-04  PROJECT 01      Steam Veins        #ff7a2f   3 clips, pinned
-05  PROJECT 02      MidNight Memories  #6d7ce8   1 clip, pinned
+04  PROJECT 01      Steam Veins        #e8452f   3 clips, pinned
+05  PROJECT 02      MidNight Memories  #8fa3ad   1 clip, pinned
 06  PROJECT 03      KuroNeko           #17c3b2   clip + VN screenshot
-07  PROJECT 04      Johnny G           #b5179e   1 clip, pinned
+07  PROJECT 04      Johnny G           #f5c518   1 clip, pinned
 08  PROJECT 05      Dino Girls         #4ade80   typographic, no media
 09  CRAFT           parallax grid of stills and sprite sheets
 10  CODE            RespondTakeDamage; lines type in on section enter
@@ -177,6 +191,23 @@ blocking; if it fails the page still renders, unanimated.
 
 Display scale `clamp(3rem, 9vw, 9rem)`; body 1.125rem at 1.6 line-height; mono details
 0.75rem with 0.08em letter-spacing.
+
+### Accent derivation
+
+Each accent is sampled from that game's own art, verified against extracted frames
+rather than chosen from memory:
+
+| Section | Accent | Sampled from |
+| --- | --- | --- |
+| Steam Veins | `#e8452f` | Crimson title screen and red combat alarm lighting |
+| MidNight Memories | `#8fa3ad` | Desaturated steel-blue fog of the street scene |
+| KuroNeko | `#17c3b2` | Teal buildings of the city background |
+| Johnny G | `#f5c518` | Amber sky and gold platform blocks |
+| Dino Girls | `#4ade80` | No media; assigned to stay distinct from the other four |
+
+Steam Veins and Johnny G both read warm in their source art, so their accents are
+deliberately separated toward crimson and yellow respectively. Adjacent sections must
+never resolve to accents that read as the same hue at a glance.
 
 ### Accent transition
 
@@ -245,6 +276,14 @@ duration, engine version, player counts, release date — a `[TODO: ...]` marker
 in the dictionary. **No detail about shipped work is invented.**
 
 The project count is corrected from 4 to 5.
+
+**Factual correction — MidNight Memories engine.** The current site describes this
+project as "developed independently using Unreal Engine." The source recording's window
+title reads `MidnightMemories - SampleScene - Unity 6.2`. Confirmed with the author on
+2026-08-11: **the project is Unity, and the existing copy is wrong.** The rebuild states
+Unity in both languages, and its technical bullets reference C# rather than C++ or
+Blueprints. The site-wide skills list still legitimately includes Unreal Engine 5, which
+is supported by the other projects.
 
 ## Degradation and accessibility
 
