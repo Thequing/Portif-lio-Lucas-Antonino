@@ -1,5 +1,44 @@
 const NEUTRAL = '#8b8b99';
 
+function pinProjects() {
+  const { gsap, ScrollTrigger } = window;
+
+  ScrollTrigger.matchMedia({
+    '(min-width: 1024px)': () => {
+      for (const section of document.querySelectorAll('.project')) {
+        const wrap = section.querySelector('.pin-wrap');
+        const shot = section.querySelector('.shot');
+        const copyEl = section.querySelector('.project-copy');
+        if (!wrap || !copyEl) continue;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrap,
+            start: 'top top',
+            end: '+=120%',
+            pin: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+          },
+        });
+
+        // Clip enters behind an expanding mask, then settles smaller
+        if (shot) {
+          tl.from(shot, { clipPath: 'inset(50% 0% 50% 0%)', duration: 0.5, ease: 'power2.out' }, 0)
+            .from(shot, { scale: 1.12, duration: 1.0, ease: 'none' }, 0);
+        }
+
+        // Copy steps in beside it
+        tl.from(
+          copyEl.children,
+          { y: 30, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'power3.out' },
+          0.25
+        );
+      }
+    },
+  });
+}
+
 export function initScroll() {
   const { gsap, ScrollTrigger } = window;
   gsap.registerPlugin(ScrollTrigger);
@@ -56,4 +95,6 @@ export function initScroll() {
       },
     });
   }
+
+  pinProjects();
 }
