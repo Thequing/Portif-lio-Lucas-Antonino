@@ -75,6 +75,42 @@ test('reports a key present in en but missing from pt', () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+// Video sources are held in data-src so nothing downloads until media.js promotes
+// them, which means data-src is the only reference to a clip anywhere in the markup.
+// The \b in the src|href pattern happens to match at the hyphen in "data-src", so
+// these paths are covered. That is easy to break by "tightening" the regex later.
+test('reports a missing video held in data-src', () => {
+  const dir = fixture(
+    `<video><source data-src="media/video/gone-1280.mp4" type="video/mp4"></video>`,
+    GOOD_I18N
+  );
+  const { errors } = checkAll(dir);
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /gone-1280\.mp4/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('reports a missing poster image', () => {
+  const dir = fixture(
+    `<video poster="media/poster/gone.webp" data-slug="x"></video>`,
+    GOOD_I18N
+  );
+  const { errors } = checkAll(dir);
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /gone\.webp/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('resolves a percent-encoded filename against the real file on disk', () => {
+  const dir = fixture(
+    `<img src="Imagens/Est%C3%A1tua2.0.png">`,
+    GOOD_I18N,
+    ['Imagens/Estátua2.0.png']
+  );
+  assert.deepEqual(checkAll(dir).errors, []);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test('reports a data-i18n key defined nowhere', () => {
   const dir = fixture(`<h2 data-i18n="hero.ghost">Ghost</h2>`, GOOD_I18N);
   const { errors } = checkAll(dir);

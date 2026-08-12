@@ -336,7 +336,10 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const SRC_HREF = /\b(?:src|href)\s*=\s*"([^"]+)"/g;
+// The \b matches at the hyphen in "data-src" too, which is deliberate: Task 5 holds
+// every clip URL in data-src, so dropping that coverage would make a typo in a clip
+// path invisible. `poster` is listed explicitly for the same reason.
+const SRC_HREF = /\b(?:src|href|poster)\s*=\s*"([^"]+)"/g;
 const I18N_EL = /<([a-z0-9]+)\b[^>]*\bdata-i18n\s*=\s*"([^"]+)"[^>]*>([\s\S]*?)<\/\1>/gi;
 const EXTERNAL = /^(?:https?:|mailto:|tel:|data:|#|\/\/)/i;
 
