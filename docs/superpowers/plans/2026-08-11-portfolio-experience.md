@@ -1420,8 +1420,16 @@ fails contrast against it unscrimmed.
 
 - [ ] **Step 2: Style the loader**
 
+**The loader must not be shown without JavaScript.** It is an opaque, full-screen,
+fixed overlay that only `boot()` removes. With JS disabled, `boot()` never runs and
+the visitor stares at a black rectangle — which contradicts Task 4 Step 6's
+requirement that the page stay readable without JS. Gate it on a `js` class set by a
+synchronous inline script in `<head>` (inline and synchronous so there is no flash),
+exactly as `.lang` is gated.
+
 ```css
-.loader {
+.loader { display: none; }
+.js .loader {
   position: fixed; inset: 0; z-index: 200;
   background: var(--ink); display: grid; place-items: center;
 }
@@ -1489,6 +1497,11 @@ function runLoader() {
 
 function revealHero() {
   const { gsap, SplitText } = window;
+  // ready() resolves on a 3s timeout whether or not every plugin arrived, so
+  // SplitText can legitimately be missing. Without this guard the throw escapes
+  // boot() and initScroll() never runs — losing the entire scroll system to
+  // save one title animation.
+  if (!SplitText) return;
   const split = new SplitText('#hero h1', { type: 'chars' });
   gsap.from(split.chars, {
     yPercent: 120,

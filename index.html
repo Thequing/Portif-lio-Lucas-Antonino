@@ -6,12 +6,22 @@
 <title>Lucas Antonino — Gameplay Programmer</title>
 <meta name="description" content="Gameplay programmer. Unity, Unreal Engine 5, C#, C++. One title shipped on Steam.">
 
+<!-- Marks the document as script-capable before first paint, so the loader — an
+     opaque full-screen overlay that only JavaScript can remove — is never shown
+     to a visitor who would then be stuck behind it. Inline and synchronous on
+     purpose: a deferred or external script would allow a flash of black. -->
+<script>document.documentElement.classList.add('js');</script>
+
 <link rel="preload" href="media/font/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <span class="loader-count">0</span>
+</div>
 
 <div class="lang" role="group" aria-label="Language">
   <button type="button" data-lang="en" aria-pressed="true">EN</button>
@@ -20,6 +30,13 @@
 
 <main>
   <section id="hero">
+    <video class="hero-bg"
+      data-slug="steam-veins-title" data-hero
+      poster="media/poster/steam-veins-title.webp"
+      preload="none" muted loop playsinline aria-hidden="true">
+      <source data-src="media/video/steam-veins-title-1280.webm" type="video/webm">
+      <source data-src="media/video/steam-veins-title-1280.mp4" type="video/mp4">
+    </video>
     <h1>Lucas Antonino</h1>
     <p class="mono" data-i18n="hero.role">Gameplay Programmer</p>
     <p class="lede" data-i18n="hero.summary">I build the systems players actually touch — combat, movement, dialogue, UI. One title shipped on Steam.</p>
