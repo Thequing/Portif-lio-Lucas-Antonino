@@ -1108,8 +1108,14 @@ main > section {
 
 - [ ] **Step 2: Write `css/components.css`**
 
+**Conflict with Task 4 Step 4 — resolved here.** Task 4 ships `.lang { display: none }`
+so a no-JS visitor is not offered a dead control, and `initI18n()` sets an inline
+`display: flex` once binding succeeds. Writing `display: flex` in this rule would
+undo that and re-expose the toggle whenever JavaScript fails. Keep `display: none`;
+the inline style from `initI18n()` wins over it.
+
 ```css
-.lang { position: fixed; top: 1.25rem; right: var(--gutter); z-index: 60; display: flex; gap: 0.5rem; }
+.lang { position: fixed; top: 1.25rem; right: var(--gutter); z-index: 60; display: none; gap: 0.5rem; }
 .lang button {
   font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em;
   background: transparent; color: var(--muted);

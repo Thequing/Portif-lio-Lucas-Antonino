@@ -1,5 +1,71 @@
-/* Cards, buttons, rail, marquee, cursor, code block. Filled in Task 6. */
+/* The language toggle cannot function without JS, so it ships hidden and
+   initI18n() sets an inline display:flex once binding succeeds. The layout
+   properties below apply from that moment; `display` is deliberately NOT set
+   to flex here, or a no-JS visitor would be offered a dead control. */
+.lang {
+  display: none;
+  position: fixed; top: 1.25rem; right: var(--gutter); z-index: 60;
+  gap: 0.5rem;
+}
+.lang button {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--rule); border-radius: 4px;
+  padding: 0.35rem 0.6rem; cursor: pointer; transition: color 0.2s, border-color 0.2s;
+}
+.lang button[aria-pressed='true'] { color: var(--accent); border-color: var(--accent); }
 
-/* The language toggle cannot function without JS, so it is not offered until
-   initI18n() has bound it. That function sets display:flex once binding succeeds. */
-.lang { display: none; }
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  align-self: flex-start;
+  padding: 0.8rem 1.4rem; border: 1px solid var(--accent); border-radius: 999px;
+  font-size: 0.95rem; transition: background 0.25s, color 0.25s;
+}
+.btn:hover { background: var(--accent); color: var(--ink); }
+
+.lede { font-size: clamp(1.15rem, 2vw, 1.5rem); color: var(--paper); max-width: 40ch; }
+
+.numeral { color: var(--accent); }
+
+/* Author-facing placeholders for facts that were never confirmed. Muted and
+   set small so they read as scaffolding, not as claims about the work. */
+.todo { color: var(--muted); opacity: 0.65; font-style: italic; text-transform: none; }
+
+.links { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+.links a {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-bottom: 1px solid var(--rule); padding-bottom: 0.2rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+.links a:hover { color: var(--accent); border-color: var(--accent); }
+
+.scroll-cue { margin-top: auto; }
+
+.shot { position: relative; overflow: hidden; border-radius: 10px; border: 1px solid var(--rule); }
+.shot video, .shot img { width: 100%; height: auto; }
+
+.rail {
+  position: fixed; left: var(--gutter); top: 50%; translate: 0 -50%;
+  width: 2px; height: 32vh; background: var(--rule); z-index: 50;
+}
+.rail span { display: block; width: 100%; height: 0; background: var(--accent); transform-origin: top; }
+@media (max-width: 1023px) { .rail { display: none; } }
+
+.marquee { overflow: hidden; white-space: nowrap; border-block: 1px solid var(--rule); padding-block: 1.5rem; }
+.marquee-inner { display: inline-flex; gap: 3rem; will-change: transform; }
+.marquee span { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 700; color: var(--muted); }
+
+.code-block {
+  background: #0d0f14; border: 1px solid var(--rule); border-radius: 10px;
+  padding: 1.5rem; overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7;
+}
+.code-block .line { display: block; }
+
+.cursor {
+  position: fixed; top: 0; left: 0; z-index: 100; pointer-events: none;
+  width: 28px; height: 28px; border: 1px solid var(--accent); border-radius: 50%;
+  translate: -50% -50%; mix-blend-mode: difference;
+}
+@media (pointer: coarse) { .cursor { display: none; } }
