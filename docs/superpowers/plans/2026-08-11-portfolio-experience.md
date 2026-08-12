@@ -1597,14 +1597,28 @@ Call both from `initScroll()`.
 - [ ] **Step 4: Build background and contact sections**
 
 Background: a `.grid-3` of the three qualifications using `bg.*` keys.
-Contact: heading, body, CV download, and links to GitHub, LinkedIn, and email. Preserve every external URL from the current site verbatim — the two Steam pages, the two Google Drive links, GitHub, LinkedIn.
+Contact: heading, body, CV download, and links to GitHub, LinkedIn, and email.
+
+Preserve every external URL from the legacy site verbatim. They are recorded in
+`docs/legacy/external-links.md`, extracted before Task 3 replaced `index.html` —
+read them from there, not from `index.html`, which no longer contains them.
+
+There are **nine** entries, not the six this plan originally claimed: two Steam
+pages, **three** Google Drive links (a Demo file for Steam Veins plus project
+folders for MidNight Memories and Johnny G), GitHub twice, LinkedIn, and the
+email `lvantonino@hotmail.com` — which a URL grep misses because it has no
+scheme. KuroNeko has no external link; do not invent one.
 
 - [ ] **Step 5: Verify every link**
 
 Run: `node scripts/check.mjs`
 Expected: PASS.
 
-Then click all six external links manually and confirm each resolves. The checker deliberately skips external URLs; only a human can confirm they still work.
+Then click every external link manually and confirm each resolves, checking off the
+table in `docs/legacy/external-links.md`. The checker deliberately skips external
+URLs; only a human can confirm they still work. The three Google Drive links are the
+likely failures — Drive sharing permissions expire or get revoked far more often than
+Steam or GitHub URLs.
 
 - [ ] **Step 6: Commit**
 
@@ -1678,8 +1692,9 @@ git commit -m "Add magnetic cursor for fine pointers"
 ### Task 12: Retire the old page, final QA sweep
 
 **Files:**
-- Delete: `docs/legacy/` — the scaffolding that carried the C# sample across the rebuild;
-  the sample now lives in `index.html` and the original is in git history
+- Delete: `docs/legacy/` — the scaffolding that carried the C# sample and the external
+  link table across the rebuild; both now live in `index.html` and the originals are in
+  git history. Delete only after Step 3's link check passes, not before.
 - Modify: `index.html` (replaced in place across Tasks 3–10; verify only)
 - Create: `README.md`
 
@@ -1711,7 +1726,7 @@ Record the actual result for each, and do not mark the task complete while any l
 - [ ] Keyboard-only traversal reaches every link and control with a visible focus ring
 - [ ] 375 px and 1440 px: no horizontal overflow
 - [ ] CV PDF downloads
-- [ ] All six external links resolve
+- [ ] All external links resolve — all nine in `docs/legacy/external-links.md`
 - [ ] No console errors or warnings
 
 - [ ] **Step 4: Write `README.md`**
