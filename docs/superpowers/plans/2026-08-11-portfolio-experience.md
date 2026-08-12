@@ -318,8 +318,14 @@ test('reports a data-i18n key defined nowhere', () => {
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `node --test scripts/`
+Run: `node --test "scripts/**/*.test.mjs"`
 Expected: FAIL — `Cannot find module './check.mjs'`.
+
+Quote the glob. Node expands it internally, which keeps the command identical under
+bash and PowerShell. The bare-directory form `node --test scripts/` does **not** work
+on Node 24 for Windows — it bypasses the runner and tries to load `scripts` as a
+module entry point, failing with `Cannot find module '...\scripts'` whether or not the
+tests would pass.
 
 - [ ] **Step 3: Write the checker**
 
@@ -385,7 +391,9 @@ export function checkAll(rootDir) {
     if (EXTERNAL.test(url)) continue;
     const clean = url.split(/[?#]/)[0];
     if (!clean) continue;
-    if (!existsSync(join(rootDir, clean))) {
+    // Decoded, so the percent-encoded `Imagens/Est%C3%A1tua2.0.png` that Task 10
+    // requires in the markup still resolves against the real filename on disk.
+    if (!existsSync(join(rootDir, decodeURIComponent(clean)))) {
       errors.push(`missing asset: ${clean}`);
     }
   }
@@ -437,7 +445,7 @@ if (isMain) {
 
 - [ ] **Step 4: Run the tests to verify they pass**
 
-Run: `node --test scripts/`
+Run: `node --test "scripts/**/*.test.mjs"`
 Expected: PASS, 6/6.
 
 - [ ] **Step 5: Commit**
@@ -1685,7 +1693,7 @@ Expected: no matches. Any hit means a fragment of the old page survived.
 - [ ] **Step 2: Run the full check**
 
 ```bash
-node --test scripts/
+node --test "scripts/**/*.test.mjs"
 node scripts/check.mjs
 ```
 
@@ -1731,8 +1739,8 @@ Requires ffmpeg on PATH.
 
 ## Checks
 
-    node --test scripts/     # checker unit tests
-    node scripts/check.mjs   # assets resolve, i18n consistent
+    node --test "scripts/**/*.test.mjs"   # checker unit tests
+    node scripts/check.mjs                # assets resolve, i18n consistent
 ```
 
 - [ ] **Step 5: Commit and deploy**
