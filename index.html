@@ -1,954 +1,328 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Lucas Vinicius de Santana Antonino | Game Developer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucas Antonino — Gameplay Programmer</title>
+<meta name="description" content="Gameplay programmer. Unity, Unreal Engine 5, C#, C++. One title shipped on Steam.">
 
-<style>
+<!-- Marks the document as script-capable before first paint, so the loader — an
+     opaque full-screen overlay that only JavaScript can remove — is never shown
+     to a visitor who would then be stuck behind it. Inline and synchronous on
+     purpose: a deferred or external script would allow a flash of black. -->
+<script>document.documentElement.classList.add('js');</script>
 
-:root{
---black:#0b0b0f;
---purple:#7b2cbf;
---blue-dark:#1f2a44;
---text:#eaeaf0;
---gray:#9aa0b3;
-}
+<link rel="icon" href="media/favicon.svg" type="image/svg+xml">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',Tahoma,sans-serif;
-}
-
-body{
-background:linear-gradient(135deg,var(--black),var(--blue-dark));
-color:var(--text);
-padding:40px;
-}
-
-.container{
-max-width:1000px;
-margin:auto;
-background:rgba(11,11,15,0.9);
-border:2px solid var(--purple);
-border-radius:16px;
-padding:40px;
-box-shadow:0 0 40px rgba(123,44,191,0.4);
-}
-
-.container{
-    position: relative;
-}
-
-header{
-    text-align:center;
-    margin-bottom:40px;
-    position:relative; 
-}
-
-header h1{
-font-size:3rem;
-color:var(--purple);
-}
-
-header h2{
-font-size:1.2rem;
-color:var(--gray);
-margin-top:10px;
-}
-
-.stats{
-display:flex;
-justify-content:center;
-gap:30px;
-margin-top:20px;
-flex-wrap:wrap;
-}
-
-.stat{
-background:#12121a;
-padding:10px 20px;
-border-radius:10px;
-border:1px solid var(--blue-dark);
-}
-
-.line{
-height:3px;
-width:100%;
-background:linear-gradient(90deg,transparent,var(--purple),transparent);
-margin:30px 0;
-}
-
-section{
-margin-bottom:35px;
-}
-
-section h3{
-font-size:1.6rem;
-color:var(--purple);
-margin-bottom:15px;
-border-left:4px solid var(--purple);
-padding-left:12px;
-}
-
-p,li{
-line-height:1.7;
-}
-
-ul{
-list-style:none;
-}
-
-ul li::before{
-content:"▸";
-color:var(--purple);
-margin-right:8px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.card{
-background:linear-gradient(145deg,#12121a,#0b0b0f);
-border:1px solid var(--blue-dark);
-border-radius:12px;
-padding:20px;
-}
-
-a{
-color:#4ea8de;
-font-weight:bold;
-text-decoration:none;
-}
-
-.btn{
-display:inline-block;
-margin-top:15px;
-background:linear-gradient(135deg,#1f6feb,#7b2cbf);
-padding:10px 18px;
-border-radius:999px;
-}
-
-.carousel{
-position:relative;
-overflow:hidden;
-border-radius:14px;
-margin:25px auto 40px;
-border:1px solid var(--purple);
-box-shadow:0 0 25px rgba(123,44,191,0.35);
-max-width:720px;
-aspect-ratio:16/9;
-}
-
-.carousel-track{
-display:flex;
-height:100%;
-transition:transform 0.45s ease;
-}
-
-.carousel img{
-width:100%;
-height:100%;
-flex-shrink:0;
-object-fit:contain;
-background:black;
-}
-
-.carousel-btn{
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-background:rgba(11,11,15,0.85);
-border:1px solid var(--purple);
-color:white;
-font-size:2rem;
-padding:6px 14px;
-cursor:pointer;
-border-radius:10px;
-}
-
-.prev{left:10px;}
-.next{right:10px;}
-
-.gif-showcase{
-margin-top:20px;
-display:grid;
-gap:20px;
-}
-
-.gif-showcase img{
-width:100%;
-border-radius:12px;
-border:1px solid var(--purple);
-}
-
-.lang-switch{
-    display:flex;
-    justify-content:flex-end;
-    margin-bottom:10px;
-    gap:10px;
-}    
-
-.lang-switch button{
-    background:none;
-    border:1px solid var(--gray);
-    color:var(--gray);
-    padding:4px 10px;
-    border-radius:6px;
-    font-size:0.8rem;
-    cursor:pointer;
-    transition:0.2s;
-}
-
-.lang-switch button:hover{
-    color:var(--purple);
-    border-color:var(--purple);
-}    
-
-pre{
-background:#12121a;
-padding:15px;
-border-radius:10px;
-overflow:auto;
-}
-
-@media(max-width:700px){
-
-body{padding:20px;}
-
-header h1{
-font-size:2rem;
-}
-
-.stats{
-flex-direction:column;
-align-items:center;
-}
-
-}
-
-</style>
+<link rel="preload" href="media/font/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
 </head>
-
 <body>
 
-<div class="container">
-    
-<div style="position:absolute; right:0; top:0;">
-    <button onclick="setLanguage('pt')" class="btn">PT</button>
-    <button onclick="setLanguage('en')" class="btn">EN</button>
-</div>
-    
-<header style="display:flex; flex-direction:column; align-items:center; position:relative;">
-    
-<h1>Lucas Vinicius de Santana Antonino</h1>
-<h2 
-data-pt="Programador de Gameplay | Unity • Unreal Engine • C# • C++"
-data-en="Gameplay Programmer | Unity • Unreal Engine • C# • C++">
-Programador de Gameplay | Unity • Unreal Engine • C# • C++
-</h2>
-
-<div class="stats">
-
-<div class="stat"
-data-pt="🏆 1 Jogo na Steam"
-data-en="🏆 1 Steam Game">
-🏆 1 Jogo na Steam
+<div class="loader" id="loader" aria-hidden="true">
+  <span class="loader-count">0</span>
 </div>
 
-<div class="stat"
-data-pt="🎮 4 Projetos"
-data-en="🎮 4 Projects">
-🎮 4 Projetos
+<div class="lang" role="group" aria-label="Language">
+  <button type="button" data-lang="en" aria-pressed="true">EN</button>
+  <button type="button" data-lang="pt" aria-pressed="false">PT</button>
 </div>
 
-<div class="stat"
-data-pt="💻 Sistemas de Gameplay"
-data-en="💻 Gameplay Systems">
-💻 Sistemas de Gameplay
-</div>
-
-</div>
-
-<a href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download class="btn">📄 Download CV</a>
-
-</header>
-
-<div class="line"></div>
-
-<section>
-
-<h3 
-data-pt="Sobre Mim" 
-data-en="About Me">
-Sobre Mim
-</h3>
-
-<p 
-data-pt="Sou desenvolvedor de jogos focado em <b>programação de gameplay</b>, criação de sistemas e implementação de mecânicas. Trabalho principalmente com <b>Unity</b> e <b>Unreal Engine 5</b>, utilizando <b>C#, C++ e Blueprints</b>."
-data-en="I am a game developer focused on <b>gameplay programming</b>, system creation, and mechanics implementation. I mainly work with <b>Unity</b> and <b>Unreal Engine 5</b>, using <b>C#, C++, and Blueprints</b>.">
-Sou desenvolvedor de jogos focado em <b>programação de gameplay</b>, criação de sistemas e implementação de mecânicas.
-Trabalho principalmente com <b>Unity</b> e <b>Unreal Engine 5</b>, utilizando <b>C#, C++ e Blueprints</b>.
-</p>
-
-<p 
-data-pt="Tenho experiência em desenvolvimento completo de projetos, desde prototipagem até polimento final, incluindo <b>sistemas de combate, UI, narrativa e gameplay</b>."
-data-en="I have experience in full-cycle game development, from prototyping to final polish, including <b>combat systems, UI, narrative, and gameplay</b>.">
-Tenho experiência em desenvolvimento completo de projetos, desde prototipagem até polimento final,
-incluindo <b>sistemas de combate, UI, narrativa e gameplay</b>.
-</p>
-
-</section>
-
-<div class="line"></div>
-
-<section>
-
-<h3>Gameplay Showcase</h3>
-
-<div class="carousel">
-
-<button class="carousel-btn prev">‹</button>
-
-<div class="carousel-track">
-
-<img src="Gifs/1SteamVeinsGif2.gif" loading="lazy">
-<img src="Gifs/2SteamVeinsGif3.gif" loading="lazy">
-<img src="Gifs/3SteamVeinsGif4.gif" loading="lazy">
-<img src="Gifs/4MidNightMemories1.gif" loading="lazy">
-<img src="Gifs/5KuroNekoDemo_ToLinkedin_1.gif" loading="lazy">
-
-</div>
-
-<button class="carousel-btn next">›</button>
-
-</div>
-
-</section>
-
-<div class="line"></div>
-
-<section>
-
-<h3 
-data-pt="Skills Técnicas" 
-data-en="Skills">
-Skills Técnicas
-</h3>
-
-<div class="grid">
-
-<div class="card">
-<h4>Engines</h4>
-<ul>
-<li>Unity</li>
-<li>Unreal Engine 5</li>
-</ul>
-</div>
-
-<div class="card">
-<h4 
-data-pt="Programação" 
-data-en="Programming">
-Programação
-</h4>
-<ul>
-<li>C#</li>
-<li>C++</li>
-<li>Blueprints</li>
-</ul>
-</div>
-
-<div class="card">
-<h4
-data-pt="Sistemas"
-data-en="Systems">
-Sistemas
-</h4>
-<ul>
-<ul>
-<li data-pt="Sistemas de Gameplay" data-en="Gameplay Systems">Sistemas de Gameplay</li>
-<li data-pt="Sistemas de Diálogo" data-en="Dialogue Systems">Sistemas de Diálogo</li>
-<li data-pt="Sistemas de UI" data-en="UI Systems">Sistemas de UI</li>
-<li data-pt="Sistemas de Combate" data-en="Combat Systems">Sistemas de Combate</li>
-</ul>
-</div>
-
-</div>
-
-</section>
-
-<div class="line"></div>
-
-<section>
-
-<h3>Code Showcase</h3>
-
-<div class="card">
-
-<h4>Take Damage SteamVeins (C#)</h4>
-
-<pre>
-public override void RespondTakeDamage(int typeDamage, float AditionalknockbackForceX, float AditionalknockbackForceY)
-{
-    if (isInvulnerable || isDead) return;
-
-    GetComponentInChildren<IgnoreCollisionOnDamage>()?.TriggerIgnoreCollision();
-
-    EventInstance soundInstance = RuntimeManager.CreateInstance(typeDamage == 2 ? soundShoot : soundSlash);
-
-    switch (typeDamage)
-    {
-        case 0:
-            // hit crouch melee
-            break;
-        case 1:
-            // hit normal melee
-            soundInstance.setPitch(UnityEngine.Random.Range(0.8f, 1.2f));
-            soundInstance.start();
-            soundInstance.release();
-            break;
-        case 2:
-            // shoot
-            soundInstance.start();
-            soundInstance.release();
-            break;
-    }
-    if (!isRained && enemyStats.hp <= enemyStats.maxHp / 2)
-    {
-        if (!isAttacking && !isTransitioning) { StartCoroutine(DropHat()); }
-        else { shouldTransition = true; }
-    }
-    if (enemyStats.hp <= 0)
-    {
-        isDead = true;
-        if (enemyStats.isExecutavel && !isExecutada)
-        {
-            StartCoroutine(ExecutavelPosAtk());
-        }
-        else if (enemyStats.isDefeated && isExecutada)
-        {
-            animator.SetTrigger("Derrotado");
-        }
-    }
-}
-</pre>
-
-<a href="https://github.com/Thequing" target="_blank"
-   data-pt="Ver mais código no GitHub"
-   data-en="See more code on GitHub">
-   Ver mais código no GitHub
-</a>
-
-</div>
-
-</section>
-
-<div class="line"></div>
-
-<section>
-
-<section>
-
-<h3 
-data-pt="Portfólio de Jogos" 
-data-en="Game Portfolio">
-Portfólio de Jogos
-</h3>
-
-<!-- STEAM VEINS -->
-
-<div class="card" style="margin-bottom:30px;">
-
-<h4>🏆 Steam Veins 
-<span 
-data-pt="(Publicado na Steam)" 
-data-en="(Published on Steam)" 
-style="font-size:0.9rem;color:var(--gray);">
-(Publicado na Steam)
-</span>
-</h4>
-
-<div class="carousel project-carousel">
-
-<button class="carousel-btn prev">‹</button>
-
-<div class="carousel-track">
-
-<img src="Gifs/1SteamVeinsGif2.gif" loading="lazy">
-<img src="Gifs/2SteamVeinsGif3.gif" loading="lazy">
-<img src="Gifs/3SteamVeinsGif4.gif" loading="lazy">
-
-</div>
-
-<button class="carousel-btn next">›</button>
-
-</div>
-
-<p 
-data-pt="Jogo desenvolvido em equipe na <strong>Kimu Studios</strong>, lançado oficialmente na Steam."
-data-en="Game developed by a team at <strong>Kimu Studios</strong>, officially released on Steam.">
-Jogo desenvolvido em equipe na <strong>Kimu Studios</strong>, lançado oficialmente na Steam.
-</p>
-
-<ul>
-<li 
-data-pt="Programação de sistemas de gameplay"
-data-en="Gameplay systems programming">
-Programação de sistemas de gameplay
-</li>
-
-<li 
-data-pt="Implementação de mecânicas principais"
-data-en="Implementation of core mechanics">
-Implementação de mecânicas principais
-</li>
-
-<li 
-data-pt="Criação e integração de efeitos visuais"
-data-en="Creation and integration of visual effects">
-Criação e integração de efeitos visuais
-</li>
-
-<li 
-data-pt="Otimização de funcionalidades e performance"
-data-en="Optimization of features and performance">
-Otimização de funcionalidades e performance
-</li>
-</ul>
-
-<p>
-🔗 
-<a href="https://store.steampowered.com/app/3201780/Steam_Veins/" 
-target="_blank"
-data-pt="Página na Steam"
-data-en="Steam Page">
-Página na Steam
-</a>
-</p>
-
-<p>
-🔗 
-<a href="https://drive.google.com/file/d/1FfMGEfl98RtVbwcl-iNgrTfCKKT5UiSN/view?usp=sharing" 
-target="_blank"
-data-pt="Demo"
-data-en="Demo">
-Demo
-</a>
-</p>
-
-<span style="
-display:inline-block;
-margin-top:10px;
-background:linear-gradient(135deg,#1f6feb,#7b2cbf);
-padding:6px 12px;
-border-radius:999px;
-font-size:0.85rem;
-font-weight:bold;">
-🏆 Steam Published Game
-</span>
-
-</div>
-
-
-<!-- DINO GIRLS -->
-
-<div class="card" style="margin-bottom:30px;">
-
-<h4>🦖 Dino Girls 
-<span 
-data-pt="(Em desenvolvimento)" 
-data-en="(In development)"
-style="font-size:0.9rem;color:var(--gray);">
-(Em desenvolvimento)
-</span>
-</h4>
-
-<p 
-data-pt="Projeto em desenvolvimento com publicação prevista na Steam, no qual participo ativamente da produção."
-data-en="Project currently in development with a planned release on Steam, where I actively contribute to production.">
-Projeto em desenvolvimento com publicação prevista na Steam, no qual participo ativamente da produção.
-</p>
-
-<ul>
-<li 
-data-pt="Participação no desenvolvimento de gameplay"
-data-en="Gameplay development participation">
-Participação no desenvolvimento de gameplay
-</li>
-
-<li 
-data-pt="Criação e integração de sistemas"
-data-en="System creation and integration">
-Criação e integração de sistemas
-</li>
-
-<li 
-data-pt="Implementação de mecânicas"
-data-en="Gameplay mechanics implementation">
-Implementação de mecânicas
-</li>
-
-<li 
-data-pt="Colaboração em decisões técnicas e criativas"
-data-en="Collaboration in technical and creative decisions">
-Colaboração em decisões técnicas e criativas
-</li>
-</ul>
-
-<p>
-🔗 
-<a href="https://store.steampowered.com/app/3495120/Dino_Girls/" target="_blank"
-data-pt="Página na Steam"
-data-en="Steam Page">
-Página na Steam
-</a>
-</p>
-
-</div>
-
-
-<!-- KURONEKO -->
-
-<div class="card" style="margin-bottom:30px;">
-
-<h4>🐱 KuroNeko 
-<span 
-data-pt="(Visual Novel • Projeto Solo)" 
-data-en="(Visual Novel • Solo Project)" 
-style="font-size:0.9rem;color:var(--gray);">
-(Visual Novel • Projeto Solo)
-</span>
-</h4>
-
-<div class="carousel project-carousel">
-
-<button class="carousel-btn prev">‹</button>
-
-<div class="carousel-track">
-
-<img src="Gifs/5KuroNekoDemo_ToLinkedin_1.gif" loading="lazy">
-
-</div>
-
-<button class="carousel-btn next">›</button>
-
-</div>
-
-<p 
-data-pt="Visual Novel desenvolvida como <strong>projeto solo</strong>, utilizando <strong>Unity</strong>. Todo o sistema de <strong>parser narrativo</strong> foi programado em <strong>C#</strong>."
-data-en="Visual Novel developed as a <strong>solo project</strong> using <strong>Unity</strong>. The entire <strong>narrative parser system</strong> was programmed in <strong>C#</strong>.">
-
-Visual Novel desenvolvida como <strong>projeto solo</strong>, utilizando <strong>Unity</strong>.
-Todo o sistema de <strong>parser narrativo</strong> foi programado em <strong>C#</strong>.
-
-</p>
-
-<ul>
-
-<li 
-data-pt="Desenvolvimento completo do projeto"
-data-en="Full project development">
-Desenvolvimento completo do projeto
-</li>
-
-<li 
-data-pt="Criação de sistema de parser narrativo em C#"
-data-en="Development of a narrative parser system in C#">
-Criação de sistema de parser narrativo em C#
-</li>
-
-<li 
-data-pt="Integração do parser com Unity"
-data-en="Integration of the parser with Unity">
-Integração do parser com Unity
-</li>
-
-<li 
-data-pt="Implementação de sistemas de escolha e progressão narrativa"
-data-en="Implementation of choice systems and narrative progression">
-Implementação de sistemas de escolha e progressão narrativa
-</li>
-
-</ul>
-
-</div>
-
-
-<!-- MIDNIGHT MEMORIES -->
-
-<div class="card">
-
-<h4>🌌 MidNight Memories 
-<span 
-data-pt="(Visual Novel • Projeto Solo)" 
-data-en="(Visual Novel • Solo Project)" 
-style="font-size:0.9rem;color:var(--gray);">
-(Visual Novel • Projeto Solo)
-</span>
-</h4>
-
-<div class="carousel project-carousel">
-
-<button class="carousel-btn prev">‹</button>
-
-<div class="carousel-track">
-
-<img src="Gifs/4MidNightMemories1.gif" loading="lazy">
-
-</div>
-
-<button class="carousel-btn next">›</button>
-
-</div>
-
-<p 
-data-pt="FPS PSX desenvolvido de forma independente em <strong>Unreal Engine</strong>, com foco em atmosfera, narrativa enigmática e gameplay clássico."
-data-en="PSX-style FPS developed independently using <strong>Unreal Engine</strong>, focused on atmosphere, enigmatic storytelling, and classic gameplay.">
-FPS PSX desenvolvido de forma independente em <strong>Unreal Engine</strong>,
-com foco em atmosfera, narrativa enigmática e gameplay clássico.
-</p>
-
-<ul>
-<li data-pt="Programação de movimentação e combate"
-    data-en="Movement and combat programming">
-    Programação de movimentação e combate
-</li>
-
-<li data-pt="Sistemas de gameplay e UI"
-    data-en="Gameplay and UI systems">
-    Sistemas de gameplay e UI
-</li>
-
-<li data-pt="Design técnico e implementação geral"
-    data-en="Technical design and overall implementation">
-    Design técnico e implementação geral
-</li>
-
-<li data-pt="Desenvolvimento completo do projeto"
-    data-en="Full project development">
-    Desenvolvimento completo do projeto
-</li>
-</ul>
-
-<p>
-🔗 
-<a href="https://drive.google.com/drive/folders/1BYW8EsY5dRsjF65luDag1ndC3lO6xUBb?usp=drive_link" target="_blank"
-data-pt="Ver Projeto"
-data-en="View Project">
-Ver Projeto
-</a>
-</p>
-
-</div>
-
-</section>
-
-<div class="card" style="margin-bottom:30px;">
-
-<h4>⛓ Johnny G 
-<span 
-data-pt="(Projeto Experimental)" 
-data-en="(Experimental Project)" 
-style="font-size:0.9rem;color:var(--gray);">
-(Projeto Experimental)
-</span>
-</h4>
-
-<div class="carousel project-carousel">
-
-<button class="carousel-btn prev">‹</button>
-
-<div class="carousel-track">
-
-<img src="Gifs/JohnnyG1.gif" loading="lazy">
-
-</div>
-
-<button class="carousel-btn next">›</button>
-
-</div>
-
-<p 
-data-pt="Johnny G é um projeto experimental focado em uma mecânica central: o jogador só pode se movimentar e atacar utilizando um <strong>grappler</strong>. A proposta explora mobilidade, precisão e domínio do espaço como pilares do gameplay."
-data-en="Johnny G is an experimental project focused on a core mechanic: the player can only move and attack using a <strong>grappler</strong>. The design explores mobility, precision, and spatial mastery as core gameplay pillars.">
-Johnny G é um projeto experimental focado em uma mecânica central: o jogador só pode se movimentar e atacar utilizando um <strong>grappler</strong>. A proposta explora mobilidade, precisão e domínio do espaço como pilares do gameplay.
-</p>
-
-<ul>
-
-<li 
-data-pt="Desenvolvimento de sistema de movimentação baseado em grappler"
-data-en="Development of a grappler-based movement system">
-Desenvolvimento de sistema de movimentação baseado em grappler
-</li>
-
-<li 
-data-pt="Combate integrado ao movimento"
-data-en="Combat integrated with movement">
-Combate integrado ao movimento
-</li>
-
-<li 
-data-pt="Foco em gameplay técnico e responsivo"
-data-en="Focus on technical and responsive gameplay">
-Foco em gameplay técnico e responsivo
-</li>
-
-<li 
-data-pt="Protótipo experimental de mecânica central"
-data-en="Experimental core mechanic prototype">
-Protótipo experimental de mecânica central
-</li>
-
-</ul>
-
-<p>
-🔗 
-<a href="https://drive.google.com/drive/folders/19SzIwTArMxGAcWTd6az3VDaEXzajdj0R?usp=sharing" target="_blank"
-data-pt="Ver Projeto"
-data-en="View Project">
-Ver Projeto
-</a>
-</p>
-
-</div>
-
-<h3 
-data-pt="Conhecimentos & Formação" 
-data-en="Education & Knowledge">
-Conhecimentos & Formação
-</h3>
-
-<div class="grid">
-
-<div class="card">
-<h4 
-data-pt="🎓 Bacharelado" 
-data-en="🎓 Bachelor's Degree">
-🎓 Bacharelado
-</h4>
-
-<p 
-data-pt="Tecnologia da Informação – UFRN" 
-data-en="Information Technology – UFRN">
-Tecnologia da Informação – UFRN
-</p>
-</div>
-
-<div class="card">
-<h4 
-data-pt="🎮 Game Design" 
-data-en="🎮 Game Design">
-🎮 Game Design
-</h4>
-
-<p 
-data-pt="Curso de Game Design – Udemy" 
-data-en="Game Design Course – Udemy">
-Curso de Game Design – Udemy
-</p>
-</div>
-
-<div class="card">
-<h4 
-data-pt="🗄️ Banco de Dados" 
-data-en="🗄️ Database">
-🗄️ Banco de Dados
-</h4>
-
-<p 
-data-pt="Administrador de Banco de Dados – IFRS" 
-data-en="Database Administrator – IFRS">
-Administrador de Banco de Dados – IFRS
-</p>
-</div>
-
-</div>
-
-</section>
-
-<div class="line"></div>
-
-<section>
-
-<h3 data-pt="Contato" data-en="Contact">Contato</h3>
-<ul>
-
-<li>
-💻 GitHub  
-<a href="https://github.com/Thequing">github.com/Thequing</a>
-</li>
-
-<li>
-🔗 LinkedIn  
-<a href="https://linkedin.com/in/lucas-antonino">linkedin</a>
-</li>
-
-<li>
-✉️ Email  
-lvantonino@hotmail.com
-</li>
-
-</ul>
-
-</section>
-
-</div>
-
-<script>
-
-document.querySelectorAll('.carousel').forEach(carousel=>{
-
-const track = carousel.querySelector('.carousel-track');
-const slides = track.children;
-
-let index = 0;
-
-function update(){
-track.style.transform = `translateX(-${index*100}%)`;
-}
-
-const nextBtn = carousel.querySelector('.next');
-const prevBtn = carousel.querySelector('.prev');
-
-if(nextBtn){
-nextBtn.onclick=()=>{
-index=(index+1)%slides.length;
-update();
-};
-}
-
-if(prevBtn){
-prevBtn.onclick=()=>{
-index=(index-1+slides.length)%slides.length;
-update();
-};
-}
-
-setInterval(()=>{
-index=(index+1)%slides.length;
-update();
-},10000);
-
-});
-    
-function setLanguage(lang){
-    localStorage.setItem('lang', lang);
-    document.querySelectorAll('[data-pt]').forEach(el=>{
-        el.innerHTML = el.getAttribute(`data-${lang}`);
-    });
-}
-    window.onload = () => {
-    const savedLang = localStorage.getItem('lang') || 'pt';
-    setLanguage(savedLang);
-};
-    
-</script>
-
+<main>
+  <section id="hero">
+    <video class="hero-bg"
+      data-slug="steam-veins-title" data-hero
+      poster="media/poster/steam-veins-title.webp"
+      preload="none" muted loop playsinline aria-hidden="true">
+      <source data-src="media/video/steam-veins-title-1280.mp4" type="video/mp4">
+    </video>
+    <h1>Lucas Antonino</h1>
+    <p class="mono" data-i18n="hero.role">Gameplay Programmer</p>
+    <p class="lede" data-i18n="hero.summary">I build the systems players actually touch — combat, movement, dialogue, UI. One title shipped on Steam.</p>
+    <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="hero.cv">Download CV</a>
+    <p class="mono scroll-cue" data-i18n="hero.scroll">Scroll</p>
+  </section>
+
+  <section id="positioning">
+    <h2 data-reveal data-i18n="positioning.heading">What I do</h2>
+    <p class="lede" data-reveal data-i18n="positioning.body">I work on gameplay: the code between an input and a response that feels right. Combat state machines, damage and knockback, dialogue parsing, UI flow, and the audio hooks that sell an impact. Unity and Unreal Engine 5, in C#, C++ and Blueprints.</p>
+  </section>
+
+  <section id="marquee" aria-hidden="true" class="marquee">
+    <div class="marquee-inner">
+      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span>
+      <span>C++</span><span>BLUEPRINTS</span><span>FMOD</span>
+      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span>
+      <span>C++</span><span>BLUEPRINTS</span><span>FMOD</span>
+    </div>
+  </section>
+
+  <section id="steam-veins" class="project" data-accent="#e8452f">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="shot-stack">
+          <figure class="shot">
+            <video
+              data-slug="steam-veins-combat"
+              poster="media/poster/steam-veins-combat.webp"
+              preload="none" muted loop playsinline
+              aria-label="Steam Veins combat: the player fights enemies in a red-lit stone corridor">
+              <source data-src="media/video/steam-veins-combat-1280.mp4" type="video/mp4">
+            </video>
+            <noscript>
+              <img src="media/poster/steam-veins-combat.webp" alt="Steam Veins combat">
+            </noscript>
+          </figure>
+          <figure class="shot">
+            <video
+              data-slug="steam-veins-chapel"
+              poster="media/poster/steam-veins-chapel.webp"
+              preload="none" muted loop playsinline
+              aria-label="Steam Veins exploration: the player moves through a chapel interior past an NPC">
+              <source data-src="media/video/steam-veins-chapel-1280.mp4" type="video/mp4">
+            </video>
+            <noscript>
+              <img src="media/poster/steam-veins-chapel.webp" alt="Steam Veins chapel interior">
+            </noscript>
+          </figure>
+        </div>
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">01 / <span data-i18n="sv.status">Published on Steam</span></p>
+          <h2 data-i18n="sv.title">Steam Veins</h2>
+          <p class="lede" data-i18n="sv.lede">A 2D action game built with a team at Kimu Studios and released on Steam. I worked on gameplay systems and the mechanics around combat.</p>
+          <ul>
+            <li data-i18n="sv.b1">Enemy damage response — invulnerability frames, knockback, collision handling</li>
+            <li data-i18n="sv.b2">Phase transitions driven by health thresholds</li>
+            <li data-i18n="sv.b3">FMOD event integration with randomised pitch on melee hits</li>
+            <li data-i18n="sv.b4">Visual effects integration and performance passes</li>
+          </ul>
+          <p class="mono todo" data-i18n="sv.todo">[TODO: team size, development duration, release date]</p>
+          <p class="links">
+            <a href="https://store.steampowered.com/app/3201780/Steam_Veins/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
+            <a href="https://drive.google.com/file/d/1FfMGEfl98RtVbwcl-iNgrTfCKKT5UiSN/view?usp=sharing" target="_blank" rel="noopener" data-i18n="nav.demo">Demo</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="midnight-memories" class="project" data-accent="#8fa3ad">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <figure class="shot">
+          <video
+            data-slug="midnight-memories"
+            poster="media/poster/midnight-memories.webp"
+            preload="none" muted loop playsinline
+            aria-label="MidNight Memories: a first-person walk through a foggy, dithered PSX-style street">
+            <source data-src="media/video/midnight-memories-1280.mp4" type="video/mp4">
+          </video>
+          <noscript>
+            <img src="media/poster/midnight-memories.webp" alt="MidNight Memories street scene">
+          </noscript>
+        </figure>
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">02 / <span data-i18n="mm.status">Solo project</span></p>
+          <h2 data-i18n="mm.title">MidNight Memories</h2>
+          <p class="lede" data-i18n="mm.lede">A PSX-style first-person game built solo in Unity, focused on atmosphere and an enigmatic narrative.</p>
+          <ul>
+            <li data-i18n="mm.b1">Movement and combat programming in C#</li>
+            <li data-i18n="mm.b2">Gameplay and UI systems</li>
+            <li data-i18n="mm.b3">Technical design and full implementation</li>
+          </ul>
+          <p class="mono todo" data-i18n="mm.todo">[TODO: current status — prototype, demo, or planned release?]</p>
+          <p class="links">
+            <a href="https://drive.google.com/drive/folders/1BYW8EsY5dRsjF65luDag1ndC3lO6xUBb?usp=drive_link" target="_blank" rel="noopener" data-i18n="nav.project">View project</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kuroneko" class="project" data-accent="#17c3b2">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <figure class="shot">
+          <video
+            data-slug="kuroneko"
+            poster="media/poster/kuroneko.webp"
+            preload="none" muted loop playsinline
+            aria-label="KuroNeko: a visual novel scene with character art and a dialogue box">
+            <source data-src="media/video/kuroneko-1280.mp4" type="video/mp4">
+          </video>
+          <noscript>
+            <img src="media/poster/kuroneko.webp" alt="KuroNeko visual novel scene">
+          </noscript>
+        </figure>
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">03 / <span data-i18n="kn.status">Visual novel · Solo project</span></p>
+          <h2 data-i18n="kn.title">KuroNeko</h2>
+          <p class="lede" data-i18n="kn.lede">A visual novel built solo in Unity. I wrote the narrative parser that drives it — script in, branching scene out.</p>
+          <ul>
+            <li data-i18n="kn.b1">Custom narrative parser system in C#</li>
+            <li data-i18n="kn.b2">Parser integration with Unity scene and UI layers</li>
+            <li data-i18n="kn.b3">Choice handling and narrative progression</li>
+          </ul>
+          <p class="mono todo" data-i18n="kn.todo">[TODO: script length or number of branches?]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="johnny-g" class="project" data-accent="#f5c518">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <figure class="shot">
+          <video
+            data-slug="johnny-g"
+            poster="media/poster/johnny-g.webp"
+            preload="none" muted loop playsinline
+            aria-label="Johnny G: the player swings and attacks using a grappler">
+            <source data-src="media/video/johnny-g-1280.mp4" type="video/mp4">
+          </video>
+          <noscript>
+            <img src="media/poster/johnny-g.webp" alt="Johnny G grappler traversal">
+          </noscript>
+        </figure>
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">04 / <span data-i18n="jg.status">Experimental prototype</span></p>
+          <h2 data-i18n="jg.title">Johnny G</h2>
+          <p class="lede" data-i18n="jg.lede">A prototype built around a single constraint: the player can only move and attack with a grappler. Everything else follows from that.</p>
+          <ul>
+            <li data-i18n="jg.b1">Grappler-based movement system</li>
+            <li data-i18n="jg.b2">Combat integrated into traversal rather than separate from it</li>
+            <li data-i18n="jg.b3">Focus on responsiveness and spatial control</li>
+          </ul>
+          <p class="links">
+            <a href="https://drive.google.com/drive/folders/19SzIwTArMxGAcWTd6az3VDaEXzajdj0R?usp=sharing" target="_blank" rel="noopener" data-i18n="nav.project">View project</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dino-girls" class="project" data-accent="#4ade80">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">05 / <span data-i18n="dg.status">In production</span></p>
+          <h2 data-i18n="dg.title">Dino Girls</h2>
+          <p class="lede" data-i18n="dg.lede">An upcoming Steam release I contribute to across gameplay systems and mechanics.</p>
+          <ul>
+            <li data-i18n="dg.b1">Gameplay systems and mechanics implementation</li>
+            <li data-i18n="dg.b2">Technical and creative decision-making with the team</li>
+          </ul>
+          <p class="mono todo" data-i18n="dg.todo">[TODO: role scope and expected release window]</p>
+          <p class="links">
+            <a href="https://store.steampowered.com/app/3495120/Dino_Girls/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="craft">
+    <h2 data-reveal data-i18n="craft.heading">Art and assets</h2>
+    <p class="lede" data-reveal data-i18n="craft.body">Backgrounds, sprite sheets and scene work produced alongside the code.</p>
+    <div class="craft-grid">
+      <!-- Estátua2.0.png is percent-encoded: an unencoded accented character
+           resolves locally on Windows but 404s on GitHub Pages. -->
+      <img src="Imagens/ShrineWithSnow.png" loading="lazy" data-parallax
+           alt="Painted shrine background under falling snow">
+      <img src="Imagens/Scene1_Street.png" loading="lazy" data-parallax
+           alt="Street scene background, first variant">
+      <img src="Imagens/Scene2_Street.png" loading="lazy" data-parallax
+           alt="Street scene background, second variant">
+      <img src="Imagens/Est%C3%A1tua2.0.png" loading="lazy" data-parallax
+           alt="Statue asset rendered against a dark ground">
+      <img src="Imagens/Kunai_Explosion-Sheet.gif" loading="lazy" data-parallax
+           alt="Kunai explosion sprite sheet animation">
+      <img src="Imagens/DracularaWave-Sheet.gif" loading="lazy" data-parallax
+           alt="Character wave animation sprite sheet">
+    </div>
+  </section>
+
+  <section id="code">
+    <h2 data-reveal data-i18n="code.heading">Code</h2>
+    <p class="mono" data-reveal data-i18n="code.caption">Enemy damage response from Steam Veins — invulnerability gate, FMOD audio, health-threshold phase change, and execution state. C#, Unity.</p>
+    <pre class="code-block" data-reveal><code>
+<span class="line">public override void RespondTakeDamage(int typeDamage, float AditionalknockbackForceX, float AditionalknockbackForceY)</span>
+<span class="line">{</span>
+<span class="line">    if (isInvulnerable || isDead) return;</span>
+<span class="line">&nbsp;</span>
+<span class="line">    GetComponentInChildren&lt;IgnoreCollisionOnDamage&gt;()?.TriggerIgnoreCollision();</span>
+<span class="line">&nbsp;</span>
+<span class="line">    EventInstance soundInstance = RuntimeManager.CreateInstance(typeDamage == 2 ? soundShoot : soundSlash);</span>
+<span class="line">&nbsp;</span>
+<span class="line">    switch (typeDamage)</span>
+<span class="line">    {</span>
+<span class="line">        case 0:</span>
+<span class="line">            // hit crouch melee</span>
+<span class="line">            break;</span>
+<span class="line">        case 1:</span>
+<span class="line">            // hit normal melee</span>
+<span class="line">            soundInstance.setPitch(UnityEngine.Random.Range(0.8f, 1.2f));</span>
+<span class="line">            soundInstance.start();</span>
+<span class="line">            soundInstance.release();</span>
+<span class="line">            break;</span>
+<span class="line">        case 2:</span>
+<span class="line">            // shoot</span>
+<span class="line">            soundInstance.start();</span>
+<span class="line">            soundInstance.release();</span>
+<span class="line">            break;</span>
+<span class="line">    }</span>
+<span class="line">    if (!isRained &amp;&amp; enemyStats.hp &lt;= enemyStats.maxHp / 2)</span>
+<span class="line">    {</span>
+<span class="line">        if (!isAttacking &amp;&amp; !isTransitioning) { StartCoroutine(DropHat()); }</span>
+<span class="line">        else { shouldTransition = true; }</span>
+<span class="line">    }</span>
+<span class="line">    if (enemyStats.hp &lt;= 0)</span>
+<span class="line">    {</span>
+<span class="line">        isDead = true;</span>
+<span class="line">        if (enemyStats.isExecutavel &amp;&amp; !isExecutada)</span>
+<span class="line">        {</span>
+<span class="line">            StartCoroutine(ExecutavelPosAtk());</span>
+<span class="line">        }</span>
+<span class="line">        else if (enemyStats.isDefeated &amp;&amp; isExecutada)</span>
+<span class="line">        {</span>
+<span class="line">            animator.SetTrigger("Derrotado");</span>
+<span class="line">        }</span>
+<span class="line">    }</span>
+<span class="line">}</span>
+</code></pre>
+    <p class="links">
+      <a href="https://github.com/Thequing" target="_blank" rel="noopener" data-i18n="code.link">More on GitHub</a>
+    </p>
+  </section>
+
+  <section id="background">
+    <h2 data-reveal data-i18n="bg.heading">Background</h2>
+    <div class="grid-3">
+      <p data-reveal data-i18n="bg.degree">Bachelor's, Information Technology — UFRN</p>
+      <p data-reveal data-i18n="bg.gamedesign">Game Design — Udemy</p>
+      <p data-reveal data-i18n="bg.database">Database Administration — IFRS</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 data-reveal data-i18n="contact.heading">Get in touch</h2>
+    <p class="lede" data-reveal data-i18n="contact.body">Open to gameplay programming roles.</p>
+    <p class="links">
+      <a href="https://github.com/Thequing" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/lucas-antonino" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:lvantonino@hotmail.com">lvantonino@hotmail.com</a>
+    </p>
+    <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="contact.cv">Download CV</a>
+  </section>
+</main>
+
+<div class="rail" aria-hidden="true"><span></span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js" defer></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

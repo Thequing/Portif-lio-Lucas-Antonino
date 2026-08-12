@@ -89,19 +89,30 @@ OUT_POSTER="media/poster"
 
 mkdir -p "$OUT_VIDEO" "$OUT_POSTER"
 
-# slug|source filename|crop filter (empty = no crop)
+# slug|source filename|crop filter (empty = no crop)|width|fps|crf
+#
 # Crop values are verified against extracted frames. Do not adjust without re-verifying.
+#
+# Width/fps/crf are per-clip because one profile does not fit this material.
+# midnight-memories is a dithered PSX-style render whose game view is natively
+# 320x240; high-frequency dither is expensive for H.264, and upscaling it past the
+# cropped width spends bits amplifying noise. Encoding it at 960px/30fps/crf26
+# measured 930 KB against 2.3 MB at 1280/50/24, with the dither pattern — the whole
+# point of the aesthetic — visually intact.
+#
+# RULE: never let the width exceed the clip's post-crop width. Upscaling before
+# encoding costs bitrate and buys nothing.
 CLIPS=(
-  "steam-veins-title|1SteamVeinsGif2.gif|"
-  "steam-veins-chapel|2SteamVeinsGif3.gif|"
-  "steam-veins-combat|3SteamVeinsGif4.gif|"
-  "midnight-memories|4MidNightMemories1.gif|crop=1192:638:362:134"
-  "kuroneko|5KuroNekoDemo_ToLinkedin_1.gif|crop=1604:856:156:136"
-  "johnny-g|JohnnyG1.gif|"
+  "steam-veins-title|1SteamVeinsGif2.gif||1280|50|24"
+  "steam-veins-chapel|2SteamVeinsGif3.gif||1280|50|24"
+  "steam-veins-combat|3SteamVeinsGif4.gif||1280|50|24"
+  "midnight-memories|4MidNightMemories1.gif|crop=1192:638:362:134|960|30|26"
+  "kuroneko|5KuroNekoDemo_ToLinkedin_1.gif|crop=1604:856:156:136|1280|50|24"
+  "johnny-g|JohnnyG1.gif||1280|50|24"
 )
 
 for entry in "${CLIPS[@]}"; do
-  IFS='|' read -r slug src crop <<< "$entry"
+  IFS='|' read -r slug src crop width fps crf <<< "$entry"
   in="$SRC_DIR/$src"
 
   if [[ ! -f "$in" ]]; then
@@ -115,33 +126,48 @@ for entry in "${CLIPS[@]}"; do
   echo "==> $slug"
 
   ffmpeg -y -v error -i "$in" \
-    -vf "${pre}fps=50,scale=1280:-2:flags=lanczos" \
-    -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 24 \
+    -vf "${pre}fps=$fps,scale=$width:-2:flags=lanczos" \
+    -c:v libx264 -profile:v high -pix_fmt yuv420p -crf "$crf" \
     -movflags +faststart -an "$OUT_VIDEO/$slug-1280.mp4"
 
   ffmpeg -y -v error -i "$in" \
-    -vf "${pre}fps=50,scale=720:-2:flags=lanczos" \
-    -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 26 \
+    -vf "${pre}fps=$fps,scale=720:-2:flags=lanczos" \
+    -c:v libx264 -profile:v high -pix_fmt yuv420p -crf $((crf + 2)) \
     -movflags +faststart -an "$OUT_VIDEO/$slug-720.mp4"
 
   ffmpeg -y -v error -i "$in" \
-    -vf "${pre}fps=50,scale=1280:-2:flags=lanczos" \
-    -c:v libvpx-vp9 -crf 34 -b:v 0 -row-mt 1 -an "$OUT_VIDEO/$slug-1280.webm"
+    -vf "${pre}fps=$fps,scale=$width:-2:flags=lanczos" \
+    -c:v libvpx-vp9 -crf $((crf + 10)) -b:v 0 -row-mt 1 -an "$OUT_VIDEO/$slug-1280.webm"
 
   ffmpeg -y -v error -i "$in" \
-    -vf "${pre}scale=1280:-2:flags=lanczos" \
+    -vf "${pre}scale=$width:-2:flags=lanczos" \
     -frames:v 1 -c:v libwebp -quality 82 "$OUT_POSTER/$slug.webp"
 done
 
 echo
-echo "Total generated size:"
+echo "Per-visitor payload (the 1280 MP4 set — one format is downloaded, not all):"
+du -ch "$OUT_VIDEO"/*-1280.mp4 | tail -1
+echo "All generated files (repo weight, not transfer weight):"
 du -ch "$OUT_VIDEO" "$OUT_POSTER" | tail -1
 ```
+
+The `-1280` suffix is kept for `midnight-memories` even though it encodes at 960 px, so
+that every slug has a uniform filename shape. `js/media.js` builds source URLs by string
+pattern; a per-clip width in the filename would force it to know each clip's resolution.
+
+**Budget note:** a browser downloads **one** of the MP4/WebM alternatives, never both,
+and one of the 1280/720 variants, never both. The 4 MB budget therefore applies to the
+sum of the `-1280.mp4` files, which is the worst realistic case for a desktop visitor who
+scrolls the whole page. Summing every generated file measures repository weight, which is
+a different and much looser concern.
 
 - [ ] **Step 2: Run it**
 
 Run: `bash scripts/build-media.sh`
-Expected: six `==> slug` lines, no errors, and a total under 8 MB across all formats.
+Expected: six `==> slug` lines, no errors, and a **per-visitor payload (the `-1280.mp4`
+set) under 3.5 MB**. If it exceeds that, stop and report rather than committing — do not
+silently raise CRF to hit the number, since that trades away the visual quality this
+whole exercise exists to protect.
 
 - [ ] **Step 3: Verify the two crops removed the editor chrome**
 
@@ -292,8 +318,14 @@ test('reports a data-i18n key defined nowhere', () => {
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `node --test scripts/`
+Run: `node --test "scripts/**/*.test.mjs"`
 Expected: FAIL — `Cannot find module './check.mjs'`.
+
+Quote the glob. Node expands it internally, which keeps the command identical under
+bash and PowerShell. The bare-directory form `node --test scripts/` does **not** work
+on Node 24 for Windows — it bypasses the runner and tries to load `scripts` as a
+module entry point, failing with `Cannot find module '...\scripts'` whether or not the
+tests would pass.
 
 - [ ] **Step 3: Write the checker**
 
@@ -304,7 +336,10 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const SRC_HREF = /\b(?:src|href)\s*=\s*"([^"]+)"/g;
+// The \b matches at the hyphen in "data-src" too, which is deliberate: Task 5 holds
+// every clip URL in data-src, so dropping that coverage would make a typo in a clip
+// path invisible. `poster` is listed explicitly for the same reason.
+const SRC_HREF = /\b(?:src|href|poster)\s*=\s*"([^"]+)"/g;
 const I18N_EL = /<([a-z0-9]+)\b[^>]*\bdata-i18n\s*=\s*"([^"]+)"[^>]*>([\s\S]*?)<\/\1>/gi;
 const EXTERNAL = /^(?:https?:|mailto:|tel:|data:|#|\/\/)/i;
 
@@ -359,7 +394,9 @@ export function checkAll(rootDir) {
     if (EXTERNAL.test(url)) continue;
     const clean = url.split(/[?#]/)[0];
     if (!clean) continue;
-    if (!existsSync(join(rootDir, clean))) {
+    // Decoded, so the percent-encoded `Imagens/Est%C3%A1tua2.0.png` that Task 10
+    // requires in the markup still resolves against the real filename on disk.
+    if (!existsSync(join(rootDir, decodeURIComponent(clean)))) {
       errors.push(`missing asset: ${clean}`);
     }
   }
@@ -411,7 +448,7 @@ if (isMain) {
 
 - [ ] **Step 4: Run the tests to verify they pass**
 
-Run: `node --test scripts/`
+Run: `node --test "scripts/**/*.test.mjs"`
 Expected: PASS, 6/6.
 
 - [ ] **Step 5: Commit**
@@ -426,7 +463,10 @@ git commit -m "Add asset and i18n consistency checker with tests"
 ### Task 3: Foundation — document shell, tokens, type
 
 **Files:**
-- Create: `index.html` (replacing the old one wholesale in Task 12; for now build alongside as the new file)
+- Modify: `index.html` — **replace its contents entirely, in place.** The previous
+  version is preserved in git history, and the one fragment later tasks still need (the
+  C# sample) has already been extracted to `docs/legacy/RespondTakeDamage.cs`. Do not
+  create a second HTML file; there is exactly one `index.html` throughout.
 - Create: `css/base.css`
 - Create: `media/font/` (vendored WOFF2)
 
@@ -1068,8 +1108,14 @@ main > section {
 
 - [ ] **Step 2: Write `css/components.css`**
 
+**Conflict with Task 4 Step 4 — resolved here.** Task 4 ships `.lang { display: none }`
+so a no-JS visitor is not offered a dead control, and `initI18n()` sets an inline
+`display: flex` once binding succeeds. Writing `display: flex` in this rule would
+undo that and re-expose the toggle whenever JavaScript fails. Keep `display: none`;
+the inline style from `initI18n()` wins over it.
+
 ```css
-.lang { position: fixed; top: 1.25rem; right: var(--gutter); z-index: 60; display: flex; gap: 0.5rem; }
+.lang { position: fixed; top: 1.25rem; right: var(--gutter); z-index: 60; display: none; gap: 0.5rem; }
 .lang button {
   font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em;
   background: transparent; color: var(--muted);
@@ -1374,8 +1420,16 @@ fails contrast against it unscrimmed.
 
 - [ ] **Step 2: Style the loader**
 
+**The loader must not be shown without JavaScript.** It is an opaque, full-screen,
+fixed overlay that only `boot()` removes. With JS disabled, `boot()` never runs and
+the visitor stares at a black rectangle — which contradicts Task 4 Step 6's
+requirement that the page stay readable without JS. Gate it on a `js` class set by a
+synchronous inline script in `<head>` (inline and synchronous so there is no flash),
+exactly as `.lang` is gated.
+
 ```css
-.loader {
+.loader { display: none; }
+.js .loader {
   position: fixed; inset: 0; z-index: 200;
   background: var(--ink); display: grid; place-items: center;
 }
@@ -1443,6 +1497,11 @@ function runLoader() {
 
 function revealHero() {
   const { gsap, SplitText } = window;
+  // ready() resolves on a 3s timeout whether or not every plugin arrived, so
+  // SplitText can legitimately be missing. Without this guard the throw escapes
+  // boot() and initScroll() never runs — losing the entire scroll system to
+  // save one title animation.
+  if (!SplitText) return;
   const split = new SplitText('#hero h1', { type: 'chars' });
   gsap.from(split.chars, {
     yPercent: 120,
@@ -1517,7 +1576,14 @@ Each image gets `loading="lazy"`, real `alt` text, and `data-parallax` for Task 
 
 - [ ] **Step 2: Build the code section**
 
-Wrap each source line of `RespondTakeDamage` in `<span class="line">` so lines can be staggered. Copy the method body verbatim from the current `index.html:396-438`.
+Wrap each source line of `RespondTakeDamage` in `<span class="line">` so lines can be
+staggered. The method body is preserved verbatim at `docs/legacy/RespondTakeDamage.cs`
+(43 lines) — read it from there. Do **not** try to recover it from `index.html`, which
+was replaced in Task 3.
+
+HTML-escape the source when embedding it: the method contains
+`GetComponentInChildren<IgnoreCollisionOnDamage>()`, and an unescaped `<` opens a bogus
+tag that swallows the rest of the block. Escape `<` as `&lt;` and `>` as `&gt;`.
 
 - [ ] **Step 3: Add `typeCode` and parallax to `js/scroll.js`**
 
@@ -1553,14 +1619,28 @@ Call both from `initScroll()`.
 - [ ] **Step 4: Build background and contact sections**
 
 Background: a `.grid-3` of the three qualifications using `bg.*` keys.
-Contact: heading, body, CV download, and links to GitHub, LinkedIn, and email. Preserve every external URL from the current site verbatim — the two Steam pages, the two Google Drive links, GitHub, LinkedIn.
+Contact: heading, body, CV download, and links to GitHub, LinkedIn, and email.
+
+Preserve every external URL from the legacy site verbatim. They are recorded in
+`docs/legacy/external-links.md`, extracted before Task 3 replaced `index.html` —
+read them from there, not from `index.html`, which no longer contains them.
+
+There are **nine** entries, not the six this plan originally claimed: two Steam
+pages, **three** Google Drive links (a Demo file for Steam Veins plus project
+folders for MidNight Memories and Johnny G), GitHub twice, LinkedIn, and the
+email `lvantonino@hotmail.com` — which a URL grep misses because it has no
+scheme. KuroNeko has no external link; do not invent one.
 
 - [ ] **Step 5: Verify every link**
 
 Run: `node scripts/check.mjs`
 Expected: PASS.
 
-Then click all six external links manually and confirm each resolves. The checker deliberately skips external URLs; only a human can confirm they still work.
+Then click every external link manually and confirm each resolves, checking off the
+table in `docs/legacy/external-links.md`. The checker deliberately skips external
+URLs; only a human can confirm they still work. The three Google Drive links are the
+likely failures — Drive sharing permissions expire or get revoked far more often than
+Steam or GitHub URLs.
 
 - [ ] **Step 6: Commit**
 
@@ -1634,8 +1714,11 @@ git commit -m "Add magnetic cursor for fine pointers"
 ### Task 12: Retire the old page, final QA sweep
 
 **Files:**
-- Delete: nothing — `index.html` was replaced in place across Tasks 3–10
-- Modify: `README.md` (create)
+- Delete: `docs/legacy/` — the scaffolding that carried the C# sample and the external
+  link table across the rebuild; both now live in `index.html` and the originals are in
+  git history. Delete only after Step 3's link check passes, not before.
+- Modify: `index.html` (replaced in place across Tasks 3–10; verify only)
+- Create: `README.md`
 
 **Interfaces:** none — this task ships.
 
@@ -1647,7 +1730,7 @@ Expected: no matches. Any hit means a fragment of the old page survived.
 - [ ] **Step 2: Run the full check**
 
 ```bash
-node --test scripts/
+node --test "scripts/**/*.test.mjs"
 node scripts/check.mjs
 ```
 
@@ -1665,7 +1748,7 @@ Record the actual result for each, and do not mark the task complete while any l
 - [ ] Keyboard-only traversal reaches every link and control with a visible focus ring
 - [ ] 375 px and 1440 px: no horizontal overflow
 - [ ] CV PDF downloads
-- [ ] All six external links resolve
+- [ ] All external links resolve — all nine in `docs/legacy/external-links.md`
 - [ ] No console errors or warnings
 
 - [ ] **Step 4: Write `README.md`**
@@ -1693,8 +1776,8 @@ Requires ffmpeg on PATH.
 
 ## Checks
 
-    node --test scripts/     # checker unit tests
-    node scripts/check.mjs   # assets resolve, i18n consistent
+    node --test "scripts/**/*.test.mjs"   # checker unit tests
+    node scripts/check.mjs                # assets resolve, i18n consistent
 ```
 
 - [ ] **Step 5: Commit and deploy**

@@ -1,0 +1,51 @@
+main > section {
+  position: relative;
+  padding: clamp(6rem, 14vh, 12rem) var(--gutter);
+}
+
+#hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.project .pin-wrap { min-height: 100svh; display: grid; align-items: center; }
+
+.project .pin-inner {
+  display: grid;
+  gap: clamp(2rem, 5vw, 5rem);
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .project .pin-inner { grid-template-columns: 1.3fr 1fr; }
+}
+
+/* Dino Girls has no media, so its panel is typographic by design rather than
+   half-empty. Without this its copy would sit in a 1.3fr/1fr grid with nothing
+   opposite it. */
+.project:not(:has(.shot)) .pin-inner { grid-template-columns: 1fr; }
+
+/* Steam Veins is the only shipped title and carries two clips. */
+.shot-stack { display: grid; gap: 1rem; }
+
+.project-copy { display: flex; flex-direction: column; gap: 1rem; max-width: 46ch; }
+.project-copy ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.project-copy li { padding-left: 1.4rem; position: relative; color: var(--muted); }
+.project-copy li::before {
+  content: ''; position: absolute; left: 0; top: 0.65em;
+  width: 0.7rem; height: 1px; background: var(--accent);
+}
+
+.grid-3 {
+  display: grid; gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.craft-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
