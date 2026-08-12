@@ -1,1 +1,5 @@
 /* Cards, buttons, rail, marquee, cursor, code block. Filled in Task 6. */
+
+/* The language toggle cannot function without JS, so it is not offered until
+   initI18n() has bound it. That function sets display:flex once binding succeeds. */
+.lang { display: none; }

@@ -13,21 +13,168 @@
 </head>
 <body>
 
+<div class="lang" role="group" aria-label="Language">
+  <button type="button" data-lang="en" aria-pressed="true">EN</button>
+  <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+</div>
+
 <main>
-  <section id="hero"></section>
-  <section id="positioning"></section>
-  <section id="marquee" aria-hidden="true"></section>
+  <section id="hero">
+    <h1>Lucas Antonino</h1>
+    <p class="mono" data-i18n="hero.role">Gameplay Programmer</p>
+    <p class="lede" data-i18n="hero.summary">I build the systems players actually touch — combat, movement, dialogue, UI. One title shipped on Steam.</p>
+    <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="hero.cv">Download CV</a>
+    <p class="mono scroll-cue" data-i18n="hero.scroll">Scroll</p>
+  </section>
 
-  <section id="steam-veins"       class="project" data-accent="#e8452f"></section>
-  <section id="midnight-memories" class="project" data-accent="#8fa3ad"></section>
-  <section id="kuroneko"          class="project" data-accent="#17c3b2"></section>
-  <section id="johnny-g"          class="project" data-accent="#f5c518"></section>
-  <section id="dino-girls"        class="project" data-accent="#4ade80"></section>
+  <section id="positioning">
+    <h2 data-reveal data-i18n="positioning.heading">What I do</h2>
+    <p class="lede" data-reveal data-i18n="positioning.body">I work on gameplay: the code between an input and a response that feels right. Combat state machines, damage and knockback, dialogue parsing, UI flow, and the audio hooks that sell an impact. Unity and Unreal Engine 5, in C#, C++ and Blueprints.</p>
+  </section>
 
-  <section id="craft"></section>
-  <section id="code"></section>
-  <section id="background"></section>
-  <section id="contact"></section>
+  <section id="marquee" aria-hidden="true" class="marquee">
+    <div class="marquee-inner">
+      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span>
+      <span>C++</span><span>BLUEPRINTS</span><span>FMOD</span>
+      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span>
+      <span>C++</span><span>BLUEPRINTS</span><span>FMOD</span>
+    </div>
+  </section>
+
+  <section id="steam-veins" class="project" data-accent="#e8452f">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">01 / <span data-i18n="sv.status">Published on Steam</span></p>
+          <h2 data-i18n="sv.title">Steam Veins</h2>
+          <p class="lede" data-i18n="sv.lede">A 2D action game built with a team at Kimu Studios and released on Steam. I worked on gameplay systems and the mechanics around combat.</p>
+          <ul>
+            <li data-i18n="sv.b1">Enemy damage response — invulnerability frames, knockback, collision handling</li>
+            <li data-i18n="sv.b2">Phase transitions driven by health thresholds</li>
+            <li data-i18n="sv.b3">FMOD event integration with randomised pitch on melee hits</li>
+            <li data-i18n="sv.b4">Visual effects integration and performance passes</li>
+          </ul>
+          <p class="mono todo" data-i18n="sv.todo">[TODO: team size, development duration, release date]</p>
+          <p class="links">
+            <a href="https://store.steampowered.com/app/3201780/Steam_Veins/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
+            <a href="https://drive.google.com/file/d/1FfMGEfl98RtVbwcl-iNgrTfCKKT5UiSN/view?usp=sharing" target="_blank" rel="noopener" data-i18n="nav.demo">Demo</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="midnight-memories" class="project" data-accent="#8fa3ad">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">02 / <span data-i18n="mm.status">Solo project</span></p>
+          <h2 data-i18n="mm.title">MidNight Memories</h2>
+          <p class="lede" data-i18n="mm.lede">A PSX-style first-person game built solo in Unity, focused on atmosphere and an enigmatic narrative.</p>
+          <ul>
+            <li data-i18n="mm.b1">Movement and combat programming in C#</li>
+            <li data-i18n="mm.b2">Gameplay and UI systems</li>
+            <li data-i18n="mm.b3">Technical design and full implementation</li>
+          </ul>
+          <p class="mono todo" data-i18n="mm.todo">[TODO: current status — prototype, demo, or planned release?]</p>
+          <p class="links">
+            <a href="https://drive.google.com/drive/folders/1BYW8EsY5dRsjF65luDag1ndC3lO6xUBb?usp=drive_link" target="_blank" rel="noopener" data-i18n="nav.project">View project</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kuroneko" class="project" data-accent="#17c3b2">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">03 / <span data-i18n="kn.status">Visual novel · Solo project</span></p>
+          <h2 data-i18n="kn.title">KuroNeko</h2>
+          <p class="lede" data-i18n="kn.lede">A visual novel built solo in Unity. I wrote the narrative parser that drives it — script in, branching scene out.</p>
+          <ul>
+            <li data-i18n="kn.b1">Custom narrative parser system in C#</li>
+            <li data-i18n="kn.b2">Parser integration with Unity scene and UI layers</li>
+            <li data-i18n="kn.b3">Choice handling and narrative progression</li>
+          </ul>
+          <p class="mono todo" data-i18n="kn.todo">[TODO: script length or number of branches?]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="johnny-g" class="project" data-accent="#f5c518">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">04 / <span data-i18n="jg.status">Experimental prototype</span></p>
+          <h2 data-i18n="jg.title">Johnny G</h2>
+          <p class="lede" data-i18n="jg.lede">A prototype built around a single constraint: the player can only move and attack with a grappler. Everything else follows from that.</p>
+          <ul>
+            <li data-i18n="jg.b1">Grappler-based movement system</li>
+            <li data-i18n="jg.b2">Combat integrated into traversal rather than separate from it</li>
+            <li data-i18n="jg.b3">Focus on responsiveness and spatial control</li>
+          </ul>
+          <p class="links">
+            <a href="https://drive.google.com/drive/folders/19SzIwTArMxGAcWTd6az3VDaEXzajdj0R?usp=sharing" target="_blank" rel="noopener" data-i18n="nav.project">View project</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dino-girls" class="project" data-accent="#4ade80">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">05 / <span data-i18n="dg.status">In production</span></p>
+          <h2 data-i18n="dg.title">Dino Girls</h2>
+          <p class="lede" data-i18n="dg.lede">An upcoming Steam release I contribute to across gameplay systems and mechanics.</p>
+          <ul>
+            <li data-i18n="dg.b1">Gameplay systems and mechanics implementation</li>
+            <li data-i18n="dg.b2">Technical and creative decision-making with the team</li>
+          </ul>
+          <p class="mono todo" data-i18n="dg.todo">[TODO: role scope and expected release window]</p>
+          <p class="links">
+            <a href="https://store.steampowered.com/app/3495120/Dino_Girls/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="craft">
+    <h2 data-reveal data-i18n="craft.heading">Art and assets</h2>
+    <p class="lede" data-reveal data-i18n="craft.body">Backgrounds, sprite sheets and scene work produced alongside the code.</p>
+  </section>
+
+  <section id="code">
+    <h2 data-reveal data-i18n="code.heading">Code</h2>
+    <p class="mono" data-reveal data-i18n="code.caption">Enemy damage response from Steam Veins — invulnerability gate, FMOD audio, health-threshold phase change, and execution state. C#, Unity.</p>
+    <p class="links">
+      <a href="https://github.com/Thequing" target="_blank" rel="noopener" data-i18n="code.link">More on GitHub</a>
+    </p>
+  </section>
+
+  <section id="background">
+    <h2 data-reveal data-i18n="bg.heading">Background</h2>
+    <div class="grid-3">
+      <p data-reveal data-i18n="bg.degree">Bachelor's, Information Technology — UFRN</p>
+      <p data-reveal data-i18n="bg.gamedesign">Game Design — Udemy</p>
+      <p data-reveal data-i18n="bg.database">Database Administration — IFRS</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 data-reveal data-i18n="contact.heading">Get in touch</h2>
+    <p class="lede" data-reveal data-i18n="contact.body">Open to gameplay programming roles.</p>
+    <p class="links">
+      <a href="https://github.com/Thequing" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/lucas-antonino" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:lvantonino@hotmail.com">lvantonino@hotmail.com</a>
+    </p>
+    <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="contact.cv">Download CV</a>
+  </section>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
