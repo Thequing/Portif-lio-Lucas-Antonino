@@ -5,13 +5,10 @@ function promote(video) {
   const wantSmall = window.innerWidth <= MOBILE_MAX;
   for (const source of video.querySelectorAll('source[data-src]')) {
     let url = source.dataset.src;
+    // MP4 is the only format shipped: VP9 measured larger than H.264 for this
+    // material, so WebM was dropped rather than served as the bigger option.
     if (wantSmall && url.endsWith('-1280.mp4')) {
       url = url.replace('-1280.mp4', '-720.mp4');
-    }
-    // No 720 WebM is generated; drop it on small screens and let MP4 serve.
-    if (wantSmall && url.endsWith('.webm')) {
-      source.remove();
-      continue;
     }
     source.src = url;
     source.removeAttribute('data-src');

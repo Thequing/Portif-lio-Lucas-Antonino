@@ -34,7 +34,6 @@
       data-slug="steam-veins-title" data-hero
       poster="media/poster/steam-veins-title.webp"
       preload="none" muted loop playsinline aria-hidden="true">
-      <source data-src="media/video/steam-veins-title-1280.webm" type="video/webm">
       <source data-src="media/video/steam-veins-title-1280.mp4" type="video/mp4">
     </video>
     <h1>Lucas Antonino</h1>
@@ -68,7 +67,6 @@
               poster="media/poster/steam-veins-combat.webp"
               preload="none" muted loop playsinline
               aria-label="Steam Veins combat: the player fights enemies in a red-lit stone corridor">
-              <source data-src="media/video/steam-veins-combat-1280.webm" type="video/webm">
               <source data-src="media/video/steam-veins-combat-1280.mp4" type="video/mp4">
             </video>
             <noscript>
@@ -81,7 +79,6 @@
               poster="media/poster/steam-veins-chapel.webp"
               preload="none" muted loop playsinline
               aria-label="Steam Veins exploration: the player moves through a chapel interior past an NPC">
-              <source data-src="media/video/steam-veins-chapel-1280.webm" type="video/webm">
               <source data-src="media/video/steam-veins-chapel-1280.mp4" type="video/mp4">
             </video>
             <noscript>
@@ -118,7 +115,6 @@
             poster="media/poster/midnight-memories.webp"
             preload="none" muted loop playsinline
             aria-label="MidNight Memories: a first-person walk through a foggy, dithered PSX-style street">
-            <source data-src="media/video/midnight-memories-1280.webm" type="video/webm">
             <source data-src="media/video/midnight-memories-1280.mp4" type="video/mp4">
           </video>
           <noscript>
@@ -152,7 +148,6 @@
             poster="media/poster/kuroneko.webp"
             preload="none" muted loop playsinline
             aria-label="KuroNeko: a visual novel scene with character art and a dialogue box">
-            <source data-src="media/video/kuroneko-1280.webm" type="video/webm">
             <source data-src="media/video/kuroneko-1280.mp4" type="video/mp4">
           </video>
           <noscript>
@@ -183,7 +178,6 @@
             poster="media/poster/johnny-g.webp"
             preload="none" muted loop playsinline
             aria-label="Johnny G: the player swings and attacks using a grappler">
-            <source data-src="media/video/johnny-g-1280.webm" type="video/webm">
             <source data-src="media/video/johnny-g-1280.mp4" type="video/mp4">
           </video>
           <noscript>
@@ -230,11 +224,72 @@
   <section id="craft">
     <h2 data-reveal data-i18n="craft.heading">Art and assets</h2>
     <p class="lede" data-reveal data-i18n="craft.body">Backgrounds, sprite sheets and scene work produced alongside the code.</p>
+    <div class="craft-grid">
+      <!-- Estátua2.0.png is percent-encoded: an unencoded accented character
+           resolves locally on Windows but 404s on GitHub Pages. -->
+      <img src="Imagens/ShrineWithSnow.png" loading="lazy" data-parallax
+           alt="Painted shrine background under falling snow">
+      <img src="Imagens/Scene1_Street.png" loading="lazy" data-parallax
+           alt="Street scene background, first variant">
+      <img src="Imagens/Scene2_Street.png" loading="lazy" data-parallax
+           alt="Street scene background, second variant">
+      <img src="Imagens/Est%C3%A1tua2.0.png" loading="lazy" data-parallax
+           alt="Statue asset rendered against a dark ground">
+      <img src="Imagens/Kunai_Explosion-Sheet.gif" loading="lazy" data-parallax
+           alt="Kunai explosion sprite sheet animation">
+      <img src="Imagens/DracularaWave-Sheet.gif" loading="lazy" data-parallax
+           alt="Character wave animation sprite sheet">
+    </div>
   </section>
 
   <section id="code">
     <h2 data-reveal data-i18n="code.heading">Code</h2>
     <p class="mono" data-reveal data-i18n="code.caption">Enemy damage response from Steam Veins — invulnerability gate, FMOD audio, health-threshold phase change, and execution state. C#, Unity.</p>
+    <pre class="code-block" data-reveal><code>
+<span class="line">public override void RespondTakeDamage(int typeDamage, float AditionalknockbackForceX, float AditionalknockbackForceY)</span>
+<span class="line">{</span>
+<span class="line">    if (isInvulnerable || isDead) return;</span>
+<span class="line">&nbsp;</span>
+<span class="line">    GetComponentInChildren&lt;IgnoreCollisionOnDamage&gt;()?.TriggerIgnoreCollision();</span>
+<span class="line">&nbsp;</span>
+<span class="line">    EventInstance soundInstance = RuntimeManager.CreateInstance(typeDamage == 2 ? soundShoot : soundSlash);</span>
+<span class="line">&nbsp;</span>
+<span class="line">    switch (typeDamage)</span>
+<span class="line">    {</span>
+<span class="line">        case 0:</span>
+<span class="line">            // hit crouch melee</span>
+<span class="line">            break;</span>
+<span class="line">        case 1:</span>
+<span class="line">            // hit normal melee</span>
+<span class="line">            soundInstance.setPitch(UnityEngine.Random.Range(0.8f, 1.2f));</span>
+<span class="line">            soundInstance.start();</span>
+<span class="line">            soundInstance.release();</span>
+<span class="line">            break;</span>
+<span class="line">        case 2:</span>
+<span class="line">            // shoot</span>
+<span class="line">            soundInstance.start();</span>
+<span class="line">            soundInstance.release();</span>
+<span class="line">            break;</span>
+<span class="line">    }</span>
+<span class="line">    if (!isRained &amp;&amp; enemyStats.hp &lt;= enemyStats.maxHp / 2)</span>
+<span class="line">    {</span>
+<span class="line">        if (!isAttacking &amp;&amp; !isTransitioning) { StartCoroutine(DropHat()); }</span>
+<span class="line">        else { shouldTransition = true; }</span>
+<span class="line">    }</span>
+<span class="line">    if (enemyStats.hp &lt;= 0)</span>
+<span class="line">    {</span>
+<span class="line">        isDead = true;</span>
+<span class="line">        if (enemyStats.isExecutavel &amp;&amp; !isExecutada)</span>
+<span class="line">        {</span>
+<span class="line">            StartCoroutine(ExecutavelPosAtk());</span>
+<span class="line">        }</span>
+<span class="line">        else if (enemyStats.isDefeated &amp;&amp; isExecutada)</span>
+<span class="line">        {</span>
+<span class="line">            animator.SetTrigger("Derrotado");</span>
+<span class="line">        }</span>
+<span class="line">    }</span>
+<span class="line">}</span>
+</code></pre>
     <p class="links">
       <a href="https://github.com/Thequing" target="_blank" rel="noopener" data-i18n="code.link">More on GitHub</a>
     </p>

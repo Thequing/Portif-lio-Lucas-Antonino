@@ -1,5 +1,30 @@
 const NEUTRAL = '#8b8b99';
 
+function typeCode() {
+  const { gsap } = window;
+  const lines = document.querySelectorAll('.code-block .line');
+  if (!lines.length) return;
+  gsap.from(lines, {
+    opacity: 0,
+    x: -12,
+    stagger: 0.025,
+    duration: 0.35,
+    ease: 'none',
+    scrollTrigger: { trigger: '.code-block', start: 'top 75%' },
+  });
+}
+
+function parallaxStills() {
+  const { gsap } = window;
+  for (const img of document.querySelectorAll('[data-parallax]')) {
+    gsap.to(img, {
+      yPercent: -12,
+      ease: 'none',
+      scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
+    });
+  }
+}
+
 function pinProjects() {
   const { gsap, ScrollTrigger } = window;
 
@@ -96,5 +121,7 @@ export function initScroll() {
     });
   }
 
+  typeCode();
+  parallaxStills();
   pinProjects();
 }

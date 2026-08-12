@@ -55,9 +55,12 @@ for entry in "${CLIPS[@]}"; do
     -c:v libx264 -profile:v high -pix_fmt yuv420p -crf $((crf + 2)) \
     -movflags +faststart -an "$OUT_VIDEO/$slug-720.mp4"
 
-  ffmpeg -y -v error -i "$in" \
-    -vf "${pre}fps=$fps,scale=$width:-2:flags=lanczos" \
-    -c:v libvpx-vp9 -crf $((crf + 10)) -b:v 0 -row-mt 1 -an "$OUT_VIDEO/$slug-1280.webm"
+  # No WebM. VP9 at crf+10 measured LARGER than H.264 for every one of these
+  # clips (4.16 MB across the set against 2.93 MB of MP4), and since <source>
+  # order put WebM first, Chrome and Firefox downloaded the bigger file and blew
+  # the 4 MB budget while Safari stayed inside it. A format that exists to be
+  # smaller and is not has no reason to ship. H.264 High/yuv420p plays in every
+  # target browser, so MP4 alone serves everyone at the measured 2.93 MB.
 
   ffmpeg -y -v error -i "$in" \
     -vf "${pre}scale=$width:-2:flags=lanczos" \
@@ -65,7 +68,7 @@ for entry in "${CLIPS[@]}"; do
 done
 
 echo
-echo "Per-visitor payload (the 1280 MP4 set — one format is downloaded, not all):"
+echo "Per-visitor payload (the 1280 MP4 set — desktop downloads one variant, not both):"
 du -ch "$OUT_VIDEO"/*-1280.mp4 | tail -1
 echo "All generated files (repo weight, not transfer weight):"
 du -ch "$OUT_VIDEO" "$OUT_POSTER" | tail -1
