@@ -1,0 +1,75 @@
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../media/font/space-grotesk-400.woff2') format('woff2');
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../media/font/space-grotesk-700.woff2') format('woff2');
+  font-weight: 700; font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../media/font/jetbrains-mono-400.woff2') format('woff2');
+  font-weight: 400; font-display: swap;
+}
+
+:root {
+  --ink: #08090c;
+  --paper: #f2f3f7;
+  --muted: #6b6b78;
+  --rule: rgba(242, 243, 247, 0.12);
+  --accent: #8b8b99;
+
+  --display: clamp(3rem, 9vw, 9rem);
+  --h2: clamp(2rem, 4vw, 3.5rem);
+  --body: 1.125rem;
+  --mono: 0.75rem;
+
+  --gutter: clamp(1.25rem, 5vw, 6rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: var(--body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 { line-height: 1.02; font-weight: 700; letter-spacing: -0.02em; }
+h1 { font-size: var(--display); }
+h2 { font-size: var(--h2); }
+
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+img, video { max-width: 100%; display: block; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
