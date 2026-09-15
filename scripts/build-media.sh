@@ -28,7 +28,6 @@ CLIPS=(
   "steam-veins-combat|3SteamVeinsGif4.gif||1280|50|24"
   "midnight-memories|4MidNightMemories1.gif|crop=1192:638:362:134|960|30|26"
   "kuroneko|5KuroNekoDemo_ToLinkedin_1.gif|crop=1604:856:156:136|1280|50|24"
-  "johnny-g|JohnnyG1.gif||1280|50|24"
 )
 
 for entry in "${CLIPS[@]}"; do

@@ -29,7 +29,6 @@
 
 /* Author-facing placeholders for facts that were never confirmed. Muted and
    set small so they read as scaffolding, not as claims about the work. */
-.todo { color: var(--muted); opacity: 0.65; font-style: italic; text-transform: none; }
 
 .links { display: flex; flex-wrap: wrap; gap: 1.25rem; }
 .links a {
@@ -86,7 +85,12 @@
   padding: 1.5rem; overflow-x: auto;
   font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7;
 }
-.code-block .line { display: block; }
+/* The newline between consecutive .line blocks would render as its own line
+   under the pre's white-space, doubling the spacing; collapse it on <code> and
+   keep pre on the lines so indentation survives. */
+.code-block + .mono { margin-top: clamp(3rem, 8vh, 6rem); }
+.code-block code { white-space: normal; }
+.code-block .line { display: block; white-space: pre; }
 
 .cursor {
   position: fixed; top: 0; left: 0; z-index: 100; pointer-events: none;

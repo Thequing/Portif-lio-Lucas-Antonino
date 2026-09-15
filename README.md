@@ -8,8 +8,6 @@ All text lives in `js/i18n.js` as `copy.en` and `copy.pt`.
 English is *also* inline in `index.html`; the two must match exactly.
 Run `node scripts/check.mjs` after editing — it fails on drift.
 
-Entries marked `[TODO: ...]` need real details filled in.
-
 ## Media
 
 Source GIFs live in `Gifs/`. To regenerate `media/` after changing one:

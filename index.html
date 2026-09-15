@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lucas Antonino — Gameplay Programmer</title>
-<meta name="description" content="Gameplay programmer. Unity, Unreal Engine 5, C#, C++. One title shipped on Steam.">
+<meta name="description" content="Gameplay and systems programmer. Unity, Unreal Engine 5, C#, C++. One title shipped on Steam, one in production, and a demo you can play at BGS 2026.">
 
 <!-- Marks the document as script-capable before first paint, so the loader — an
      opaque full-screen overlay that only JavaScript can remove — is never shown
@@ -39,23 +39,23 @@
       <source data-src="media/video/steam-veins-title-1280.mp4" type="video/mp4">
     </video>
     <h1>Lucas Antonino</h1>
-    <p class="mono" data-i18n="hero.role">Gameplay Programmer</p>
-    <p class="lede" data-i18n="hero.summary">I build the systems players actually touch — combat, movement, dialogue, UI. One title shipped on Steam.</p>
+    <p class="mono" data-i18n="hero.role">Gameplay & Systems Programmer</p>
+    <p class="lede" data-i18n="hero.summary">I build the systems players actually touch — combat, movement, dialogue, UI — and the simulation underneath them. One title shipped on Steam, one in production, and a demo you can play at BGS 2026.</p>
     <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="hero.cv">Download CV</a>
     <p class="mono scroll-cue" data-i18n="hero.scroll">Scroll</p>
   </section>
 
   <section id="positioning">
     <h2 data-reveal data-i18n="positioning.heading">What I do</h2>
-    <p class="lede" data-reveal data-i18n="positioning.body">I work on gameplay: the code between an input and a response that feels right. Combat state machines, damage and knockback, dialogue parsing, UI flow, and the audio hooks that sell an impact. Unity and Unreal Engine 5, in C#, C++ and Blueprints.</p>
+    <p class="lede" data-reveal data-i18n="positioning.body">I work on gameplay: the code between an input and a response that feels right — combat state machines, damage and knockback, dialogue parsing, UI flow, the audio hooks that sell an impact. And the systems under it: a deterministic race simulator with no engine dependency, a narrative parser that validates its own script, test harnesses that run without opening the editor. Unity and Unreal Engine 5, in C#, C++ and Blueprints.</p>
   </section>
 
   <section id="marquee" aria-hidden="true" class="marquee">
     <div class="marquee-inner">
-      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span>
-      <span>C++</span><span>BLUEPRINTS</span><span>FMOD</span>
-      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span>
-      <span>C++</span><span>BLUEPRINTS</span><span>FMOD</span>
+      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span><span>C++</span>
+      <span>BLUEPRINTS</span><span>FMOD</span><span>URP</span><span>NUNIT</span>
+      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span><span>C++</span>
+      <span>BLUEPRINTS</span><span>FMOD</span><span>URP</span><span>NUNIT</span>
     </div>
   </section>
 
@@ -89,16 +89,15 @@
           </figure>
         </div>
         <div class="project-copy" data-reveal>
-          <p class="mono numeral">01 / <span data-i18n="sv.status">Published on Steam</span></p>
+          <p class="mono numeral">01 / <span data-i18n="sv.status">Released on Steam · Aug 2025 · Kimu Studios</span></p>
           <h2 data-i18n="sv.title">Steam Veins</h2>
-          <p class="lede" data-i18n="sv.lede">A 2D action game built with a team at Kimu Studios and released on Steam. I worked on gameplay systems and the mechanics around combat.</p>
+          <p class="lede" data-i18n="sv.lede">A 2D action roguelike from Kimu Studios, released on Steam in Early Access. I owned enemy combat: how enemies take damage, react, change phase and die.</p>
           <ul>
             <li data-i18n="sv.b1">Enemy damage response — invulnerability frames, knockback, collision handling</li>
             <li data-i18n="sv.b2">Phase transitions driven by health thresholds</li>
             <li data-i18n="sv.b3">FMOD event integration with randomised pitch on melee hits</li>
             <li data-i18n="sv.b4">Visual effects integration and performance passes</li>
           </ul>
-          <p class="mono todo" data-i18n="sv.todo">[TODO: team size, development duration, release date]</p>
           <p class="links">
             <a href="https://store.steampowered.com/app/3201780/Steam_Veins/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
             <a href="https://drive.google.com/file/d/1FfMGEfl98RtVbwcl-iNgrTfCKKT5UiSN/view?usp=sharing" target="_blank" rel="noopener" data-i18n="nav.demo">Demo</a>
@@ -124,18 +123,57 @@
           </noscript>
         </figure>
         <div class="project-copy" data-reveal>
-          <p class="mono numeral">02 / <span data-i18n="mm.status">Solo project</span></p>
+          <p class="mono numeral">02 / <span data-i18n="mm.status">BGS 2026 booth demo · Two-person team, code lead</span></p>
           <h2 data-i18n="mm.title">MidNight Memories</h2>
-          <p class="lede" data-i18n="mm.lede">A PSX-style first-person game built solo in Unity, focused on atmosphere and an enigmatic narrative.</p>
+          <p class="lede" data-i18n="mm.lede">A PSX-style first-person horror built in Unity. Chapter One is a 10–12 minute demo I designed and built for the Brasil Game Show booth: one route, one puzzle, one boss, and a story that is never explained out loud.</p>
           <ul>
-            <li data-i18n="mm.b1">Movement and combat programming in C#</li>
-            <li data-i18n="mm.b2">Gameplay and UI systems</li>
-            <li data-i18n="mm.b3">Technical design and full implementation</li>
+            <li data-i18n="mm.b1">Investigation Mode: objects, clocks and the distant tower become readable only through the visor — and the clock puzzle is solved with it, at range</li>
+            <li data-i18n="mm.b2">Fog-gated combat arenas, Nightmare AI that chases or waits, and the Obsidian Wraith boss with two attacks</li>
+            <li data-i18n="mm.b3">Item log, ammo count, and a floor-plan map the player has to earn</li>
+            <li data-i18n="mm.b4">Generated streets and facades; a demo flow that resets cleanly between booth players</li>
+            <li data-i18n="mm.b5">Game-logic core covered by 103 unit tests</li>
           </ul>
-          <p class="mono todo" data-i18n="mm.todo">[TODO: current status — prototype, demo, or planned release?]</p>
           <p class="links">
             <a href="https://drive.google.com/drive/folders/1BYW8EsY5dRsjF65luDag1ndC3lO6xUBb?usp=drive_link" target="_blank" rel="noopener" data-i18n="nav.project">View project</a>
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="framed-drift" class="project" data-accent="#f5c518">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">03 / <span data-i18n="fd.status">Solo · Unity 6 · In development</span></p>
+          <h2 data-i18n="fd.title">Framed Drift</h2>
+          <p class="lede" data-i18n="fd.lede">An idle drift RPG for PC. The player doesn't drive — they build the car, pick the track and the risk, and watch it run. Underneath is a race simulator that resolves the whole race at once, deterministic and independent of Unity.</p>
+          <ul>
+            <li data-i18n="fd.b1">Pure C# simulation assembly with no engine references — 10,000 races resolve in 0.06 s, and the tests run in dotnet without opening the editor</li>
+            <li data-i18n="fd.b2">Offline progress uses the same scorer as live play: parity measured at 0.06 %</li>
+            <li data-i18n="fd.b3">135 automated tests written as the GDD's exit criteria — win rates, cash curve, presence uplift, failure rate</li>
+            <li data-i18n="fd.b4">All content as commented JSON: 11 tracks, 57 parts, 12 affixes, 5 rivals — each rival a readable, counterable build</li>
+            <li data-i18n="fd.b5">Procedural track generator, validated 200 of 200</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hells-kitchen" class="project" data-accent="#ff7a1a">
+    <div class="pin-wrap">
+      <div class="pin-inner">
+        <div class="project-copy" data-reveal>
+          <p class="mono numeral">04 / <span data-i18n="hk.status">Independent team · Unity 6 · In development</span></p>
+          <h2 data-i18n="hk.title">Hell's Kitchen</h2>
+          <p class="lede" data-i18n="hk.lede">A tower defense where the map grows as you clear it: a 4×4 grid of rooms, each claimed and fortified, a boss every third room and one at the end. I write the gameplay systems on top of the team's design document.</p>
+          <ul>
+            <li data-i18n="hk.b1">Damage types — physical, magic, true, area — against per-enemy armour and resistance</li>
+            <li data-i18n="hk.b2">Four-level towers: stats, then a speciality choice, then a chef special on a cooldown</li>
+            <li data-i18n="hk.b3">Status effects that pierce, split and slow to a root; blocker squads that hold the path; flying enemies out of ground towers' reach</li>
+            <li data-i18n="hk.b4">Ingredient drops into a typed pantry that funds upgrades</li>
+            <li data-i18n="hk.b5">Batch-mode smoke harness that plays all 16 rooms headless and asserts the run</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -157,47 +195,14 @@
           </noscript>
         </figure>
         <div class="project-copy" data-reveal>
-          <p class="mono numeral">03 / <span data-i18n="kn.status">Visual novel · Solo project</span></p>
+          <p class="mono numeral">05 / <span data-i18n="kn.status">Visual novel · Solo project</span></p>
           <h2 data-i18n="kn.title">KuroNeko</h2>
-          <p class="lede" data-i18n="kn.lede">A visual novel built solo in Unity. I wrote the narrative parser that drives it — script in, branching scene out.</p>
+          <p class="lede" data-i18n="kn.lede">A visual novel built solo in Unity, driven by a narrative parser I wrote: script in, branching scene out.</p>
           <ul>
-            <li data-i18n="kn.b1">Custom narrative parser system in C#</li>
-            <li data-i18n="kn.b2">Parser integration with Unity scene and UI layers</li>
-            <li data-i18n="kn.b3">Choice handling and narrative progression</li>
+            <li data-i18n="kn.b1">Ten-command script language — scenes, characters, audio, flags, conditionals, jumps, menus — with inline parameters anywhere in a line</li>
+            <li data-i18n="kn.b2">A diagnostic pass validates the whole script at load: unknown commands, duplicate labels, dead jumps, empty menus</li>
+            <li data-i18n="kn.b3">Parser has no Unity dependency; the engine layer handles scene, UI and save slots</li>
           </ul>
-          <p class="mono todo" data-i18n="kn.todo">[TODO: script length or number of branches?]</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="johnny-g" class="project" data-accent="#f5c518">
-    <div class="pin-wrap">
-      <div class="pin-inner">
-        <figure class="shot">
-          <video
-            data-slug="johnny-g"
-            poster="media/poster/johnny-g.webp"
-            preload="none" muted loop playsinline
-            aria-label="Johnny G: the player swings and attacks using a grappler">
-            <source data-src="media/video/johnny-g-1280.mp4" type="video/mp4">
-          </video>
-          <noscript>
-            <img src="media/poster/johnny-g.webp" alt="Johnny G grappler traversal">
-          </noscript>
-        </figure>
-        <div class="project-copy" data-reveal>
-          <p class="mono numeral">04 / <span data-i18n="jg.status">Experimental prototype</span></p>
-          <h2 data-i18n="jg.title">Johnny G</h2>
-          <p class="lede" data-i18n="jg.lede">A prototype built around a single constraint: the player can only move and attack with a grappler. Everything else follows from that.</p>
-          <ul>
-            <li data-i18n="jg.b1">Grappler-based movement system</li>
-            <li data-i18n="jg.b2">Combat integrated into traversal rather than separate from it</li>
-            <li data-i18n="jg.b3">Focus on responsiveness and spatial control</li>
-          </ul>
-          <p class="links">
-            <a href="https://drive.google.com/drive/folders/19SzIwTArMxGAcWTd6az3VDaEXzajdj0R?usp=sharing" target="_blank" rel="noopener" data-i18n="nav.project">View project</a>
-          </p>
         </div>
       </div>
     </div>
@@ -207,14 +212,13 @@
     <div class="pin-wrap">
       <div class="pin-inner">
         <div class="project-copy" data-reveal>
-          <p class="mono numeral">05 / <span data-i18n="dg.status">In production</span></p>
+          <p class="mono numeral">06 / <span data-i18n="dg.status">In production · Kimu Studios · Gameplay programmer</span></p>
           <h2 data-i18n="dg.title">Dino Girls</h2>
-          <p class="lede" data-i18n="dg.lede">An upcoming Steam release I contribute to across gameplay systems and mechanics.</p>
+          <p class="lede" data-i18n="dg.lede">An idle resort-builder coming to Steam from Kimu Studios. I'm on the gameplay team: systems and mechanics, and the technical calls that come with them.</p>
           <ul>
             <li data-i18n="dg.b1">Gameplay systems and mechanics implementation</li>
             <li data-i18n="dg.b2">Technical and creative decision-making with the team</li>
           </ul>
-          <p class="mono todo" data-i18n="dg.todo">[TODO: role scope and expected release window]</p>
           <p class="links">
             <a href="https://store.steampowered.com/app/3495120/Dino_Girls/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
           </p>
@@ -292,6 +296,53 @@
 <span class="line">    }</span>
 <span class="line">}</span>
 </code></pre>
+    <p class="mono" data-reveal data-i18n="code.caption2">Drift scoring from Framed Drift — the same scorer runs the live race and the offline one, so offline parity is structural rather than tested. Pure C#, no UnityEngine.</p>
+    <pre class="code-block" data-reveal><code>
+<span class="line">// Reduces a timeline to a Drift Score. Deliberately separate from the</span>
+<span class="line">// simulator: called on the untouched timeline it yields the offline result.</span>
+<span class="line">// Consumes no RNG, so scoring twice gives the same number.</span>
+<span class="line">public long Score(SegmentOutcome[] timeline, in Context ctx)</span>
+<span class="line">{</span>
+<span class="line">    if (timeline == null) return 0L;</span>
+<span class="line">&nbsp;</span>
+<span class="line">    // Accumulate in double, floor once: a 12-million endgame summed in float</span>
+<span class="line">    // drops whole units on the last segment, and the same replay would score</span>
+<span class="line">    // differently depending on summation order.</span>
+<span class="line">    double sum = 0.0;</span>
+<span class="line">    for (int i = 0; i &lt; timeline.Length; i++)</span>
+<span class="line">        sum += SegmentScore(in timeline[i], in ctx);</span>
+<span class="line">&nbsp;</span>
+<span class="line">    double total = sum * ctx.TotalMultiplier;</span>
+<span class="line">    return total &lt;= 0.0 ? 0L : (long)Math.Floor(total);</span>
+<span class="line">}</span>
+<span class="line">&nbsp;</span>
+<span class="line">// Offline: the timeline as the simulator left it, no promotions.</span>
+<span class="line">public long ScoreWithoutPromotions(RaceResult result, in Context ctx)</span>
+<span class="line">{</span>
+<span class="line">    if (result?.Timeline == null) return 0L;</span>
+<span class="line">&nbsp;</span>
+<span class="line">    double sum = 0.0;</span>
+<span class="line">    for (int i = 0; i &lt; result.Timeline.Length; i++)</span>
+<span class="line">    {</span>
+<span class="line">        SegmentOutcome o = result.Timeline[i];</span>
+<span class="line">        o.QualityFinal = o.Quality;</span>
+<span class="line">        sum += SegmentScore(in o, in ctx);</span>
+<span class="line">    }</span>
+<span class="line">&nbsp;</span>
+<span class="line">    double total = sum * ctx.TotalMultiplier;</span>
+<span class="line">    return total &lt;= 0.0 ? 0L : (long)Math.Floor(total);</span>
+<span class="line">}</span>
+<span class="line">&nbsp;</span>
+<span class="line">// uplift = (all promotions - none) / none. The balance suite measures this</span>
+<span class="line">// over 1,000 races and requires 0.20-0.30; it currently lands at 0.245.</span>
+<span class="line">public double MeasureUplift(RaceResult result, in Context ctx)</span>
+<span class="line">{</span>
+<span class="line">    long without = ScoreWithoutPromotions(result, in ctx);</span>
+<span class="line">    if (without &lt;= 0L) return 0.0;</span>
+<span class="line">    long with = ScoreWithAllPromotions(result, in ctx);</span>
+<span class="line">    return (with - without) / (double)without;</span>
+<span class="line">}</span>
+</code></pre>
     <p class="links">
       <a href="https://github.com/Thequing" target="_blank" rel="noopener" data-i18n="code.link">More on GitHub</a>
     </p>
@@ -308,7 +359,7 @@
 
   <section id="contact">
     <h2 data-reveal data-i18n="contact.heading">Get in touch</h2>
-    <p class="lede" data-reveal data-i18n="contact.body">Open to gameplay programming roles.</p>
+    <p class="lede" data-reveal data-i18n="contact.body">Open to gameplay and systems programming roles. Find me at BGS 2026.</p>
     <p class="links">
       <a href="https://github.com/Thequing" target="_blank" rel="noopener">GitHub</a>
       <a href="https://linkedin.com/in/lucas-antonino" target="_blank" rel="noopener">LinkedIn</a>

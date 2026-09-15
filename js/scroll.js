@@ -2,16 +2,20 @@ const NEUTRAL = '#8b8b99';
 
 function typeCode() {
   const { gsap } = window;
-  const lines = document.querySelectorAll('.code-block .line');
-  if (!lines.length) return;
-  gsap.from(lines, {
-    opacity: 0,
-    x: -12,
-    stagger: 0.025,
-    duration: 0.35,
-    ease: 'none',
-    scrollTrigger: { trigger: '.code-block', start: 'top 75%' },
-  });
+  // Each block types in on its own trigger; a single selector would start the
+  // second block's lines when the first one scrolled into view.
+  for (const block of document.querySelectorAll('.code-block')) {
+    const lines = block.querySelectorAll('.line');
+    if (!lines.length) continue;
+    gsap.from(lines, {
+      opacity: 0,
+      x: -12,
+      stagger: 0.025,
+      duration: 0.35,
+      ease: 'none',
+      scrollTrigger: { trigger: block, start: 'top 75%' },
+    });
+  }
 }
 
 function parallaxStills() {
