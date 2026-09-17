@@ -110,18 +110,32 @@
   <section id="midnight-memories" class="project" data-accent="#8fa3ad">
     <div class="pin-wrap">
       <div class="pin-inner">
-        <figure class="shot">
-          <video
-            data-slug="midnight-memories"
-            poster="media/poster/midnight-memories.webp"
-            preload="none" muted loop playsinline
-            aria-label="MidNight Memories: a first-person walk through a foggy, dithered PSX-style street">
-            <source data-src="media/video/midnight-memories-1280.mp4" type="video/mp4">
-          </video>
-          <noscript>
-            <img src="media/poster/midnight-memories.webp" alt="MidNight Memories street scene">
-          </noscript>
-        </figure>
+        <div class="shot-stack">
+          <figure class="shot">
+            <video
+              data-slug="midnight-street"
+              poster="media/poster/midnight-street.webp"
+              preload="none" muted loop playsinline
+              aria-label="MidNight Memories: Investigation Mode turns a foggy PSX-style street greyscale and picks out a yellow barrier">
+              <source data-src="media/video/midnight-street-1280.mp4" type="video/mp4">
+            </video>
+            <noscript>
+              <img src="media/poster/midnight-street.webp" alt="MidNight Memories street scene in Investigation Mode">
+            </noscript>
+          </figure>
+          <figure class="shot">
+            <video
+              data-slug="midnight-boss"
+              poster="media/poster/midnight-boss.webp"
+              preload="none" muted loop playsinline
+              aria-label="MidNight Memories: the Obsidian Wraith boss fight, pistol firing at shadow figures under a red health bar">
+              <source data-src="media/video/midnight-boss-1280.mp4" type="video/mp4">
+            </video>
+            <noscript>
+              <img src="media/poster/midnight-boss.webp" alt="MidNight Memories boss fight against the Obsidian Wraith">
+            </noscript>
+          </figure>
+        </div>
         <div class="project-copy" data-reveal>
           <p class="mono numeral">02 / <span data-i18n="mm.status">BGS 2026 booth demo · Two-person team, code lead</span></p>
           <h2 data-i18n="mm.title">MidNight Memories</h2>
@@ -144,6 +158,18 @@
   <section id="framed-drift" class="project" data-accent="#f5c518">
     <div class="pin-wrap">
       <div class="pin-inner">
+        <figure class="shot">
+          <video
+            data-slug="framed-drift"
+            poster="media/poster/framed-drift.webp"
+            preload="none" muted loop playsinline
+            aria-label="Framed Drift: the garage screen over a running race, with part slots, tuning sliders and a rising drift score">
+            <source data-src="media/video/framed-drift-1280.mp4" type="video/mp4">
+          </video>
+          <noscript>
+            <img src="media/poster/framed-drift.webp" alt="Framed Drift garage screen over a running race">
+          </noscript>
+        </figure>
         <div class="project-copy" data-reveal>
           <p class="mono numeral">03 / <span data-i18n="fd.status">Solo · Unity 6 · In development</span></p>
           <h2 data-i18n="fd.title">Framed Drift</h2>
@@ -163,6 +189,18 @@
   <section id="hells-kitchen" class="project" data-accent="#ff7a1a">
     <div class="pin-wrap">
       <div class="pin-inner">
+        <figure class="shot">
+          <video
+            data-slug="hells-kitchen"
+            poster="media/poster/hells-kitchen.webp"
+            preload="none" muted loop playsinline
+            aria-label="Hell's Kitchen: a boss wave crossing a greybox room while towers fire and the map expands into the next room">
+            <source data-src="media/video/hells-kitchen-1280.mp4" type="video/mp4">
+          </video>
+          <noscript>
+            <img src="media/poster/hells-kitchen.webp" alt="Hell's Kitchen tower defense room during a boss wave">
+          </noscript>
+        </figure>
         <div class="project-copy" data-reveal>
           <p class="mono numeral">04 / <span data-i18n="hk.status">Independent team · Unity 6 · In development</span></p>
           <h2 data-i18n="hk.title">Hell's Kitchen</h2>
@@ -187,7 +225,7 @@
             data-slug="kuroneko"
             poster="media/poster/kuroneko.webp"
             preload="none" muted loop playsinline
-            aria-label="KuroNeko: a visual novel scene with character art and a dialogue box">
+            aria-label="KuroNeko: a visual novel scene where a dialogue menu opens and the chosen line changes the reply">
             <source data-src="media/video/kuroneko-1280.mp4" type="video/mp4">
           </video>
           <noscript>
@@ -365,7 +403,12 @@
       <a href="https://linkedin.com/in/lucas-antonino" target="_blank" rel="noopener">LinkedIn</a>
       <a href="mailto:lvantonino@hotmail.com">lvantonino@hotmail.com</a>
     </p>
-    <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="contact.cv">Download CV</a>
+    <div class="btn-row">
+      <!-- One tap on a phone adds the card to Contacts. This is the action a
+           booth visitor who scanned the QR code is most likely to want. -->
+      <a class="btn btn-solid" href="media/lucas-antonino.vcf" download="Lucas Antonino.vcf" data-i18n="contact.vcard">Save contact</a>
+      <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="contact.cv">Download CV</a>
+    </div>
   </section>
 </main>
 

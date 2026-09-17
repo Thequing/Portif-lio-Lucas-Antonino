@@ -1,2 +1,6 @@
 .vs/
 .superpowers/
+
+# Raw screen captures are hundreds of MB each and exceed GitHub's file limit.
+# They stay local; media/ holds everything the site serves.
+Gifs/*.mp4

@@ -72,6 +72,7 @@ export const copy = {
     'contact.heading': 'Get in touch',
     'contact.body': 'Open to gameplay and systems programming roles. Find me at BGS 2026.',
     'contact.cv': 'Download CV',
+    'contact.vcard': 'Save contact',
 
     'nav.steam': 'Steam page',
     'nav.demo': 'Demo',
@@ -151,6 +152,7 @@ export const copy = {
     'contact.heading': 'Contato',
     'contact.body': 'Aberto a vagas de programação de gameplay e sistemas. Me encontre na BGS 2026.',
     'contact.cv': 'Baixar CV',
+    'contact.vcard': 'Salvar contato',
 
     'nav.steam': 'Página na Steam',
     'nav.demo': 'Demo',

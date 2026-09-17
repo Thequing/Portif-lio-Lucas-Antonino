@@ -17,6 +17,34 @@ function promote(video) {
   video.load();
 }
 
+// Autoplay is refused on iOS in Low Power Mode and under Data Saver, both
+// plausible on a phone that has been at a convention all day. Left alone the
+// clip is a still poster that reads as broken. Mark the figure so CSS shows a
+// play badge, and let a tap on it start the clip — that tap is a user gesture,
+// so the same play() call succeeds.
+function tryPlay(video) {
+  video.play().then(
+    () => { video.closest('.shot')?.removeAttribute('data-blocked'); },
+    () => { markBlocked(video); }
+  );
+}
+
+function markBlocked(video) {
+  const shot = video.closest('.shot');
+  if (!shot || shot.dataset.blocked) return;
+  shot.dataset.blocked = 'true';
+  if (!shot.querySelector('.play')) {
+    const badge = document.createElement('div');
+    badge.className = 'play';
+    badge.setAttribute('aria-hidden', 'true');
+    badge.innerHTML = '<span>&#9654;</span>';
+    shot.appendChild(badge);
+  }
+  // Not `once`: play() on an already-playing video is a no-op, and a retry
+  // after a refused tap costs nothing.
+  shot.addEventListener('click', () => tryPlay(video));
+}
+
 export function initMedia({ reducedMotion }) {
   const videos = document.querySelectorAll('video[data-slug]');
 
@@ -34,9 +62,7 @@ export function initMedia({ reducedMotion }) {
         const video = entry.target;
         if (entry.isIntersecting) {
           promote(video);
-          video.play().catch(() => {
-            // Autoplay can still be refused; the poster remains, which is fine.
-          });
+          tryPlay(video);
         } else {
           video.pause();
         }
