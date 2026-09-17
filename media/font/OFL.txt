@@ -1,14 +1,18 @@
-Fonts vendored in this directory, both under the SIL Open Font License 1.1:
+Fonts vendored in this directory, all under the SIL Open Font License 1.1:
 
-  space-grotesk-400.woff2, space-grotesk-700.woff2
-    Copyright 2020 The Space Grotesk Project Authors
-    https://github.com/floriankarsten/space-grotesk
+  jersey-20-400.woff2
+    Copyright 2023 The Jersey Project Authors
+    https://github.com/scfried/soft-type-jersey
+
+  atkinson-hyperlegible-400.woff2, atkinson-hyperlegible-700.woff2
+    Copyright 2020 Braille Institute of America, Inc.
+    https://github.com/googlefonts/atkinson-hyperlegible
 
   jetbrains-mono-400.woff2
     Copyright 2020 The JetBrains Mono Project Authors
     https://github.com/JetBrains/JetBrainsMono
 
-The licence text below applies to both.
+The licence text below applies to all three.
 
 -----------------------------------------------------------
 
