@@ -1,75 +1,106 @@
-/* The language toggle cannot function without JS, so it ships hidden and
-   initI18n() sets an inline display:flex once binding succeeds. The layout
-   properties below apply from that moment; `display` is deliberately NOT set
-   to flex here, or a no-JS visitor would be offered a dead control. */
-.lang {
-  display: none;
-  position: fixed; top: 1.25rem; right: var(--gutter); z-index: 60;
-  gap: 0.5rem;
-}
-.lang button {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em;
-  background: transparent; color: var(--muted);
-  border: 1px solid var(--rule); border-radius: 4px;
-  padding: 0.35rem 0.6rem; cursor: pointer; transition: color 0.2s, border-color 0.2s;
-}
-.lang button[aria-pressed='true'] { color: var(--accent); border-color: var(--accent); }
-
-.btn {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  align-self: flex-start;
-  padding: 0.8rem 1.4rem; border: 1px solid var(--accent); border-radius: 999px;
-  font-size: 0.95rem; transition: background 0.25s, color 0.25s;
-}
-.btn:hover { background: var(--accent); color: var(--ink); }
-.btn-solid { background: var(--paper); border-color: var(--paper); color: var(--ink); }
-.btn-solid:hover { background: var(--accent); border-color: var(--accent); }
-.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
-
-.lede { font-size: clamp(1.15rem, 2vw, 1.5rem); color: var(--paper); max-width: 40ch; }
-
-.numeral { color: var(--accent); }
-
-/* Author-facing placeholders for facts that were never confirmed. Muted and
-   set small so they read as scaffolding, not as claims about the work. */
-
-.links { display: flex; flex-wrap: wrap; gap: 1.25rem; }
-.links a {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  border-bottom: 1px solid var(--rule); padding-bottom: 0.2rem;
-  transition: color 0.2s, border-color 0.2s;
-}
-.links a:hover { color: var(--accent); border-color: var(--accent); }
-
-.scroll-cue { margin-top: auto; }
-
-#hero { position: relative; isolation: isolate; }
-.hero-bg {
-  position: absolute; inset: 0; z-index: -2;
-  width: 100%; height: 100%; object-fit: cover;
-}
-/* Not optional: the title screen is bright and busy, and the hero text fails
-   contrast against it unscrimmed. */
-#hero::after {
-  content: ''; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(180deg, rgba(8,9,12,0.55), rgba(8,9,12,0.92));
-}
-
-/* Hidden unless the inline head script has marked the document script-capable.
-   Only JS removes the loader, so showing it without JS would bury the page. */
-.loader { display: none; }
-.js .loader {
+/* ---------- Loader: a black frame and a blinking caret, then a hard cut ---------- */
+#loader { display: none; }
+.js #loader {
   position: fixed; inset: 0; z-index: 200;
-  background: var(--ink); display: grid; place-items: center;
+  background: var(--screen-off);
+  display: grid; place-items: center;
 }
-.loader-count {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(3rem, 12vw, 9rem); color: var(--paper);
+.loader-caret {
+  font-family: var(--display); font-size: 4rem; color: var(--phosphor);
+  animation: blink 1s steps(1) infinite;
 }
-.loader.done { pointer-events: none; }
+@keyframes blink { 50% { opacity: 0.15; } }
 
-.shot { position: relative; overflow: hidden; border-radius: 10px; border: 1px solid var(--rule); }
+/* ---------- HUD pieces ---------- */
+/* The language toggle cannot function without JS, so it ships hidden and
+   initI18n() sets an inline display:flex once binding succeeds. */
+.lang { display: none; gap: 0.25rem; }
+.lang button {
+  min-width: 44px; min-height: 44px;
+  font-weight: 700; font-size: var(--small); color: var(--dim);
+  transition: color 0.2s;
+}
+.lang button[aria-pressed='true'] { color: var(--coin); }
+.lang button:hover { color: var(--phosphor); }
+
+/* Each segment is a 44px hit area around an 8px bar. */
+.hud-seg { display: grid; place-items: center; width: 44px; height: 44px; }
+.hud-seg span {
+  display: block; width: 36px; height: 8px;
+  border: 1px solid var(--dim);
+  transition: background 0.3s, border-color 0.3s;
+}
+.hud-seg.is-reached span { background: var(--stage); border-color: var(--stage); }
+.hud-seg.is-current span { outline: 1px solid var(--phosphor); outline-offset: 2px; }
+.hud-seg:hover span { border-color: var(--coin); }
+
+/* ---------- Title screen ---------- */
+#press-start {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  min-height: 48px; padding: 0.25rem 1.25rem;
+  font-family: var(--display); font-size: 2.25rem; line-height: 1;
+  color: var(--coin);
+  /* A selection plate, as a menu cursor would draw: it also keeps the prompt
+     legible over whatever the attract-mode video is showing underneath. */
+  background: rgba(0, 0, 0, 0.8);
+  animation: blink-start 1s steps(1) infinite;
+}
+@keyframes blink-start { 50% { color: color-mix(in oklab, var(--coin) 40%, transparent); } }
+#press-start::before { content: '\25B8'; }
+#press-start::after  { content: '\25C2'; }
+#press-start:hover, #press-start:focus-visible { animation: none; }
+
+/* ---------- Stage anatomy ---------- */
+.stamp {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+  max-width: none;
+}
+.stamp-num { font-family: var(--display); font-size: 1.75rem; line-height: 1; color: var(--stage); }
+.stamp-state {
+  font-weight: 700; font-size: var(--small); line-height: 1;
+  padding: 0.4rem 0.6rem; border: 1px solid currentColor;
+}
+.stamp-state[data-state='cleared']  { color: var(--stage); }
+/* The stage you can actually play at the booth gets the interactive colour. */
+.stamp-state[data-state='playing']  { color: var(--coin); }
+.stamp-state[data-state='progress'],
+.stamp-state[data-state='soon']     { color: var(--dim); }
+.stamp-credit { font-size: var(--small); color: var(--dim); }
+
+.lede { font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.5; color: var(--phosphor); }
+
+.copy ul { list-style: none; }
+.copy li + li { margin-top: 0.5rem; }
+.copy li { padding-left: 1.25rem; position: relative; color: var(--dim); font-size: 1rem; line-height: 1.5; }
+.copy li::before {
+  content: ''; position: absolute; left: 0; top: 0.65em;
+  width: 6px; height: 6px; background: var(--stage);
+}
+
+.links { display: flex; flex-wrap: wrap; gap: 1.25rem; max-width: none; }
+.links a {
+  font-weight: 700; color: var(--coin);
+  padding-bottom: 0.1rem; border-bottom: 1px solid currentColor;
+  min-height: 44px; display: inline-flex; align-items: flex-end;
+}
+.links a:hover { color: var(--phosphor); }
+
+.readouts { display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem; }
+.readout { display: flex; flex-direction: column-reverse; }
+.readout-value {
+  font-family: var(--display); font-size: var(--numeral); line-height: 1;
+  color: var(--stage);
+}
+.readout-label { font-size: var(--small); color: var(--dim); margin-top: 0.15rem; }
+
+.locked {
+  aspect-ratio: 16 / 9;
+  display: grid; place-items: center;
+  background: var(--cabinet); border: 1px solid var(--dim);
+}
+.locked span { font-family: var(--display); font-size: 8rem; line-height: 1; color: var(--dim); }
+
+.shot { position: relative; overflow: hidden; border: 1px solid color-mix(in oklab, var(--stage) 50%, transparent); }
 .shot video, .shot img { width: 100%; height: auto; }
 
 /* Shown only when autoplay was refused (iOS Low Power Mode, Data Saver). Without
@@ -82,38 +113,92 @@
   position: absolute; inset: 0; pointer-events: none;
 }
 .shot[data-blocked] .play span {
-  width: 3.5rem; height: 3.5rem; border-radius: 50%;
+  width: 3.5rem; height: 3.5rem;
   display: grid; place-items: center;
-  background: rgba(8, 9, 12, 0.7); border: 1px solid var(--paper);
-  color: var(--paper); font-size: 1.1rem; padding-left: 0.2rem;
+  background: rgba(0, 0, 0, 0.7); border: 2px solid var(--coin);
+  color: var(--coin); font-size: 1.1rem; padding-left: 0.2rem;
 }
 
-.rail {
-  position: fixed; left: var(--gutter); top: 50%; translate: 0 -50%;
-  width: 2px; height: 32vh; background: var(--rule); z-index: 50;
+/* ---------- Buttons and chips ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 1.5rem;
+  border: 1px solid var(--coin); color: var(--coin); font-weight: 700;
+  transition: background 0.2s, color 0.2s;
 }
-.rail span { display: block; width: 100%; height: 0; background: var(--accent); transform-origin: top; }
-@media (max-width: 1023px) { .rail { display: none; } }
+.btn:hover { background: var(--coin); color: var(--screen-off); }
+.btn-solid { background: var(--coin); color: var(--screen-off); }
+.btn-solid:hover { background: var(--phosphor); border-color: var(--phosphor); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 
-.marquee { overflow: hidden; white-space: nowrap; border-block: 1px solid var(--rule); padding-block: 1.5rem; }
-.marquee-inner { display: inline-flex; gap: 3rem; will-change: transform; }
-.marquee span { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 700; color: var(--muted); }
+.equipped span {
+  font-weight: 700; font-size: 0.9375rem;
+  padding: 0.35rem 0.7rem; border: 1px solid var(--dim);
+}
 
-.code-block {
-  background: #0d0f14; border: 1px solid var(--rule); border-radius: 10px;
-  padding: 1.5rem; overflow-x: auto;
-  font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7;
+/* ---------- Bonus stage: the chest ---------- */
+#chest { display: block; width: 160px; }
+#chest svg { width: 100%; height: auto; overflow: visible; }
+#chest-lid { transform-origin: 8px 20px; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+#chest.is-open #chest-lid { transform: rotate(-100deg); }
+#chest-loot { opacity: 0; transition: opacity 0.2s 0.2s; }
+#chest.is-open #chest-loot { opacity: 1; }
+#chest:hover #chest-latch rect:first-child { fill: var(--phosphor); }
+@media (max-width: 1023px) { #chest { width: 120px; } }
+
+#loot li { position: relative; }
+.tile { display: block; width: 100%; border: 1px solid var(--dim); background: var(--cabinet); }
+.tile img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.tile:hover { border-color: var(--coin); }
+/* The landing sparkle: a four-point coin star that flashes once per tile. */
+#loot li::after {
+  content: ''; position: absolute; top: -12px; right: -12px;
+  width: 28px; height: 28px; background: var(--coin);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  transform: scale(0); pointer-events: none;
+}
+#loot li.is-landed::after { animation: spark 0.3s ease-out 1; }
+@keyframes spark { 0% { transform: scale(0); } 50% { transform: scale(1); } 100% { transform: scale(0); } }
+
+#lightbox {
+  border: 1px solid var(--dim); background: var(--screen-off); color: var(--phosphor);
+  padding: 0.75rem; max-width: min(92vw, 1200px);
+}
+#lightbox::backdrop { background: rgba(0, 0, 0, 0.85); }
+#lightbox img { max-height: 80vh; width: auto; margin-inline: auto; }
+#lightbox .close {
+  margin-top: 0.75rem; min-height: 44px; padding: 0 1rem;
+  font-weight: 700; color: var(--coin); border: 1px solid var(--coin);
+}
+
+/* ---------- Source viewer ---------- */
+.viewer-tab {
+  display: inline-block;
+  font-family: var(--code); font-size: 0.8rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--dim); border-bottom-color: var(--cabinet);
+  background: var(--cabinet); position: relative; top: 1px;
+}
+.code {
+  background: var(--screen-off); border: 1px solid var(--dim);
+  padding: 1.25rem 1.25rem 1.25rem 0; overflow-x: auto;
+  font-family: var(--code); font-size: 0.8rem; line-height: 1.7;
+  counter-reset: line;
 }
 /* The newline between consecutive .line blocks would render as its own line
    under the pre's white-space, doubling the spacing; collapse it on <code> and
    keep pre on the lines so indentation survives. */
-.code-block + .mono { margin-top: clamp(3rem, 8vh, 6rem); }
-.code-block code { white-space: normal; }
-.code-block .line { display: block; white-space: pre; }
-
-.cursor {
-  position: fixed; top: 0; left: 0; z-index: 100; pointer-events: none;
-  width: 28px; height: 28px; border: 1px solid var(--accent); border-radius: 50%;
-  translate: -50% -50%; mix-blend-mode: difference;
+.code code { white-space: normal; }
+.code .line { display: block; white-space: pre; }
+.code .line::before {
+  counter-increment: line; content: counter(line);
+  display: inline-block; width: 3.5ch; margin-right: 1.5ch;
+  text-align: right; color: var(--dim); user-select: none;
 }
-@media (pointer: coarse) { .cursor { display: none; } }
+
+/* ---------- Motion preferences and degraded modes ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .loader-caret, #press-start { animation: none; }
+  #chest-lid, #chest-loot { transition: none; }
+  #loot li.is-landed::after { animation: none; }
+}
