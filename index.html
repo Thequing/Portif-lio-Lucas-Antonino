@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lucas Antonino — Gameplay Programmer</title>
 <meta name="description" content="Gameplay and systems programmer. Unity, Unreal Engine 5, C#, C++. One title shipped on Steam, one in production, and a demo you can play at BGS 2026.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lucas Antonino — Gameplay & Systems Programmer">
+<meta property="og:description" content="One title shipped on Steam, one in production, and a demo you can play at BGS 2026.">
+<meta property="og:url" content="https://thequing.github.io/Portif-lio-Lucas-Antonino/">
+<meta property="og:image" content="https://thequing.github.io/Portif-lio-Lucas-Antonino/media/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#000000">
 
 <!-- Marks the document as script-capable before first paint, so the loader — an
      opaque full-screen overlay that only JavaScript can remove — is never shown
@@ -14,150 +23,154 @@
 
 <link rel="icon" href="media/favicon.svg" type="image/svg+xml">
 
-<link rel="preload" href="media/font/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="media/font/jersey-20-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="media/font/atkinson-hyperlegible-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
-<div class="loader" id="loader" aria-hidden="true">
-  <span class="loader-count">0</span>
-</div>
+<div id="loader" aria-hidden="true"><span class="loader-caret">_</span></div>
 
-<div class="lang" role="group" aria-label="Language">
-  <button type="button" data-lang="en" aria-pressed="true">EN</button>
-  <button type="button" data-lang="pt" aria-pressed="false">PT</button>
-</div>
+<header id="hud">
+  <a class="hud-name" href="#title">Lucas Antonino</a>
+  <nav class="hud-stages" aria-label="Stages">
+    <a class="hud-seg" href="#stage-1" data-stage="1" aria-label="Stage 01, Steam Veins" style="--stage:#e8452f"><span></span></a>
+    <a class="hud-seg" href="#stage-2" data-stage="2" aria-label="Stage 02, MidNight Memories" style="--stage:#9fb4c4"><span></span></a>
+    <a class="hud-seg" href="#stage-3" data-stage="3" aria-label="Stage 03, Framed Drift" style="--stage:#b46cff"><span></span></a>
+    <a class="hud-seg" href="#stage-4" data-stage="4" aria-label="Stage 04, Hell's Kitchen" style="--stage:#ff7a1a"><span></span></a>
+    <a class="hud-seg" href="#stage-5" data-stage="5" aria-label="Stage 05, KuroNeko" style="--stage:#17c3b2"><span></span></a>
+    <a class="hud-seg" href="#stage-6" data-stage="6" aria-label="Stage 06, Dino Girls" style="--stage:#4ade80"><span></span></a>
+    <span class="hud-current" aria-live="polite"></span>
+  </nav>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+  </div>
+</header>
 
 <main>
-  <section id="hero">
+  <section id="title" aria-label="Title screen">
     <video class="hero-bg"
       data-slug="steam-veins-title" data-hero
       poster="media/poster/steam-veins-title.webp"
       preload="none" muted loop playsinline aria-hidden="true">
       <source data-src="media/video/steam-veins-title-1280.mp4" type="video/mp4">
     </video>
-    <h1>Lucas Antonino</h1>
-    <p class="mono" data-i18n="hero.role">Gameplay & Systems Programmer</p>
-    <p class="lede" data-i18n="hero.summary">I build the systems players actually touch — combat, movement, dialogue, UI — and the simulation underneath them. One title shipped on Steam, one in production, and a demo you can play at BGS 2026.</p>
-    <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="hero.cv">Download CV</a>
-    <p class="mono scroll-cue" data-i18n="hero.scroll">Scroll</p>
-  </section>
-
-  <section id="positioning">
-    <h2 data-reveal data-i18n="positioning.heading">What I do</h2>
-    <p class="lede" data-reveal data-i18n="positioning.body">I work on gameplay: the code between an input and a response that feels right — combat state machines, damage and knockback, dialogue parsing, UI flow, the audio hooks that sell an impact. And the systems under it: a deterministic race simulator with no engine dependency, a narrative parser that validates its own script, test harnesses that run without opening the editor. Unity and Unreal Engine 5, in C#, C++ and Blueprints.</p>
-  </section>
-
-  <section id="marquee" aria-hidden="true" class="marquee">
-    <div class="marquee-inner">
-      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span><span>C++</span>
-      <span>BLUEPRINTS</span><span>FMOD</span><span>URP</span><span>NUNIT</span>
-      <span>UNITY</span><span>UNREAL ENGINE 5</span><span>C#</span><span>C++</span>
-      <span>BLUEPRINTS</span><span>FMOD</span><span>URP</span><span>NUNIT</span>
+    <div class="title-inner">
+      <h1 class="logo">Lucas Antonino</h1>
+      <p class="title-role" data-i18n="title.role">Gameplay & Systems Programmer</p>
+      <p class="title-summary" data-i18n="title.summary">I build the systems players actually touch — combat, movement, dialogue, UI — and the simulation underneath them.</p>
+      <a id="press-start" href="#stage-1" data-i18n="title.start">Press start</a>
     </div>
+    <p class="tally" data-i18n="title.tally">1 shipped · 1 in production · 1 demo at BGS 2026</p>
   </section>
 
-  <section id="steam-veins" class="project" data-accent="#e8452f">
-    <div class="pin-wrap">
-      <div class="pin-inner">
-        <div class="shot-stack">
-          <figure class="shot">
-            <video
-              data-slug="steam-veins-combat"
-              poster="media/poster/steam-veins-combat.webp"
-              preload="none" muted loop playsinline
-              aria-label="Steam Veins combat: the player fights enemies in a red-lit stone corridor">
-              <source data-src="media/video/steam-veins-combat-1280.mp4" type="video/mp4">
-            </video>
-            <noscript>
-              <img src="media/poster/steam-veins-combat.webp" alt="Steam Veins combat">
-            </noscript>
-          </figure>
-          <figure class="shot">
-            <video
-              data-slug="steam-veins-chapel"
-              poster="media/poster/steam-veins-chapel.webp"
-              preload="none" muted loop playsinline
-              aria-label="Steam Veins exploration: the player moves through a chapel interior past an NPC">
-              <source data-src="media/video/steam-veins-chapel-1280.mp4" type="video/mp4">
-            </video>
-            <noscript>
-              <img src="media/poster/steam-veins-chapel.webp" alt="Steam Veins chapel interior">
-            </noscript>
-          </figure>
-        </div>
-        <div class="project-copy" data-reveal>
-          <p class="mono numeral">01 / <span data-i18n="sv.status">Released on Steam · Aug 2025 · Kimu Studios</span></p>
-          <h2 data-i18n="sv.title">Steam Veins</h2>
-          <p class="lede" data-i18n="sv.lede">A 2D action roguelike from Kimu Studios, released on Steam in Early Access. I owned enemy combat: how enemies take damage, react, change phase and die.</p>
-          <ul>
-            <li data-i18n="sv.b1">Enemy damage response — invulnerability frames, knockback, collision handling</li>
-            <li data-i18n="sv.b2">Phase transitions driven by health thresholds</li>
-            <li data-i18n="sv.b3">FMOD event integration with randomised pitch on melee hits</li>
-            <li data-i18n="sv.b4">Visual effects integration and performance passes</li>
-          </ul>
-          <p class="links">
-            <a href="https://store.steampowered.com/app/3201780/Steam_Veins/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
-            <a href="https://drive.google.com/file/d/1FfMGEfl98RtVbwcl-iNgrTfCKKT5UiSN/view?usp=sharing" target="_blank" rel="noopener" data-i18n="nav.demo">Demo</a>
-          </p>
-        </div>
+  <section class="stage" id="stage-1" style="--stage:#e8452f" aria-labelledby="t-sv">
+    <div class="stage-inner">
+      <div class="clips">
+        <figure class="shot">
+          <video
+            data-slug="steam-veins-combat"
+            poster="media/poster/steam-veins-combat.webp"
+            preload="none" muted loop playsinline
+            aria-label="Steam Veins combat: the player fights enemies in a red-lit stone corridor">
+            <source data-src="media/video/steam-veins-combat-1280.mp4" type="video/mp4">
+          </video>
+          <noscript><img src="media/poster/steam-veins-combat.webp" alt="Steam Veins combat"></noscript>
+        </figure>
+        <figure class="shot">
+          <video
+            data-slug="steam-veins-chapel"
+            poster="media/poster/steam-veins-chapel.webp"
+            preload="none" muted loop playsinline
+            aria-label="Steam Veins exploration: the player moves through a chapel interior past an NPC">
+            <source data-src="media/video/steam-veins-chapel-1280.mp4" type="video/mp4">
+          </video>
+          <noscript><img src="media/poster/steam-veins-chapel.webp" alt="Steam Veins chapel interior"></noscript>
+        </figure>
+      </div>
+      <div class="copy">
+        <p class="stamp">
+          <span class="stamp-num"><span data-i18n="hud.stage">Stage</span> 01</span>
+          <span class="stamp-state" data-state="cleared" data-i18n="stamp.cleared">Cleared</span>
+          <span class="stamp-credit" data-i18n="sv.credit">Steam, Aug 2025, Kimu Studios</span>
+        </p>
+        <h2 id="t-sv" data-i18n="sv.title">Steam Veins</h2>
+        <p class="lede" data-i18n="sv.lede">A 2D action roguelike from Kimu Studios, released on Steam in Early Access. I owned enemy combat: how enemies take damage, react, change phase and die.</p>
+        <ul>
+          <li data-i18n="sv.b1">Enemy damage response — invulnerability frames, knockback, collision handling</li>
+          <li data-i18n="sv.b2">Phase transitions driven by health thresholds</li>
+          <li data-i18n="sv.b3">FMOD event integration with randomised pitch on melee hits</li>
+          <li data-i18n="sv.b4">Visual effects integration and performance passes</li>
+        </ul>
+        <p class="links">
+          <a href="https://store.steampowered.com/app/3201780/Steam_Veins/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
+          <a href="https://drive.google.com/file/d/1FfMGEfl98RtVbwcl-iNgrTfCKKT5UiSN/view?usp=sharing" target="_blank" rel="noopener" data-i18n="nav.demo">Demo</a>
+        </p>
+        <dl class="readouts">
+          <div class="readout"><dt class="readout-label" data-i18n="ro.role">Role</dt><dd class="readout-value" data-i18n="ro.sv.role">Enemy combat</dd></div>
+          <div class="readout"><dt class="readout-label" data-i18n="ro.audio">Audio</dt><dd class="readout-value" data-i18n="ro.sv.audio">FMOD</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <section id="midnight-memories" class="project" data-accent="#8fa3ad">
-    <div class="pin-wrap">
-      <div class="pin-inner">
-        <div class="shot-stack">
-          <figure class="shot">
-            <video
-              data-slug="midnight-street"
-              poster="media/poster/midnight-street.webp"
-              preload="none" muted loop playsinline
-              aria-label="MidNight Memories: Investigation Mode turns a foggy PSX-style street greyscale and picks out a yellow barrier">
-              <source data-src="media/video/midnight-street-1280.mp4" type="video/mp4">
-            </video>
-            <noscript>
-              <img src="media/poster/midnight-street.webp" alt="MidNight Memories street scene in Investigation Mode">
-            </noscript>
-          </figure>
-          <figure class="shot">
-            <video
-              data-slug="midnight-boss"
-              poster="media/poster/midnight-boss.webp"
-              preload="none" muted loop playsinline
-              aria-label="MidNight Memories: the Obsidian Wraith boss fight, pistol firing at shadow figures under a red health bar">
-              <source data-src="media/video/midnight-boss-1280.mp4" type="video/mp4">
-            </video>
-            <noscript>
-              <img src="media/poster/midnight-boss.webp" alt="MidNight Memories boss fight against the Obsidian Wraith">
-            </noscript>
-          </figure>
-        </div>
-        <div class="project-copy" data-reveal>
-          <p class="mono numeral">02 / <span data-i18n="mm.status">BGS 2026 booth demo · Two-person team, code lead</span></p>
-          <h2 data-i18n="mm.title">MidNight Memories</h2>
-          <p class="lede" data-i18n="mm.lede">A PSX-style first-person horror built in Unity. Chapter One is a 10–12 minute demo I designed and built for the Brasil Game Show booth: one route, one puzzle, one boss, and a story that is never explained out loud.</p>
-          <ul>
-            <li data-i18n="mm.b1">Investigation Mode: objects, clocks and the distant tower become readable only through the visor — and the clock puzzle is solved with it, at range</li>
-            <li data-i18n="mm.b2">Fog-gated combat arenas, Nightmare AI that chases or waits, and the Obsidian Wraith boss with two attacks</li>
-            <li data-i18n="mm.b3">Item log, ammo count, and a floor-plan map the player has to earn</li>
-            <li data-i18n="mm.b4">Generated streets and facades; a demo flow that resets cleanly between booth players</li>
-            <li data-i18n="mm.b5">Game-logic core covered by 103 unit tests</li>
-          </ul>
-          <p class="links">
-            <a href="https://drive.google.com/drive/folders/1BYW8EsY5dRsjF65luDag1ndC3lO6xUBb?usp=drive_link" target="_blank" rel="noopener" data-i18n="nav.project">View project</a>
-          </p>
-        </div>
+  <section class="stage" id="stage-2" style="--stage:#9fb4c4" aria-labelledby="t-mm">
+    <div class="stage-inner">
+      <div class="clips">
+        <figure class="shot">
+          <video
+            data-slug="midnight-street"
+            poster="media/poster/midnight-street.webp"
+            preload="none" muted loop playsinline
+            aria-label="MidNight Memories: Investigation Mode turns a foggy PSX-style street greyscale and picks out a yellow barrier">
+            <source data-src="media/video/midnight-street-1280.mp4" type="video/mp4">
+          </video>
+          <noscript><img src="media/poster/midnight-street.webp" alt="MidNight Memories street scene in Investigation Mode"></noscript>
+        </figure>
+        <figure class="shot">
+          <video
+            data-slug="midnight-boss"
+            poster="media/poster/midnight-boss.webp"
+            preload="none" muted loop playsinline
+            aria-label="MidNight Memories: the Obsidian Wraith boss fight, pistol firing at shadow figures under a red health bar">
+            <source data-src="media/video/midnight-boss-1280.mp4" type="video/mp4">
+          </video>
+          <noscript><img src="media/poster/midnight-boss.webp" alt="MidNight Memories boss fight against the Obsidian Wraith"></noscript>
+        </figure>
+      </div>
+      <div class="copy">
+        <p class="stamp">
+          <span class="stamp-num"><span data-i18n="hud.stage">Stage</span> 02</span>
+          <span class="stamp-state" data-state="playing" data-i18n="stamp.playing">Now playing</span>
+          <span class="stamp-credit" data-i18n="mm.credit">BGS 2026 booth, two-person team, code lead</span>
+        </p>
+        <h2 id="t-mm" data-i18n="mm.title">MidNight Memories</h2>
+        <p class="lede" data-i18n="mm.lede">A PSX-style first-person horror built in Unity. Chapter One is a 10–12 minute demo I designed and built for the Brasil Game Show booth: one route, one puzzle, one boss, and a story that is never explained out loud.</p>
+        <ul>
+          <li data-i18n="mm.b1">Investigation Mode: objects, clocks and the distant tower become readable only through the visor — and the clock puzzle is solved with it, at range</li>
+          <li data-i18n="mm.b2">Fog-gated combat arenas, Nightmare AI that chases or waits, and the Obsidian Wraith boss with two attacks</li>
+          <li data-i18n="mm.b3">Item log, ammo count, and a floor-plan map the player has to earn</li>
+          <li data-i18n="mm.b4">Generated streets and facades; a demo flow that resets cleanly between booth players</li>
+          <li data-i18n="mm.b5">Game-logic core covered by 103 unit tests</li>
+        </ul>
+        <p class="links">
+          <a href="https://drive.google.com/drive/folders/1BYW8EsY5dRsjF65luDag1ndC3lO6xUBb?usp=drive_link" target="_blank" rel="noopener" data-i18n="nav.project">View project</a>
+        </p>
+        <dl class="readouts">
+          <div class="readout"><dt class="readout-label" data-i18n="ro.tests">Tests</dt><dd class="readout-value">103</dd></div>
+          <div class="readout"><dt class="readout-label" data-i18n="ro.demo">Demo</dt><dd class="readout-value" data-i18n="ro.mm.demo">10–12 min</dd></div>
+          <div class="readout"><dt class="readout-label" data-i18n="ro.boss">Boss</dt><dd class="readout-value">1</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <section id="framed-drift" class="project" data-accent="#f5c518">
-    <div class="pin-wrap">
-      <div class="pin-inner">
+  <section class="stage" id="stage-3" style="--stage:#b46cff" aria-labelledby="t-fd">
+    <div class="stage-inner">
+      <div class="clips">
         <figure class="shot">
           <video
             data-slug="framed-drift"
@@ -166,29 +179,36 @@
             aria-label="Framed Drift: the garage screen over a running race, with part slots, tuning sliders and a rising drift score">
             <source data-src="media/video/framed-drift-1280.mp4" type="video/mp4">
           </video>
-          <noscript>
-            <img src="media/poster/framed-drift.webp" alt="Framed Drift garage screen over a running race">
-          </noscript>
+          <noscript><img src="media/poster/framed-drift.webp" alt="Framed Drift garage screen over a running race"></noscript>
         </figure>
-        <div class="project-copy" data-reveal>
-          <p class="mono numeral">03 / <span data-i18n="fd.status">Solo · Unity 6 · In development</span></p>
-          <h2 data-i18n="fd.title">Framed Drift</h2>
-          <p class="lede" data-i18n="fd.lede">An idle drift RPG for PC. The player doesn't drive — they build the car, pick the track and the risk, and watch it run. Underneath is a race simulator that resolves the whole race at once, deterministic and independent of Unity.</p>
-          <ul>
-            <li data-i18n="fd.b1">Pure C# simulation assembly with no engine references — 10,000 races resolve in 0.06 s, and the tests run in dotnet without opening the editor</li>
-            <li data-i18n="fd.b2">Offline progress uses the same scorer as live play: parity measured at 0.06 %</li>
-            <li data-i18n="fd.b3">135 automated tests written as the GDD's exit criteria — win rates, cash curve, presence uplift, failure rate</li>
-            <li data-i18n="fd.b4">All content as commented JSON: 11 tracks, 57 parts, 12 affixes, 5 rivals — each rival a readable, counterable build</li>
-            <li data-i18n="fd.b5">Procedural track generator, validated 200 of 200</li>
-          </ul>
-        </div>
+      </div>
+      <div class="copy">
+        <p class="stamp">
+          <span class="stamp-num"><span data-i18n="hud.stage">Stage</span> 03</span>
+          <span class="stamp-state" data-state="progress" data-i18n="stamp.progress">In progress</span>
+          <span class="stamp-credit" data-i18n="fd.credit">Solo, Unity 6</span>
+        </p>
+        <h2 id="t-fd" data-i18n="fd.title">Framed Drift</h2>
+        <p class="lede" data-i18n="fd.lede">An idle drift RPG for PC. The player doesn't drive — they build the car, pick the track and the risk, and watch it run. Underneath is a race simulator that resolves the whole race at once, deterministic and independent of Unity.</p>
+        <ul>
+          <li data-i18n="fd.b1">Pure C# simulation assembly with no engine references — 10,000 races resolve in 0.06 s, and the tests run in dotnet without opening the editor</li>
+          <li data-i18n="fd.b2">Offline progress uses the same scorer as live play: parity measured at 0.06 %</li>
+          <li data-i18n="fd.b3">135 automated tests written as the GDD's exit criteria — win rates, cash curve, presence uplift, failure rate</li>
+          <li data-i18n="fd.b4">All content as commented JSON: 11 tracks, 57 parts, 12 affixes, 5 rivals — each rival a readable, counterable build</li>
+          <li data-i18n="fd.b5">Procedural track generator, validated 200 of 200</li>
+        </ul>
+        <dl class="readouts">
+          <div class="readout"><dt class="readout-label" data-i18n="ro.tests">Tests</dt><dd class="readout-value">135</dd></div>
+          <div class="readout"><dt class="readout-label" data-i18n="ro.races">Races</dt><dd class="readout-value" data-i18n="ro.fd.races">10,000 / 0.06 s</dd></div>
+          <div class="readout"><dt class="readout-label" data-i18n="ro.parity">Parity</dt><dd class="readout-value" data-i18n="ro.fd.parity">0.06 %</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <section id="hells-kitchen" class="project" data-accent="#ff7a1a">
-    <div class="pin-wrap">
-      <div class="pin-inner">
+  <section class="stage" id="stage-4" style="--stage:#ff7a1a" aria-labelledby="t-hk">
+    <div class="stage-inner">
+      <div class="clips">
         <figure class="shot">
           <video
             data-slug="hells-kitchen"
@@ -197,29 +217,36 @@
             aria-label="Hell's Kitchen: a boss wave crossing a greybox room while towers fire and the map expands into the next room">
             <source data-src="media/video/hells-kitchen-1280.mp4" type="video/mp4">
           </video>
-          <noscript>
-            <img src="media/poster/hells-kitchen.webp" alt="Hell's Kitchen tower defense room during a boss wave">
-          </noscript>
+          <noscript><img src="media/poster/hells-kitchen.webp" alt="Hell's Kitchen tower defense room during a boss wave"></noscript>
         </figure>
-        <div class="project-copy" data-reveal>
-          <p class="mono numeral">04 / <span data-i18n="hk.status">Independent team · Unity 6 · In development</span></p>
-          <h2 data-i18n="hk.title">Hell's Kitchen</h2>
-          <p class="lede" data-i18n="hk.lede">A tower defense where the map grows as you clear it: a 4×4 grid of rooms, each claimed and fortified, a boss every third room and one at the end. I write the gameplay systems on top of the team's design document.</p>
-          <ul>
-            <li data-i18n="hk.b1">Damage types — physical, magic, true, area — against per-enemy armour and resistance</li>
-            <li data-i18n="hk.b2">Four-level towers: stats, then a speciality choice, then a chef special on a cooldown</li>
-            <li data-i18n="hk.b3">Status effects that pierce, split and slow to a root; blocker squads that hold the path; flying enemies out of ground towers' reach</li>
-            <li data-i18n="hk.b4">Ingredient drops into a typed pantry that funds upgrades</li>
-            <li data-i18n="hk.b5">Batch-mode smoke harness that plays all 16 rooms headless and asserts the run</li>
-          </ul>
-        </div>
+      </div>
+      <div class="copy">
+        <p class="stamp">
+          <span class="stamp-num"><span data-i18n="hud.stage">Stage</span> 04</span>
+          <span class="stamp-state" data-state="progress" data-i18n="stamp.progress">In progress</span>
+          <span class="stamp-credit" data-i18n="hk.credit">Independent team, Unity 6</span>
+        </p>
+        <h2 id="t-hk" data-i18n="hk.title">Hell's Kitchen</h2>
+        <p class="lede" data-i18n="hk.lede">A tower defense where the map grows as you clear it: a 4×4 grid of rooms, each claimed and fortified, a boss every third room and one at the end. I write the gameplay systems on top of the team's design document.</p>
+        <ul>
+          <li data-i18n="hk.b1">Damage types — physical, magic, true, area — against per-enemy armour and resistance</li>
+          <li data-i18n="hk.b2">Four-level towers: stats, then a speciality choice, then a chef special on a cooldown</li>
+          <li data-i18n="hk.b3">Status effects that pierce, split and slow to a root; blocker squads that hold the path; flying enemies out of ground towers' reach</li>
+          <li data-i18n="hk.b4">Ingredient drops into a typed pantry that funds upgrades</li>
+          <li data-i18n="hk.b5">Batch-mode smoke harness that plays all 16 rooms headless and asserts the run</li>
+        </ul>
+        <dl class="readouts">
+          <div class="readout"><dt class="readout-label" data-i18n="ro.rooms">Rooms</dt><dd class="readout-value">16</dd></div>
+          <div class="readout"><dt class="readout-label" data-i18n="ro.dmg">Damage types</dt><dd class="readout-value">4</dd></div>
+          <div class="readout"><dt class="readout-label" data-i18n="ro.tiers">Tower tiers</dt><dd class="readout-value">4</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <section id="kuroneko" class="project" data-accent="#17c3b2">
-    <div class="pin-wrap">
-      <div class="pin-inner">
+  <section class="stage" id="stage-5" style="--stage:#17c3b2" aria-labelledby="t-kn">
+    <div class="stage-inner">
+      <div class="clips">
         <figure class="shot">
           <video
             data-slug="kuroneko"
@@ -228,68 +255,111 @@
             aria-label="KuroNeko: a visual novel scene where a dialogue menu opens and the chosen line changes the reply">
             <source data-src="media/video/kuroneko-1280.mp4" type="video/mp4">
           </video>
-          <noscript>
-            <img src="media/poster/kuroneko.webp" alt="KuroNeko visual novel scene">
-          </noscript>
+          <noscript><img src="media/poster/kuroneko.webp" alt="KuroNeko visual novel scene"></noscript>
         </figure>
-        <div class="project-copy" data-reveal>
-          <p class="mono numeral">05 / <span data-i18n="kn.status">Visual novel · Solo project</span></p>
-          <h2 data-i18n="kn.title">KuroNeko</h2>
-          <p class="lede" data-i18n="kn.lede">A visual novel built solo in Unity, driven by a narrative parser I wrote: script in, branching scene out.</p>
-          <ul>
-            <li data-i18n="kn.b1">Ten-command script language — scenes, characters, audio, flags, conditionals, jumps, menus — with inline parameters anywhere in a line</li>
-            <li data-i18n="kn.b2">A diagnostic pass validates the whole script at load: unknown commands, duplicate labels, dead jumps, empty menus</li>
-            <li data-i18n="kn.b3">Parser has no Unity dependency; the engine layer handles scene, UI and save slots</li>
-          </ul>
-        </div>
+      </div>
+      <div class="copy">
+        <p class="stamp">
+          <span class="stamp-num"><span data-i18n="hud.stage">Stage</span> 05</span>
+          <span class="stamp-state" data-state="cleared" data-i18n="stamp.cleared">Cleared</span>
+          <span class="stamp-credit" data-i18n="kn.credit">Solo</span>
+        </p>
+        <h2 id="t-kn" data-i18n="kn.title">KuroNeko</h2>
+        <p class="lede" data-i18n="kn.lede">A visual novel built solo in Unity, driven by a narrative parser I wrote: script in, branching scene out.</p>
+        <ul>
+          <li data-i18n="kn.b1">Ten-command script language — scenes, characters, audio, flags, conditionals, jumps, menus — with inline parameters anywhere in a line</li>
+          <li data-i18n="kn.b2">A diagnostic pass validates the whole script at load: unknown commands, duplicate labels, dead jumps, empty menus</li>
+          <li data-i18n="kn.b3">Parser has no Unity dependency; the engine layer handles scene, UI and save slots</li>
+        </ul>
+        <dl class="readouts">
+          <div class="readout"><dt class="readout-label" data-i18n="ro.cmds">Commands</dt><dd class="readout-value">10</dd></div>
+          <div class="readout"><dt class="readout-label" data-i18n="ro.deps">Engine deps</dt><dd class="readout-value">0</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <section id="dino-girls" class="project" data-accent="#4ade80">
-    <div class="pin-wrap">
-      <div class="pin-inner">
-        <div class="project-copy" data-reveal>
-          <p class="mono numeral">06 / <span data-i18n="dg.status">In production · Kimu Studios · Gameplay programmer</span></p>
-          <h2 data-i18n="dg.title">Dino Girls</h2>
-          <p class="lede" data-i18n="dg.lede">An idle resort-builder coming to Steam from Kimu Studios. I'm on the gameplay team: systems and mechanics, and the technical calls that come with them.</p>
-          <ul>
-            <li data-i18n="dg.b1">Gameplay systems and mechanics implementation</li>
-            <li data-i18n="dg.b2">Technical and creative decision-making with the team</li>
-          </ul>
-          <p class="links">
-            <a href="https://store.steampowered.com/app/3495120/Dino_Girls/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
-          </p>
-        </div>
+  <section class="stage" id="stage-6" style="--stage:#4ade80" aria-labelledby="t-dg">
+    <div class="stage-inner">
+      <!-- Dino Girls has no footage yet; the slot is a locked stage tile rather than
+           an empty column, which is honest about the gap and on-theme. -->
+      <div class="locked" aria-hidden="true"><span>?</span></div>
+      <div class="copy">
+        <p class="stamp">
+          <span class="stamp-num"><span data-i18n="hud.stage">Stage</span> 06</span>
+          <span class="stamp-state" data-state="soon" data-i18n="stamp.soon">Coming soon</span>
+          <span class="stamp-credit" data-i18n="dg.credit">Kimu Studios, gameplay programmer</span>
+        </p>
+        <h2 id="t-dg" data-i18n="dg.title">Dino Girls</h2>
+        <p class="lede" data-i18n="dg.lede">An idle resort-builder coming to Steam from Kimu Studios. I'm on the gameplay team: systems and mechanics, and the technical calls that come with them.</p>
+        <ul>
+          <li data-i18n="dg.b1">Gameplay systems and mechanics implementation</li>
+          <li data-i18n="dg.b2">Technical and creative decision-making with the team</li>
+        </ul>
+        <p class="links">
+          <a href="https://store.steampowered.com/app/3495120/Dino_Girls/" target="_blank" rel="noopener" data-i18n="nav.steam">Steam page</a>
+        </p>
       </div>
     </div>
   </section>
 
-  <section id="craft">
-    <h2 data-reveal data-i18n="craft.heading">Art and assets</h2>
-    <p class="lede" data-reveal data-i18n="craft.body">Backgrounds, sprite sheets and scene work produced alongside the code.</p>
-    <div class="craft-grid">
+  <section id="bonus" aria-labelledby="t-bonus">
+    <h2 id="t-bonus" data-i18n="bonus.heading">Bonus stage</h2>
+    <p class="lede" data-i18n="bonus.body">Art and assets made alongside the code.</p>
+    <button id="chest" type="button" aria-expanded="false" aria-controls="loot">
+      <span class="visually-hidden" data-i18n="bonus.open">Open the chest</span>
+      <!-- 16×12 cell pixel chest on a 4px grid. Body and lid are outlined in
+           phosphor and filled with cabinet; the latch is the only coin pixel,
+           because it is the part you press. -->
+      <svg viewBox="0 0 64 48" aria-hidden="true" shape-rendering="crispEdges">
+        <g id="chest-body">
+          <rect x="4" y="20" width="56" height="24" fill="var(--phosphor)"/>
+          <rect x="8" y="24" width="48" height="16" fill="var(--cabinet)"/>
+          <rect x="8" y="32" width="48" height="4" fill="var(--phosphor)"/>
+        </g>
+        <g id="chest-loot">
+          <rect x="12" y="24" width="8" height="4" fill="var(--coin)"/>
+          <rect x="24" y="24" width="12" height="4" fill="var(--coin)"/>
+          <rect x="40" y="24" width="12" height="4" fill="var(--coin)"/>
+        </g>
+        <g id="chest-lid">
+          <rect x="12" y="4" width="40" height="4" fill="var(--phosphor)"/>
+          <rect x="8" y="8" width="48" height="4" fill="var(--phosphor)"/>
+          <rect x="4" y="12" width="56" height="12" fill="var(--phosphor)"/>
+          <rect x="12" y="8" width="40" height="4" fill="var(--cabinet)"/>
+          <rect x="8" y="12" width="48" height="8" fill="var(--cabinet)"/>
+        </g>
+        <g id="chest-latch">
+          <rect x="28" y="20" width="8" height="10" fill="var(--coin)"/>
+          <rect x="30" y="24" width="4" height="4" fill="var(--cabinet)"/>
+        </g>
+      </svg>
+    </button>
+    <ul id="loot" hidden>
+      <!-- src is set by js/chest.js when the chest opens, so the 1.1 MB of art is
+           never fetched on a phone that only wanted the contact card. Without JS
+           the noscript copies show the gallery open. -->
+      <li><button type="button" class="tile"><img data-src="Imagens/ShrineWithSnow.png" alt="Painted shrine background under falling snow"><noscript><img src="Imagens/ShrineWithSnow.png" alt=""></noscript></button></li>
+      <li><button type="button" class="tile"><img data-src="Imagens/Scene1_Street.png" alt="Street scene background, first variant"><noscript><img src="Imagens/Scene1_Street.png" alt=""></noscript></button></li>
+      <li><button type="button" class="tile"><img data-src="Imagens/Scene2_Street.png" alt="Street scene background, second variant"><noscript><img src="Imagens/Scene2_Street.png" alt=""></noscript></button></li>
       <!-- Estátua2.0.png is percent-encoded: an unencoded accented character
            resolves locally on Windows but 404s on GitHub Pages. -->
-      <img src="Imagens/ShrineWithSnow.png" loading="lazy" data-parallax
-           alt="Painted shrine background under falling snow">
-      <img src="Imagens/Scene1_Street.png" loading="lazy" data-parallax
-           alt="Street scene background, first variant">
-      <img src="Imagens/Scene2_Street.png" loading="lazy" data-parallax
-           alt="Street scene background, second variant">
-      <img src="Imagens/Est%C3%A1tua2.0.png" loading="lazy" data-parallax
-           alt="Statue asset rendered against a dark ground">
-      <img src="Imagens/Kunai_Explosion-Sheet.gif" loading="lazy" data-parallax
-           alt="Kunai explosion sprite sheet animation">
-      <img src="Imagens/DracularaWave-Sheet.gif" loading="lazy" data-parallax
-           alt="Character wave animation sprite sheet">
-    </div>
+      <li><button type="button" class="tile"><img data-src="Imagens/Est%C3%A1tua2.0.png" alt="Statue asset rendered against a dark ground"><noscript><img src="Imagens/Est%C3%A1tua2.0.png" alt=""></noscript></button></li>
+      <li><button type="button" class="tile"><img data-src="Imagens/Kunai_Explosion-Sheet.gif" alt="Kunai explosion sprite sheet animation"><noscript><img src="Imagens/Kunai_Explosion-Sheet.gif" alt=""></noscript></button></li>
+      <li><button type="button" class="tile"><img data-src="Imagens/DracularaWave-Sheet.gif" alt="Character wave animation sprite sheet"><noscript><img src="Imagens/DracularaWave-Sheet.gif" alt=""></noscript></button></li>
+    </ul>
+    <dialog id="lightbox">
+      <img alt="">
+      <button type="button" class="close" data-i18n="lightbox.close">Close</button>
+    </dialog>
   </section>
 
-  <section id="code">
-    <h2 data-reveal data-i18n="code.heading">Code</h2>
-    <p class="mono" data-reveal data-i18n="code.caption">Enemy damage response from Steam Veins — invulnerability gate, FMOD audio, health-threshold phase change, and execution state. C#, Unity.</p>
-    <pre class="code-block" data-reveal><code>
+  <section id="source" aria-labelledby="t-source">
+    <h2 id="t-source" data-i18n="source.heading">Source</h2>
+    <div class="viewer">
+      <p class="viewer-tab">EnemyBase.cs</p>
+      <p class="viewer-caption" data-i18n="source.caption">Enemy damage response from Steam Veins — invulnerability gate, FMOD audio, health-threshold phase change, and execution state. C#, Unity.</p>
+      <pre class="code"><code>
 <span class="line">public override void RespondTakeDamage(int typeDamage, float AditionalknockbackForceX, float AditionalknockbackForceY)</span>
 <span class="line">{</span>
 <span class="line">    if (isInvulnerable || isDead) return;</span>
@@ -334,8 +404,11 @@
 <span class="line">    }</span>
 <span class="line">}</span>
 </code></pre>
-    <p class="mono" data-reveal data-i18n="code.caption2">Drift scoring from Framed Drift — the same scorer runs the live race and the offline one, so offline parity is structural rather than tested. Pure C#, no UnityEngine.</p>
-    <pre class="code-block" data-reveal><code>
+    </div>
+    <div class="viewer">
+      <p class="viewer-tab">DriftScorer.cs</p>
+      <p class="viewer-caption" data-i18n="source.caption2">Drift scoring from Framed Drift — the same scorer runs the live race and the offline one, so offline parity is structural rather than tested. Pure C#, no UnityEngine.</p>
+      <pre class="code"><code>
 <span class="line">// Reduces a timeline to a Drift Score. Deliberately separate from the</span>
 <span class="line">// simulator: called on the untouched timeline it yields the offline result.</span>
 <span class="line">// Consumes no RNG, so scoring twice gives the same number.</span>
@@ -381,42 +454,50 @@
 <span class="line">    return (with - without) / (double)without;</span>
 <span class="line">}</span>
 </code></pre>
+    </div>
     <p class="links">
-      <a href="https://github.com/Thequing" target="_blank" rel="noopener" data-i18n="code.link">More on GitHub</a>
+      <a href="https://github.com/Thequing" target="_blank" rel="noopener" data-i18n="source.link">More on GitHub</a>
     </p>
   </section>
 
-  <section id="background">
-    <h2 data-reveal data-i18n="bg.heading">Background</h2>
-    <div class="grid-3">
-      <p data-reveal data-i18n="bg.degree">Bachelor's, Information Technology — UFRN</p>
-      <p data-reveal data-i18n="bg.gamedesign">Game Design — Udemy</p>
-      <p data-reveal data-i18n="bg.database">Database Administration — IFRS</p>
+  <section id="player" aria-labelledby="t-player">
+    <h2 id="t-player" data-i18n="player.heading">Player</h2>
+    <div class="profile">
+      <p class="profile-class" data-i18n="player.class">Gameplay & Systems Programmer</p>
+      <p class="profile-body" data-i18n="player.body">I work on gameplay: the code between an input and a response that feels right — combat state machines, damage and knockback, dialogue parsing, UI flow, the audio hooks that sell an impact. And the systems under it: a deterministic race simulator with no engine dependency, a narrative parser that validates its own script, test harnesses that run without opening the editor. Unity and Unreal Engine 5, in C#, C++ and Blueprints.</p>
+      <ul class="profile-edu">
+        <li data-i18n="player.degree">Bachelor's, Information Technology — UFRN</li>
+        <li data-i18n="player.gamedesign">Game Design — Udemy</li>
+        <li data-i18n="player.database">Database Administration — IFRS</li>
+      </ul>
+      <p class="equipped-label" data-i18n="player.equipped">Equipped</p>
+      <p class="equipped">
+        <span>Unity</span><span>Unreal Engine 5</span><span>C#</span><span>C++</span>
+        <span>Blueprints</span><span>FMOD</span><span>URP</span><span>NUnit</span>
+      </p>
     </div>
   </section>
 
-  <section id="contact">
-    <h2 data-reveal data-i18n="contact.heading">Get in touch</h2>
-    <p class="lede" data-reveal data-i18n="contact.body">Open to gameplay and systems programming roles. Find me at BGS 2026.</p>
+  <section id="continue" aria-labelledby="t-continue">
+    <h2 id="t-continue" data-i18n="continue.heading">Continue?</h2>
+    <p class="lede" data-i18n="continue.body">Open to gameplay and systems programming roles. Find me at BGS 2026.</p>
+    <div class="btn-row">
+      <!-- One tap on a phone adds the card to Contacts. This is the action a
+           booth visitor who scanned the QR code is most likely to want. -->
+      <a class="btn btn-solid" href="media/lucas-antonino.vcf" download="Lucas Antonino.vcf" data-i18n="continue.vcard">Save contact</a>
+      <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="continue.cv">Download CV</a>
+    </div>
     <p class="links">
       <a href="https://github.com/Thequing" target="_blank" rel="noopener">GitHub</a>
       <a href="https://linkedin.com/in/lucas-antonino" target="_blank" rel="noopener">LinkedIn</a>
       <a href="mailto:lvantonino@hotmail.com">lvantonino@hotmail.com</a>
     </p>
-    <div class="btn-row">
-      <!-- One tap on a phone adds the card to Contacts. This is the action a
-           booth visitor who scanned the QR code is most likely to want. -->
-      <a class="btn btn-solid" href="media/lucas-antonino.vcf" download="Lucas Antonino.vcf" data-i18n="contact.vcard">Save contact</a>
-      <a class="btn" href="Lucas_Antonino_Resumee_PT-BR_US.pdf" download data-i18n="contact.cv">Download CV</a>
-    </div>
+    <footer data-i18n="continue.footer">Built by hand · 2026</footer>
   </section>
 </main>
 
-<div class="rail" aria-hidden="true"><span></span></div>
-
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js" defer></script>
 <script type="module" src="js/main.js"></script>
 </body>
 </html>
