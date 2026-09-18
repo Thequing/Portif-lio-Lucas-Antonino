@@ -33,6 +33,13 @@
 .hud-seg.is-reached span { background: var(--stage); border-color: var(--stage); }
 .hud-seg.is-current span { outline: 1px solid var(--phosphor); outline-offset: 2px; }
 .hud-seg:hover span { border-color: var(--coin); }
+/* Phones: six segments plus EN/PT must fit 320px. At 44px each they pushed the
+   PT button off the right edge, and a fixed bar never shows up as overflow. */
+@media (max-width: 1023px) {
+  .hud-seg { width: clamp(28px, 9vw, 44px); }
+  .hud-seg span { width: calc(100% - 6px); }
+  .lang button { min-width: 40px; }
+}
 
 /* ---------- Title screen ---------- */
 #press-start {

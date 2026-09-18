@@ -17,8 +17,9 @@
 #hud .lang { justify-self: end; }
 
 @media (max-width: 1023px) {
-  #hud { grid-template-columns: 1fr auto; }
+  #hud { grid-template-columns: 1fr auto; padding-inline: 1rem; }
   .hud-name, .hud-current { display: none; }
+  .hud-stages { gap: 2px; }
 }
 
 /* ---------- Title screen ---------- */
