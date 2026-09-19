@@ -74,6 +74,14 @@
 .stamp-state[data-state='soon']     { color: var(--dim); }
 .stamp-credit { font-size: var(--small); color: var(--dim); }
 
+/* Below 1024px the long credits wrap onto their own line on their own, but the
+   short ones ("Solo", "Solo, Unity 6") still fit beside the badge — so stages 3
+   and 5 read differently from the rest. Break every credit at that width so the
+   six stamps line up. Desktop keeps them all on one line. */
+@media (max-width: 1023px) {
+  .stamp-credit { flex-basis: 100%; }
+}
+
 .lede { font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.5; color: var(--phosphor); }
 
 .copy ul { list-style: none; }
