@@ -14,7 +14,7 @@ The page is laid out as a game's front-end, in this order:
 | Bonus stage | `#bonus` | A pixel chest (`#chest`, inline SVG). Clicking it pops the six art tiles out of `#loot` and opens a `<dialog>` lightbox on tap. `js/chest.js` sets the images' `src` only on that click, so the 1.1 MB in `Imagens/` never loads for a visitor who does not open it. |
 | Source | `#source` | One code viewer, two file tabs, line numbers. `js/source.js` binds the tabs and highlights C# at load; paste plain code into the markup. Without JS both files show stacked. |
 | Player | `#player` | Class, bio, education, equipped tools. |
-| Continue? | `#continue` | A 9→0 countdown (any press stops it; at 0 Save contact blinks), KuroNeko waving, Save contact (vCard), Download CV, Share, links. `js/continue.js`. The cat is a 16×16 inline SVG placeholder: to use the hand-drawn sprite, swap the `<svg>` in `.waver` for an `<img>` of the same 64×64 frame. |
+| Continue? | `#continue` | A 9→0 countdown (any press stops it; at 0 Save contact blinks), KuroNeko (peeks, blinks, pops up, waves), Save contact (vCard), Download CV, Share, links. `js/continue.js`, `js/sprite.js`. |
 
 Design tokens live in `css/base.css`: `--cabinet` / `--screen-off` (backgrounds), `--phosphor` (text), `--dim` (secondary), `--coin` (every interactive element and nothing else), `--stage` (per-stage colour). The spec is `docs/superpowers/specs/2026-09-17-arcade-redesign-design.md`.
 
@@ -36,6 +36,19 @@ the referrer, so scans are counted separately.
 
 GSAP 3.15.0 is vendored in `js/vendor/` rather than loaded from a CDN, because
 of the expo hall's mobile signal.
+
+## KuroNeko sprite
+
+Source: `media/sprite/kuroneko-wave.aseprite`, 32×32, drawn in the site's
+palette. Two layers (KuroNeko behind Ledge) and two tags: `intro` plays once
+when she comes on screen, then `wave` loops. `js/sprite.js` reads frame
+durations and tags from the exported JSON, so after editing, re-export and
+nothing else changes:
+
+    Aseprite.exe -b media/sprite/kuroneko-wave.aseprite --sheet media/sprite/kuroneko-wave.png --sheet-type horizontal --data media/sprite/kuroneko-wave.json --format json-array --list-tags --filename-format "{frame}"
+
+Keep the tag names. If the frame count changes, update the `2700%` fallback in
+`.waver .sprite` (frames × 100%) — it is only used without JS.
 
 ## Editing copy
 

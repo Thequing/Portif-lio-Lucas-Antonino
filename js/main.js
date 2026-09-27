@@ -10,6 +10,7 @@ import { initKeys } from './keys.js';
 import { initReadouts } from './readouts.js';
 import { initContinue } from './continue.js';
 import { initSource } from './source.js';
+import { initSprite } from './sprite.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -69,6 +70,7 @@ async function boot() {
   safe('readouts', () => initReadouts({ reducedMotion }));
   safe('continue', () => initContinue({ reducedMotion }));
   safe('source', initSource);
+  safe('sprite', () => initSprite({ reducedMotion }).catch((err) => console.error('sprite failed', err)));
   safe('press start', pressStart);
 
   if (reducedMotion) {

@@ -292,13 +292,14 @@
 .game-over { margin-top: 1rem; color: var(--dim); }
 
 .waver { position: relative; display: block; flex: none; }
-.waver img, .waver svg { display: block; width: 128px; height: 128px; image-rendering: pixelated; }
-.waver.is-hopping :is(img, svg) { animation: hop 0.4s steps(4) 1; }
-/* Two-frame wave from the shoulder, and a blink every few seconds. */
-.cat-paw { transform-box: view-box; transform-origin: 46px 36px; animation: wave 0.6s steps(1) infinite; }
-@keyframes wave { 50% { transform: rotate(-22deg); } }
-.cat-eyes { transform-box: fill-box; transform-origin: center; animation: cat-blink 4s steps(1) infinite; }
-@keyframes cat-blink { 94% { transform: scaleY(1); } 95% { transform: scaleY(0.25); } 98% { transform: scaleY(1); } }
+/* The sheet is 27 frames of 32×32 in a row, shown at 4× (3× on phones).
+   js/sprite.js sets the frame; without it the last frame, mid-wave, shows. */
+.waver .sprite {
+  display: block; width: 128px; height: 128px;
+  background: url('../media/sprite/kuroneko-wave.png') 100% 0 / 2700% 100% no-repeat;
+  image-rendering: pixelated;
+}
+.waver.is-hopping .sprite { animation: hop 0.4s steps(4) 1; }
 @keyframes hop { 50% { transform: translateY(-20px); } }
 .waver-say:empty { display: none; }
 .waver-say {
@@ -313,7 +314,7 @@
   width: 8px; height: 8px; background: var(--phosphor);
 }
 @media (max-width: 1023px) {
-  .waver img, .waver svg { width: 96px; height: 96px; }
+  .waver .sprite { width: 96px; height: 96px; }
 }
 
 /* Save contact blinks like an Insert Coin prompt once the countdown runs out,
@@ -327,6 +328,6 @@
   .loader-caret, #press-start { animation: none; }
   #chest-lid, #chest-loot { transition: none; }
   #loot li.is-landed::after { animation: none; }
-  .waver.is-hopping :is(img, svg), .cat-paw, .cat-eyes,
+  .waver.is-hopping .sprite,
   .btn-solid.insert-coin, .readout-value.is-tallied { animation: none; }
 }
