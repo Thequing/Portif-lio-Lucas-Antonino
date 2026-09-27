@@ -1,3 +1,5 @@
+import { track } from './analytics.js';
+
 // The bonus-stage chest. Opening it is the only thing that fetches the art:
 // the six <img> ship with data-src and get a real src here, so a booth phone
 // that never clicks never pays the 1.1 MB.
@@ -5,7 +7,7 @@ export function initChest({ reducedMotion }) {
   const chest = document.getElementById('chest');
   const loot = document.getElementById('loot');
   const box = document.getElementById('lightbox');
-  if (!chest || !loot) return;
+  if (!chest || !loot) return {};
 
   function reveal() {
     if (chest.getAttribute('aria-expanded') === 'true') return;
@@ -36,27 +38,56 @@ export function initChest({ reducedMotion }) {
       onComplete: () => { for (const li of items) li.classList.add('is-landed'); },
     });
   }
-  chest.addEventListener('click', reveal);
+  chest.addEventListener('click', () => {
+    if (chest.getAttribute('aria-expanded') !== 'true') track('chest');
+    reveal();
+  });
 
-  if (!box || typeof box.showModal !== 'function') return;
+  const api = { open: reveal };
+  if (!box || typeof box.showModal !== 'function') return api;
   const img = box.querySelector('img');
-  let opener = null;
+  const count = box.querySelector('.lightbox-count');
+  const tiles = [...loot.querySelectorAll('.tile')];
+  let index = 0;
 
-  for (const tile of loot.querySelectorAll('.tile')) {
+  // The lightbox pages through the loot like an item viewer: buttons, ← →,
+  // and a horizontal swipe on touch screens.
+  function show(i) {
+    index = (i + tiles.length) % tiles.length;
+    const source = tiles[index].querySelector('img');
+    img.src = source.src;
+    img.alt = source.alt;
+    if (count) count.textContent = `${index + 1} / ${tiles.length}`;
+  }
+
+  tiles.forEach((tile, i) => {
     tile.addEventListener('click', () => {
-      const source = tile.querySelector('img');
-      if (!source?.src) return;
-      img.src = source.src;
-      img.alt = source.alt;
-      opener = tile;
+      if (!tile.querySelector('img')?.src) return;
+      show(i);
       box.showModal();
     });
-  }
+  });
+  box.querySelector('.prev')?.addEventListener('click', () => show(index - 1));
+  box.querySelector('.next')?.addEventListener('click', () => show(index + 1));
+  box.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1); }
+  });
+  let touchX = null;
+  box.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener('touchend', (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+  });
   box.querySelector('.close')?.addEventListener('click', () => box.close());
   // A click on the backdrop lands on the dialog element itself, not its children.
   box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
+  // Focus goes back to the tile last shown, which may not be the one opened.
   box.addEventListener('close', () => {
     img.removeAttribute('src');
-    opener?.focus();
+    tiles[index]?.focus();
   });
+  return api;
 }

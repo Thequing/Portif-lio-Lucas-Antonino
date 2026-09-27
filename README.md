@@ -10,13 +10,32 @@ The page is laid out as a game's front-end, in this order:
 |---|---|---|
 | HUD | `#hud` | Fixed 44px bar: name, six stage segments (links, filled as you pass each stage), current stage label, EN/PT. Driven by `js/hud.js` with IntersectionObserver, so it works without GSAP. |
 | Title screen | `#title` | Steam Veins attract-mode video, the name as logo, *Press start* (scrolls to stage 1; Enter does the same). |
-| Stages 01–06 | `.stage#stage-n` | One per project. Each carries `style="--stage: …"` (its colour), a stamp (`.stamp-state[data-state]` = cleared / playing / progress / soon), copy, links and a readout strip of numbers taken from the copy. Desktop pins each stage and wipes the clip in (`js/scroll.js`); phones scroll normally. Dino Girls has no footage and shows a locked tile instead. |
+| Stages 01–06 | `.stage#stage-n` | One per project. Each carries `style="--stage: …"` (its colour), a stamp (`.stamp-state[data-state]` = cleared / playing / progress / soon), copy, links and a readout strip of numbers taken from the copy. Desktop pins each stage and wipes the clip in (`js/scroll.js`); phones scroll normally. Dino Girls has no public footage and shows its Steam capsule (`media/art/`). Integer readouts tally up on first view (`js/readouts.js`). Every clip is a pause button. On phones, the first visit to each stage flashes a stage card under the HUD (`js/stagecard.js`). |
 | Bonus stage | `#bonus` | A pixel chest (`#chest`, inline SVG). Clicking it pops the six art tiles out of `#loot` and opens a `<dialog>` lightbox on tap. `js/chest.js` sets the images' `src` only on that click, so the 1.1 MB in `Imagens/` never loads for a visitor who does not open it. |
-| Source | `#source` | Two code viewers with line numbers. Static. |
+| Source | `#source` | One code viewer, two file tabs, line numbers. `js/source.js` binds the tabs and highlights C# at load; paste plain code into the markup. Without JS both files show stacked. |
 | Player | `#player` | Class, bio, education, equipped tools. |
-| Continue? | `#continue` | Save contact (vCard), Download CV, links. |
+| Continue? | `#continue` | A 9→0 countdown (any press stops it; at 0 Save contact blinks), KuroNeko waving, Save contact (vCard), Download CV, Share, links. `js/continue.js`. The cat is a 16×16 inline SVG placeholder: to use the hand-drawn sprite, swap the `<svg>` in `.waver` for an `<img>` of the same 64×64 frame. |
 
 Design tokens live in `css/base.css`: `--cabinet` / `--screen-off` (backgrounds), `--phosphor` (text), `--dim` (secondary), `--coin` (every interactive element and nothing else), `--stage` (per-stage colour). The spec is `docs/superpowers/specs/2026-09-17-arcade-redesign-design.md`.
+
+## Controls
+
+`js/keys.js`: 1–6 jump to a stage, ← → step through sections, Esc returns to
+the title. The Konami code (or five quick taps on the logo) opens the chest.
+All in-page jumps go through `goTo()` in `js/nav.js`, which lands pinned
+stages part-way into their pin so they arrive fully drawn.
+
+## Analytics
+
+Off by default. To turn it on, create a free site at goatcounter.com and put
+its endpoint in `<meta name="goatcounter" content="…">` in `index.html`.
+Pageviews plus these events are counted: `save-contact`, `download-cv`,
+`share`, `chest`, `cheat`, `wave`, and `out/<host>` for outbound links. The
+booth card's QR code adds `?utm_source=bgs-qr`, which GoatCounter shows as
+the referrer, so scans are counted separately.
+
+GSAP 3.15.0 is vendored in `js/vendor/` rather than loaded from a CDN, because
+of the expo hall's mobile signal.
 
 ## Editing copy
 

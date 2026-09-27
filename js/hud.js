@@ -18,12 +18,17 @@ export function initHud() {
   }
 
   function setActive(i) {
+    const changed = i !== activeIndex;
     activeIndex = i;
     segs.forEach((s, j) => {
       s.classList.toggle('is-reached', j <= i);
       s.classList.toggle('is-current', j === i);
     });
     if (current) current.textContent = i < 0 ? '' : label(i);
+    // The phone stage card listens for this; the HUD itself does not need it.
+    if (changed && i >= 0) {
+      document.dispatchEvent(new CustomEvent('stagechange', { detail: { index: i, stage: stages[i] } }));
+    }
   }
 
   const middle = { rootMargin: '-50% 0px -50% 0px' };

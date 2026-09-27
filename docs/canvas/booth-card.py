@@ -18,6 +18,9 @@ from reportlab.pdfgen import canvas
 FONTS = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('.')
 OUT = Path(__file__).resolve().parents[2] / 'docs' / 'booth-card.pdf'
 URL = 'https://thequing.github.io/Portif-lio-Lucas-Antonino/'
+# Only the QR carries the tag: it lets the site's analytics count scans apart
+# from other visits. The printed URL stays short for anyone typing it.
+QR_URL = URL + '?utm_source=bgs-qr'
 
 BLEED = 3 * mm
 W, H = 105 * mm + 2 * BLEED, 148 * mm + 2 * BLEED
@@ -72,7 +75,7 @@ for i, col in enumerate(STAGES):
 
 # The QR, the thing to be pressed: black modules on a phosphor plate.
 qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, border=0)
-qr.add_data(URL)
+qr.add_data(QR_URL)
 qr.make(fit=True)
 matrix = qr.get_matrix()
 n = len(matrix)
