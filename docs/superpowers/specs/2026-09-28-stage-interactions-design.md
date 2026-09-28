@@ -21,7 +21,8 @@ Every decision below is downstream of that paragraph.
 
 Success: a visitor presses one thing, and within ten seconds has watched a
 system Lucas wrote do the thing the bullet point next to it claims. Nothing
-requires typing on a phone, reading instructions, or a working network.
+requires typing, reading instructions, or a working network — and nobody who
+would rather just keep scrolling is made to deal with any of it.
 
 ## Non-goals
 
@@ -40,19 +41,31 @@ scrolls *through* a held frame. Embedding a widget there fights the pin: you
 must stop scrolling to touch it and the pin releases when you resume. At 390px
 there is also no room beside the copy for a tower grid or a script pane.
 
-So each interaction opens in a shared modal dialog — **the cabinet** — launched
-by a `▸ TRY IT ◂` button in the stage copy:
+So each interaction opens in a shared panel — **the cabinet** — launched by a
+`▸ TRY IT ◂` button in the stage copy:
 
 ```
-#cabinet (dialog)
+#cabinet (dialog, non-modal)
   ├─ header: stage number, title, close
   └─ mount point, owned by the stage module
 ```
 
-This is the pattern the bonus stage already uses (`#lightbox`, `showModal()`,
-backdrop click to dismiss, focus returned to the opener). It gives every
-interaction the full viewport on a phone, leaves stages reading as stages,
-and makes click-gating structural rather than a thing to remember.
+**Nobody gets trapped.** The cabinet is a `<dialog>` opened with `show()`, not
+`showModal()`: it does not take the page hostage, does not block scrolling and
+does not hold focus captive. A visitor who opens the dummy, loses interest and
+keeps scrolling is not asked to deal with a modal first — the page moves under
+the panel, and the panel closes itself once its stage has left the viewport.
+
+Five ways out, all of them obvious: the ✕ in the header, `Esc`, a tap outside
+the panel, pressing the launch button again, and simply scrolling away. The
+cabinet never opens on its own, never moves the visitor's scroll position, and
+never reopens after being dismissed. Interacting is always the visitor's idea.
+
+The trade-off against `showModal()` is that focus is not trapped inside the
+panel, so tabbing can walk out of it. That is the correct direction here: it is
+the behaviour of a thing you may ignore. Focus moves to the panel heading on
+open and returns to the launch button on close, so keyboard users are placed
+without being held.
 
 The launch button is injected by JS, like the language toggle, so it never
 appears in a no-JS page that could not honour it. It is a child of `.copy`,
@@ -159,22 +172,24 @@ readout says why. That refusal is the whole point of the feature.
 distant tower become readable only through the visor, and the clock puzzle is
 solved with it, at range.*
 
-A scene fills the cabinet. Drag the lens across it and what is under the glass
-is the Investigation Mode read: the clock face resolves to a time, the distant
-tower gains its detail, an object gains a label. Outside the lens the scene
-stays as the naked eye has it.
+One MidNight Memories screenshot fills the cabinet, murky — dimmed and
+softened, the way the scene reads to the naked eye. Drag the magnifying glass
+across it and the image is crisp and legible under the glass only. The lens is
+the mask; there is no second image and no puzzle.
 
-The clock puzzle is the payload: three clocks are readable only through the
-lens, and the cabinet asks for the odd one out. Getting it right is the same
-deduction the demo asks for, in fifteen seconds.
+That is the mechanic stated plainly: this scene is only readable through the
+visor. A sweep meter fills as the glass covers ground, so there is a visible
+end without anything to solve or read.
 
-- **Completion:** the odd clock is identified.
-- **Assets:** `Lens.aseprite` → `media/minigames/lens.png`, as the drag handle
-  with `touch-action: none` so dragging never scrolls the dialog. Plus the
-  scene, twice — plain and investigated.
-- **Needs:** a still *through* Investigation Mode. Failing that, the lens view
-  is derived from the existing poster with a filter and a hand-placed label
-  layer, which is weaker and should be replaced when a real capture exists.
+- **Completion:** enough of the scene has been swept.
+- **Assets:** `Lens.aseprite` → `media/minigames/lens.png`, positioned as the
+  mask and the drag handle, with `touch-action: none` so dragging never
+  scrolls the page under it. The scene is `media/poster/midnight-street.webp`,
+  **already committed and already fetched by stage 02** — so this interaction
+  adds no payload at all beyond the 1 KB lens. The murky state is a CSS filter
+  over the same file, not a second export.
+- **Needs:** nothing. If Lucas later supplies a dedicated screenshot, it
+  replaces the poster in one line of the data module.
 
 ### 03 Framed Drift — the balance suite
 
@@ -240,19 +255,24 @@ pass that validates the whole script at load — unknown commands, duplicate
 labels, dead jumps, empty menus.*
 
 The KuroNeko dialogue box sits in the cabinet, rendering a scene. Below it, the
-script that produced it.
+script that produced it — and **three buttons, each one a different script.**
 
-**No free typing on a phone.** The script is built by tapping command chips —
-the ten commands, each inserting a line — and the box re-renders on every
-change. A hardware keyboard edits the script directly; a touch device never has
-to raise one.
+No typing anywhere, on any device. Pick a script, watch the parser consume it:
 
-Two chips are wrong on purpose: one jumps to a label that does not exist, one
-opens an empty menu. Tapping either replaces the rendered scene with the
-diagnostic the parser actually prints. The validator is the part worth showing,
-so the interaction is built to be broken.
+1. **A scene that works** — characters, dialogue, a menu with two branches. The
+   box renders it; the script is shown beside the result so the mapping from
+   ten commands to a branching scene is visible at a glance.
+2. **A dead jump** — identical, but one label was renamed. The render is
+   replaced by the diagnostic the parser actually prints.
+3. **An empty menu** — a menu command with no options under it. A different
+   diagnostic, from the same validation pass.
 
-- **Completion:** a diagnostic is triggered. Breaking it is the lesson.
+Three taps, no reading required, and the visitor has seen both halves: the
+language, and the pass that refuses to load a script that would break at
+runtime. The validator is the part worth showing, so two of the three options
+exist to be broken.
+
+- **Completion:** one of the two broken scripts is run.
 - **Assets:** `ParserBox.aseprite` (640×360, layers `NameTag`, `Base`, `Uper`,
   `patinhas`) → exported flattened as the box frame; `NameTag` exported
   separately so the speaker name can be driven by the script.
@@ -287,7 +307,7 @@ Drawn as inline SVG in the chest's idiom — no new asset, no payload.
 | GSAP CDN fails | Cabinets work; they never touch ScrollTrigger. |
 | `prefers-reduced-motion` | Knockback, block bounce, counter ticking and lens easing resolve instantly to their end state. Every readout still updates. The information is the point; the motion is not. |
 | No network | Everything except the video clips, via the service worker. |
-| Keyboard only | Every interaction operable. The lens moves on arrow keys; chips are buttons; the dummy is a button. |
+| Keyboard only | Every interaction operable. The lens moves on arrow keys; every chip, script and the dummy is a `<button>`. Focus is placed in the cabinet on open and returned to the launcher on close, but never trapped. |
 | `data.ready === false` | That stage's button is not rendered. |
 
 ## Testing
@@ -300,8 +320,10 @@ alongside the existing checker tests. The README's command becomes
 - **drift**: every golden vector from the recorded C# run, exactly.
 - **hells-kitchen**: mitigation for each type × enemy pair, including the
   invalid ones.
-- **kuroneko**: each of the four diagnostic classes fires on a script that
-  should trigger it, and does not fire on one that should not.
+- **kuroneko**: all four diagnostic classes are tested at the module level —
+  unknown command, duplicate label, dead jump, empty menu — each firing on a
+  script that should trigger it and staying quiet on one that should not, even
+  though the cabinet surfaces only two of them.
 - **progress**: six booleans round-trip; a corrupt or absent localStorage value
   yields six falses rather than throwing.
 
@@ -334,7 +356,7 @@ the README already warns about.
 2. **01 dummy** and **06 block** — no external dependencies, both shippable
    immediately, and together they prove the cabinet on both a motion-heavy and
    a motion-free interaction.
-3. **02 visor** — derived lens view, replaced if a real capture arrives.
+3. **02 visor** — needs nothing external; reuses the stage-02 poster.
 4. **04 damage table**, **05 parser**, **03 balance suite** — in the order their
    data lands.
 5. `sw.js` last, so it never caches a moving target during development.
