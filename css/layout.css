@@ -73,10 +73,11 @@
   /* Alternate the clip side so six panels do not read as one repeated card.
      #title is the first <section>, so stage 1 is the even one and keeps the
      clip on the left; every odd one flips. */
-  .stage:nth-of-type(odd) .clips,
-  .stage:nth-of-type(odd) .locked { order: 2; }
+  .stage:nth-of-type(odd) .clips { order: 2; }
   /* Two stacked clips must fit a 900px-tall viewport while pinned. */
   .clips .shot video, .clips .shot img { max-height: 38vh; object-fit: cover; }
+  /* Key art is shown whole: cropping a capsule cuts the logo. */
+  .clips .shot-art img { max-height: none; }
 }
 
 /* ---------- Bonus, source, player, continue ---------- */
@@ -90,7 +91,10 @@
 
 #bonus { text-align: center; }
 #bonus .lede { margin-inline: auto; }
-#chest { margin: 2.5rem auto 0; }
+/* Room above for the lid: opened, it stands a chest-height tall and used to
+   cover the line of copy above it. */
+#chest { margin: 6.5rem auto 0; }
+@media (max-width: 1023px) { #chest { margin-top: 5rem; } }
 #loot[hidden] { display: none; }
 #loot {
   list-style: none;

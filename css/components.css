@@ -108,13 +108,6 @@
 }
 .readout-label { font-size: var(--small); color: var(--dim); margin-top: 0.15rem; }
 
-.locked {
-  aspect-ratio: 16 / 9;
-  display: grid; place-items: center;
-  background: var(--cabinet); border: 1px solid var(--dim);
-}
-.locked span { font-family: var(--display); font-size: 8rem; line-height: 1; color: var(--dim); }
-
 .shot { position: relative; overflow: hidden; border: 1px solid color-mix(in oklab, var(--stage) 50%, transparent); }
 /* The clips are all 1280x720, and reserving that ratio up front matters more
    than it looks: a <video> whose source has not loaded falls back to a 300x150
@@ -126,8 +119,8 @@
    it the clip is a still poster that looks like a broken image; with it, one tap
    plays. The whole figure is the hit target, so the badge itself needs no size. */
 .shot .play { display: none; }
-.shot[data-blocked] { cursor: pointer; }
-.shot[data-blocked] .play {
+.shot[role='button'] { cursor: pointer; }
+.shot[data-blocked] .play, .shot[data-paused] .play {
   display: grid; place-items: center;
   position: absolute; inset: 0; pointer-events: none;
 }
@@ -229,10 +222,13 @@
 }
 #lightbox::backdrop { background: rgba(0, 0, 0, 0.85); }
 #lightbox img { max-height: 80vh; width: auto; margin-inline: auto; }
-#lightbox .close {
-  margin-top: 0.75rem; min-height: 44px; padding: 0 1rem;
+.lightbox-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.75rem; }
+.lightbox-count { margin-inline: auto; font-size: var(--small); color: var(--dim); }
+#lightbox button {
+  min-height: 44px; padding: 0 1rem;
   font-weight: 700; color: var(--coin); border: 1px solid var(--coin);
 }
+#lightbox button:hover { background: var(--coin); color: var(--screen-off); }
 
 /* ---------- Source viewer ---------- */
 .viewer-tab {
@@ -258,6 +254,122 @@
   display: inline-block; width: 3.5ch; margin-right: 1.5ch;
   text-align: right; color: var(--dim); user-select: none;
 }
+
+/* Tabs exist only once js/source.js has bound them; before that (or without
+   JS) both files show stacked, each under its own filename tab. */
+.viewer-tabs { display: none; }
+.viewer-panel + .viewer-panel { margin-top: 3rem; }
+.viewer.is-tabbed .viewer-tabs { display: flex; flex-wrap: wrap; }
+.viewer.is-tabbed .viewer-panel > .viewer-tab { display: none; }
+.viewer.is-tabbed .viewer-panel:not(.is-active) { display: none; }
+.viewer.is-tabbed .viewer-panel + .viewer-panel { margin-top: 0; }
+.viewer-tabs [role='tab'] {
+  min-height: 44px; padding: 0 0.9rem;
+  font-family: var(--code); font-size: 0.8rem; color: var(--dim);
+  border: 1px solid transparent; border-bottom: 0;
+  position: relative; top: 1px;
+}
+.viewer-tabs [role='tab']:hover { color: var(--coin); }
+.viewer-tabs [role='tab'][aria-selected='true'] {
+  color: var(--phosphor); background: var(--screen-off);
+  border-color: var(--dim);
+}
+.viewer.is-tabbed .viewer-tabs { border-bottom: 1px solid var(--dim); }
+.viewer.is-tabbed .viewer-caption { margin-top: 0.75rem; }
+
+/* Syntax colours borrow the stage palette, so the code reads as part of the
+   same cabinet. Coin is never used: nothing in a code listing is pressable. */
+.tk-keyword { color: #ff7a1a; }
+.tk-type    { color: #17c3b2; }
+.tk-call    { color: #9fb4c4; }
+.tk-string  { color: #4ade80; }
+.tk-number  { color: #b46cff; }
+.tk-comment { color: var(--dim); }
+
+/* ---------- Title screen: the controls legend ---------- */
+/* Only where there is a keyboard to press, and only once js/keys.js is live. */
+.keys-hint { display: none; }
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .js .keys-hint {
+    display: block; position: absolute; right: var(--gutter); bottom: 1.5rem;
+    font-size: var(--small); color: var(--dim); max-width: none;
+  }
+}
+
+/* ---------- Stage card (phones) ---------- */
+/* Hard cut in under the HUD, the number blinks twice, hold, hard cut out. */
+.stage-card {
+  position: fixed; top: var(--hud); left: 0; right: 0; z-index: 55;
+  display: flex; align-items: baseline; gap: 0.75rem;
+  padding: 0.5rem 1rem 0.6rem;
+  background: var(--screen-off); border-bottom: 2px solid var(--stage);
+  pointer-events: none; visibility: hidden;
+}
+.stage-card-num { font-family: var(--display); font-size: 2rem; line-height: 1; color: var(--stage); }
+.stage-card-name { font-weight: 700; color: var(--phosphor); }
+.stage-card.is-showing { animation: stage-card 1.5s linear 1; }
+.stage-card.is-showing .stage-card-num { animation: blink 0.3s steps(1) 2; }
+@keyframes stage-card { 0%, 99.9% { visibility: visible; } 100% { visibility: hidden; } }
+
+/* ---------- Readouts ---------- */
+/* One phosphor frame as the tally lands, like a score locking in. */
+.readout-value.is-tallied { animation: tally-lock 0.24s steps(1) 1; }
+@keyframes tally-lock { 0% { color: var(--phosphor); } 100% { color: var(--stage); } }
+
+/* ---------- Toast and the cheat ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: 1.5rem; z-index: 70;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 0.75rem;
+  width: max-content; max-width: calc(100vw - 2rem);
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  background: var(--screen-off); border: 1px solid var(--phosphor);
+  font-weight: 700; visibility: hidden;
+}
+.toast.is-showing { visibility: visible; }
+.toast img { width: 48px; height: 48px; image-rendering: pixelated; }
+/* Cheat enabled: every stage counts as reached. */
+.cheat .hud-seg span { background: var(--stage); border-color: var(--stage); }
+
+/* ---------- Continue screen ---------- */
+.continue-head {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: 1.5rem; max-width: 72ch;
+}
+.countdown { display: inline-block; min-width: 1ch; margin-left: 0.25em; }
+.game-over { margin-top: 1rem; color: var(--dim); }
+
+.waver { position: relative; display: block; flex: none; }
+/* The sheet is 27 frames of 32×32 in a row, shown at 4× (3× on phones).
+   js/sprite.js sets the frame; without it the last frame, mid-wave, shows. */
+.waver .sprite {
+  display: block; width: 128px; height: 128px;
+  background: url('../media/sprite/kuroneko-wave.png') 100% 0 / 2700% 100% no-repeat;
+  image-rendering: pixelated;
+}
+.waver.is-hopping .sprite { animation: hop 0.4s steps(4) 1; }
+@keyframes hop { 50% { transform: translateY(-20px); } }
+.waver-say:empty { display: none; }
+.waver-say {
+  position: absolute; bottom: calc(100% + 0.5rem); right: 0;
+  white-space: nowrap; padding: 0.35rem 0.7rem;
+  background: var(--phosphor); color: var(--screen-off);
+  font-weight: 700; font-size: 0.9375rem;
+}
+/* A square pixel tail under the speech box, pointing at the sprite. */
+.waver-say::after {
+  content: ''; position: absolute; top: 100%; right: 2.5rem;
+  width: 8px; height: 8px; background: var(--phosphor);
+}
+@media (max-width: 1023px) {
+  .waver .sprite { width: 96px; height: 96px; }
+}
+
+/* Save contact blinks like an Insert Coin prompt once the countdown runs out,
+   and stops the moment it is pointed at. */
+.btn-solid.insert-coin { animation: insert-coin 1s steps(1) infinite; }
+.btn-solid.insert-coin:hover, .btn-solid.insert-coin:focus-visible { animation: none; }
+@keyframes insert-coin { 50% { background: transparent; color: var(--coin); } }
 
 /* ---------- Motion preferences and degraded modes ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -514,4 +626,6 @@
   .dummy-figure, .dummy-bar span, .visor-meter span { transition: none; }
   .dummy-pop { animation: none; opacity: 1; }
   .block.is-bounce { animation: none; }
+  .waver.is-hopping .sprite,
+  .btn-solid.insert-coin, .readout-value.is-tallied { animation: none; }
 }

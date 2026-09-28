@@ -1,3 +1,4 @@
+import { initAnalytics } from './analytics.js';
 import { initI18n } from './i18n.js';
 import { initMedia } from './media.js';
 import { initHud } from './hud.js';
@@ -5,6 +6,13 @@ import { initChest } from './chest.js';
 import { initPortrait } from './portrait.js';
 import { initArcade } from './arcade.js';
 import { initScroll } from './scroll.js';
+import { initNav } from './nav.js';
+import { initStageCard } from './stagecard.js';
+import { initKeys } from './keys.js';
+import { initReadouts } from './readouts.js';
+import { initContinue } from './continue.js';
+import { initSource } from './source.js';
+import { initSprite } from './sprite.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -45,14 +53,29 @@ function pressStart() {
   });
 }
 
+// Each module is independent: a throw in one (a browser quirk, a missing
+// element) is logged and the rest still start, rather than leaving the page
+// half-initialised behind the loader.
+function safe(name, fn) {
+  try { return fn(); } catch (err) { console.error(`${name} failed to start`, err); }
+}
+
 async function boot() {
-  initI18n();
-  initMedia({ reducedMotion });
-  initHud();
-  initChest({ reducedMotion });
-  initPortrait();
-  initArcade({ reducedMotion });
-  pressStart();
+  safe('analytics', initAnalytics);
+  safe('i18n', initI18n);
+  safe('media', () => initMedia({ reducedMotion }));
+  safe('stage card', () => initStageCard({ reducedMotion }));
+  safe('hud', initHud);
+  const chest = safe('chest', () => initChest({ reducedMotion }));
+  safe('nav', initNav);
+  safe('keys', () => initKeys({ openChest: chest?.open }));
+  safe('readouts', () => initReadouts({ reducedMotion }));
+  safe('arcade', () => initArcade({ reducedMotion }).catch((err) => console.error('arcade failed', err)));
+  safe('continue', () => initContinue({ reducedMotion }));
+  safe('source', initSource);
+  safe('portrait', initPortrait);
+  safe('sprite', () => initSprite({ reducedMotion }).catch((err) => console.error('sprite failed', err)));
+  safe('press start', pressStart);
 
   if (reducedMotion) {
     document.getElementById('loader')?.remove();
@@ -68,7 +91,7 @@ async function boot() {
   }
 
   await runLoader();
-  initScroll();
+  safe('scroll', initScroll);
 }
 
 boot();

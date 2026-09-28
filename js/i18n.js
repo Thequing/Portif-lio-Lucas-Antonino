@@ -6,6 +6,7 @@ export const copy = {
     'title.summary': 'I build the systems players actually touch — combat, movement, dialogue, UI — and the simulation underneath them.',
     'title.start': 'Press start',
     'title.tally': '1 shipped · 1 in production · 1 demo at BGS 2026',
+    'title.keys': 'Keys: 1–6 jump to a stage · ← → move · Esc back to title',
 
     'stamp.cleared': 'Cleared',
     'stamp.playing': 'Now playing',
@@ -81,9 +82,10 @@ export const copy = {
     'bonus.heading': 'Bonus stage',
     'bonus.body': 'Art and assets made alongside the code.',
     'bonus.open': 'Open the chest',
+    'cheat.toast': 'Cheat enabled: bonus stage unlocked',
 
     'source.heading': 'Source',
-    'source.caption': 'Enemy damage response from Steam Veins — invulnerability gate, FMOD audio, health-threshold phase change, and execution state. C#, Unity.',
+    'source.caption': 'Enemy damage response from Steam Veins — invulnerability gate, FMOD audio, health-threshold phase change, and execution state. C#, Unity. Tidied for this page: names translated from Portuguese, damage codes as an enum, the FMOD one-shot moved into a helper.',
     'source.caption2': 'Drift scoring from Framed Drift — the same scorer runs the live race and the offline one, so offline parity is structural rather than tested. Pure C#, no UnityEngine.',
     'source.link': 'More on GitHub',
 
@@ -163,11 +165,22 @@ export const copy = {
     'continue.vcard': 'Save contact',
     'continue.cv': 'Download CV',
     'continue.footer': 'Built by hand · 2026',
+    'continue.share': 'Share this page',
+    'continue.copied': 'Link copied',
+    'continue.over': 'Game over — but the contact card still works.',
+    'waver.label': 'Wave back',
+    'waver.say': 'See you at BGS!',
+
+    'clip.pause': 'Pause clip',
+    'clip.play': 'Play clip',
+    'clip.paused': 'Paused',
 
     'nav.steam': 'Steam page',
     'nav.demo': 'Demo',
     'nav.project': 'View project',
     'lightbox.close': 'Close',
+    'lightbox.prev': 'Previous',
+    'lightbox.next': 'Next',
   },
 
   pt: {
@@ -177,6 +190,7 @@ export const copy = {
     'title.summary': 'Construo os sistemas que o jogador realmente toca — combate, movimentação, diálogo, UI — e a simulação por baixo deles.',
     'title.start': 'Aperte start',
     'title.tally': '1 lançado · 1 em produção · 1 demo na BGS 2026',
+    'title.keys': 'Teclas: 1–6 vão para uma fase · ← → navegam · Esc volta ao título',
 
     'stamp.cleared': 'Concluída',
     'stamp.playing': 'Jogando agora',
@@ -252,9 +266,10 @@ export const copy = {
     'bonus.heading': 'Fase bônus',
     'bonus.body': 'Arte e assets feitos junto com o código.',
     'bonus.open': 'Abrir o baú',
+    'cheat.toast': 'Trapaça ativada: fase bônus liberada',
 
     'source.heading': 'Código',
-    'source.caption': 'Resposta a dano de inimigo em Steam Veins — verificação de invulnerabilidade, áudio FMOD, mudança de fase por limiar de vida e estado de execução. C#, Unity.',
+    'source.caption': 'Resposta a dano de inimigo em Steam Veins — verificação de invulnerabilidade, áudio FMOD, mudança de fase por limiar de vida e estado de execução. C#, Unity. Ajustado para esta página: nomes traduzidos do português, códigos de dano como enum, o one-shot do FMOD movido para um helper.',
     'source.caption2': 'Pontuação de drift em Framed Drift — o mesmo scorer roda a corrida ao vivo e a offline, então a paridade offline é estrutural, não testada. C# puro, sem UnityEngine.',
     'source.link': 'Mais no GitHub',
 
@@ -334,11 +349,22 @@ export const copy = {
     'continue.vcard': 'Salvar contato',
     'continue.cv': 'Baixar CV',
     'continue.footer': 'Feito à mão · 2026',
+    'continue.share': 'Compartilhar',
+    'continue.copied': 'Link copiado',
+    'continue.over': 'Fim de jogo — mas o cartão de contato ainda funciona.',
+    'waver.label': 'Acenar de volta',
+    'waver.say': 'Te vejo na BGS!',
+
+    'clip.pause': 'Pausar vídeo',
+    'clip.play': 'Reproduzir vídeo',
+    'clip.paused': 'Pausado',
 
     'nav.steam': 'Página na Steam',
     'nav.demo': 'Demo',
     'nav.project': 'Ver projeto',
     'lightbox.close': 'Fechar',
+    'lightbox.prev': 'Anterior',
+    'lightbox.next': 'Próxima',
   },
 };
 
@@ -356,8 +382,25 @@ export function currentLang() {
   return active;
 }
 
+// Storage throws outright in some places a booth visitor will be: blocked site
+// data, some in-app browsers (a link opened from Instagram or LinkedIn), older
+// Safari private mode. This runs first in boot, so an uncaught throw here left
+// every later module uninitialised and the loader covering the page.
+function readStored() {
+  try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
+}
+
+function writeStored(lang) {
+  try { localStorage.setItem(STORAGE_KEY, lang); } catch { /* per-visit only */ }
+}
+
+// For strings that scripts compose at runtime rather than ones in the markup.
+export function t(key) {
+  return copy[active]?.[key] ?? copy.en[key] ?? '';
+}
+
 function resolveInitial() {
-  const stored = localStorage.getItem(STORAGE_KEY);
+  const stored = readStored();
   if (stored === 'en' || stored === 'pt') return stored;
   return navigator.language?.toLowerCase().startsWith('pt') ? 'pt' : 'en';
 }
@@ -386,7 +429,7 @@ function apply(lang) {
   }
   document.documentElement.lang = lang;
   active = lang;
-  localStorage.setItem(STORAGE_KEY, lang);
+  writeStored(lang);
 
   for (const btn of document.querySelectorAll('[data-lang]')) {
     btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));

@@ -1,3 +1,5 @@
+import { registerPin, clearPins } from './nav.js';
+
 // Stage pins, desktop only. The clip enters with a hard horizontal wipe and
 // the copy cuts in in two steps — stamp and title first, then the rest — so
 // each stage reads like a menu screen coming up, not a card fading in.
@@ -16,7 +18,7 @@ export function initScroll() {
         const first = [copy.querySelector('.stamp'), copy.querySelector('h2')].filter(Boolean);
         const rest = [...copy.children].filter((el) => !first.includes(el));
 
-        // Dino Girls has no clip: its copy still cuts in, but nothing pins.
+        // A stage with no clip column still cuts its copy in, but nothing pins.
         if (!clips) {
           gsap.from(first, { opacity: 0, duration: 0.01, scrollTrigger: { trigger: inner, start: 'top 60%' } });
           gsap.from(rest, { opacity: 0, duration: 0.01, scrollTrigger: { trigger: inner, start: 'top 45%' } });
@@ -33,6 +35,7 @@ export function initScroll() {
             anticipatePin: 1,
           },
         });
+        registerPin(stage, tl.scrollTrigger);
         // Positions are fractions of the pin: wipe over the first 40%, stamp and
         // title at 30%, the rest at 50%, then the stage holds for the remainder.
         // The empty tween at 1 fixes the timeline's length, otherwise scrub maps
@@ -42,6 +45,7 @@ export function initScroll() {
           .from(rest, { opacity: 0, duration: 0.01 }, 0.5)
           .to({}, { duration: 0.01 }, 1);
       }
+      return clearPins;
     },
   });
 }

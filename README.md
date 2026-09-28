@@ -10,14 +10,46 @@ The page is laid out as a game's front-end, in this order:
 |---|---|---|
 | HUD | `#hud` | Fixed 44px bar: name, six stage segments (links, filled as you pass each stage), current stage label, EN/PT. Driven by `js/hud.js` with IntersectionObserver, so it works without GSAP. |
 | Title screen | `#title` | Steam Veins attract-mode video, the name as logo, *Press start* (scrolls to stage 1; Enter does the same). |
-| Stages 01–06 | `.stage#stage-n` | One per project. Each carries `style="--stage: …"` (its colour), a stamp (`.stamp-state[data-state]` = cleared / playing / progress / soon), copy, links and a readout strip of numbers taken from the copy. Desktop pins each stage and wipes the clip in (`js/scroll.js`); phones scroll normally. Dino Girls has no footage and shows a locked tile instead. |
+| Stages 01–06 | `.stage#stage-n` | One per project. Each carries `style="--stage: …"` (its colour), a stamp (`.stamp-state[data-state]` = cleared / playing / progress / soon), copy, links and a readout strip of numbers taken from the copy. Desktop pins each stage and wipes the clip in (`js/scroll.js`); phones scroll normally. Dino Girls has no public footage and shows its Steam capsule (`media/art/`). Integer readouts tally up on first view (`js/readouts.js`). Every clip is a pause button. On phones, the first visit to each stage flashes a stage card under the HUD (`js/stagecard.js`). |
 | The cabinet | `#cabinet` | One shared panel. Each stage's `▸ Try it ◂` button mounts its interaction into it (`js/arcade.js`). See **Stage interactions** below. |
 | Bonus stage | `#bonus` | A pixel chest (`#chest`, inline SVG). Clicking it pops the six art tiles out of `#loot` and opens a `<dialog>` lightbox on tap. `js/chest.js` sets the images' `src` only on that click, so the 1.1 MB in `Imagens/` never loads for a visitor who does not open it. |
-| Source | `#source` | Two code viewers with line numbers. Static. |
+| Source | `#source` | One code viewer, two file tabs, line numbers. `js/source.js` binds the tabs and highlights C# at load; paste plain code into the markup. Without JS both files show stacked. |
 | Player | `#player` | A portrait, then class, bio, education, equipped tools. The portrait is the 64px sprite from `media/me/`; pressing it turns the frame over to the photograph (`js/portrait.js`). The photograph ships as `data-src` and is fetched on the first press, the same bargain the chest makes — a visitor who never presses pays 1.6 KB. |
-| Continue? | `#continue` | Save contact (vCard), Download CV, links. |
+| Continue? | `#continue` | A 9→0 countdown (any press stops it; at 0 Save contact blinks), KuroNeko (peeks, blinks, pops up, waves), Save contact (vCard), Download CV, Share, links. `js/continue.js`, `js/sprite.js`. A cleared-interaction tally (`n/6`) sits under the heading. |
 
 Design tokens live in `css/base.css`: `--cabinet` / `--screen-off` (backgrounds), `--phosphor` (text), `--dim` (secondary), `--coin` (every interactive element and nothing else), `--stage` (per-stage colour). The spec is `docs/superpowers/specs/2026-09-17-arcade-redesign-design.md`.
+
+## Controls
+
+`js/keys.js`: 1–6 jump to a stage, ← → step through sections, Esc returns to
+the title. The Konami code (or five quick taps on the logo) opens the chest.
+All in-page jumps go through `goTo()` in `js/nav.js`, which lands pinned
+stages part-way into their pin so they arrive fully drawn.
+
+## Analytics
+
+Off by default. To turn it on, create a free site at goatcounter.com and put
+its endpoint in `<meta name="goatcounter" content="…">` in `index.html`.
+Pageviews plus these events are counted: `save-contact`, `download-cv`,
+`share`, `chest`, `cheat`, `wave`, and `out/<host>` for outbound links. The
+booth card's QR code adds `?utm_source=bgs-qr`, which GoatCounter shows as
+the referrer, so scans are counted separately.
+
+GSAP 3.15.0 is vendored in `js/vendor/` rather than loaded from a CDN, because
+of the expo hall's mobile signal.
+
+## KuroNeko sprite
+
+Source: `media/sprite/kuroneko-wave.aseprite`, 32×32, drawn in the site's
+palette. Two layers (KuroNeko behind Ledge) and two tags: `intro` plays once
+when she comes on screen, then `wave` loops. `js/sprite.js` reads frame
+durations and tags from the exported JSON, so after editing, re-export and
+nothing else changes:
+
+    Aseprite.exe -b media/sprite/kuroneko-wave.aseprite --sheet media/sprite/kuroneko-wave.png --sheet-type horizontal --data media/sprite/kuroneko-wave.json --format json-array --list-tags --filename-format "{frame}"
+
+Keep the tag names. If the frame count changes, update the `2700%` fallback in
+`.waver .sprite` (frames × 100%) — it is only used without JS.
 
 ## Editing copy
 
@@ -42,7 +74,7 @@ One per stage, each demonstrating the system its stage claims. Spec:
 | 03 Framed Drift | The balance suite, run live in a Worker, with the browser's time and the C# time side by side and labelled. | A finished run |
 | 04 Hell's Kitchen | The damage table: type × enemy, showing the mitigation and what survives it. | Finding a wall |
 | 05 KuroNeko | Three prepared scripts — one renders, two the validator refuses. | Breaking it |
-| 06 Dino Girls | The locked tile becomes a ?-block that dispenses one line per press. | Emptying it |
+| 06 Dino Girls | A ?-block that dispenses one line per press. | Emptying it |
 
 **The cabinet never traps anyone.** It is a `<dialog>` opened with `show()`, not
 `showModal()`, docked into a corner (a bottom sheet on phones) and covering well
@@ -147,7 +179,8 @@ Two budgets, because the phone is the path that matters: the site is opened
 from a QR code. The bonus-stage art, the player photograph and every stage
 interaction are excluded from both, since none of them loads until it is
 pressed: the interaction modules are dynamic imports and their sprites are
-fetched on mount. Measured 2026-09-28: phone 2.88 MB, desktop 6.36 MB.
+fetched on mount. Measured 2026-09-28, with GSAP now self-hosted and counted:
+phone 3.09 MB, desktop 6.52 MB.
 
 - Phone (≤1023 px, 720 set): a cold full scroll transfers about 3.0 MB of local
   assets. Budget 4 MB.

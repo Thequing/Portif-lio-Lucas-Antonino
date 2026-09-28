@@ -1,3 +1,5 @@
+import { t } from './i18n.js';
+
 const MOBILE_MAX = 1023;
 
 function promote(video) {
@@ -29,20 +31,60 @@ function tryPlay(video) {
   );
 }
 
+function badge(shot) {
+  if (shot.querySelector('.play')) return;
+  const el = document.createElement('div');
+  el.className = 'play';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = '<span>&#9654;</span>';
+  shot.appendChild(el);
+}
+
 function markBlocked(video) {
   const shot = video.closest('.shot');
   if (!shot || shot.dataset.blocked) return;
   shot.dataset.blocked = 'true';
-  if (!shot.querySelector('.play')) {
-    const badge = document.createElement('div');
-    badge.className = 'play';
-    badge.setAttribute('aria-hidden', 'true');
-    badge.innerHTML = '<span>&#9654;</span>';
-    shot.appendChild(badge);
-  }
-  // Not `once`: play() on an already-playing video is a no-op, and a retry
-  // after a refused tap costs nothing.
-  shot.addEventListener('click', () => tryPlay(video));
+  badge(shot);
+  label(video);
+}
+
+// Every clip is also a pause button, the way a game pauses on a tap. The same
+// handler plays a clip whose autoplay was refused, so the blocked badge needs
+// no listener of its own. A clip the visitor paused stays paused when it
+// scrolls back into view.
+function label(video) {
+  const shot = video.closest('.shot');
+  const name = video.getAttribute('aria-label') || '';
+  shot?.setAttribute('aria-label', `${t(video.paused ? 'clip.play' : 'clip.pause')}: ${name}`);
+}
+
+function makeToggle(video) {
+  const shot = video.closest('.shot');
+  if (!shot) return;
+  shot.setAttribute('role', 'button');
+  shot.tabIndex = 0;
+  label(video);
+  const toggle = () => {
+    if (video.paused) {
+      delete shot.dataset.paused;
+      delete video.dataset.userPaused;
+      tryPlay(video);
+    } else {
+      video.pause();
+      video.dataset.userPaused = 'true';
+      shot.dataset.paused = 'true';
+      badge(shot);
+    }
+  };
+  shot.addEventListener('click', toggle);
+  shot.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    toggle();
+  });
+  video.addEventListener('play', () => label(video));
+  video.addEventListener('pause', () => label(video));
+  document.addEventListener('langchange', () => label(video));
 }
 
 export function initMedia({ reducedMotion }) {
@@ -62,7 +104,7 @@ export function initMedia({ reducedMotion }) {
         const video = entry.target;
         if (entry.isIntersecting) {
           promote(video);
-          tryPlay(video);
+          if (!video.dataset.userPaused) tryPlay(video);
         } else {
           video.pause();
         }
@@ -71,5 +113,9 @@ export function initMedia({ reducedMotion }) {
     { rootMargin: '200px 0px', threshold: 0.1 }
   );
 
-  for (const video of videos) observer.observe(video);
+  for (const video of videos) {
+    // The title screen's attract video is scenery, not a clip to control.
+    if (!video.hasAttribute('data-hero')) makeToggle(video);
+    observer.observe(video);
+  }
 }
