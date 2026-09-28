@@ -116,7 +116,11 @@
 .locked span { font-family: var(--display); font-size: 8rem; line-height: 1; color: var(--dim); }
 
 .shot { position: relative; overflow: hidden; border: 1px solid color-mix(in oklab, var(--stage) 50%, transparent); }
-.shot video, .shot img { width: 100%; height: auto; }
+/* The clips are all 1280x720, and reserving that ratio up front matters more
+   than it looks: a <video> whose source has not loaded falls back to a 300x150
+   intrinsic box, so on a dead network — the BGS hall — every stage resized as
+   you reached it and the page crept under your thumb. */
+.shot video, .shot img { width: 100%; height: auto; aspect-ratio: 16 / 9; }
 
 /* Shown only when autoplay was refused (iOS Low Power Mode, Data Saver). Without
    it the clip is a still poster that looks like a broken image; with it, one tap
@@ -149,6 +153,50 @@
 .equipped span {
   font-weight: 700; font-size: 0.9375rem;
   padding: 0.35rem 0.7rem; border: 1px solid var(--dim);
+}
+
+/* ---------- Player: the portrait that flips ---------- */
+.portrait { display: block; }
+.portrait-frame {
+  display: block; position: relative;
+  width: var(--portrait, 232px); aspect-ratio: 1;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.portrait[aria-pressed='true'] .portrait-frame { transform: rotateY(180deg); }
+.portrait-face {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  background: var(--cabinet);
+  border: 1px solid var(--dim);
+  transition: border-color 0.2s;
+}
+/* The sprite is 64px: upscaling it must stay blocky, and it sits in the frame at
+   the same scale as the photograph's head so the flip reads as one face turning. */
+.portrait-face.is-pixel { image-rendering: pixelated; object-fit: contain; padding: 6%; }
+.portrait-face.is-real { transform: rotateY(180deg); object-fit: cover; }
+.portrait:hover .portrait-face,
+.portrait:focus-visible .portrait-face { border-color: var(--coin); }
+
+.portrait-hint {
+  margin-top: 0.75rem;
+  width: var(--portrait, 232px);
+  font-size: var(--small); font-weight: 700; color: var(--coin);
+  line-height: 1.4;
+}
+.portrait-hint::before { content: '\21BB\00A0'; }
+.portrait-hint .caret { animation: blink 1s steps(1) infinite; }
+.portrait-hint .hint-back { display: none; }
+.portrait[aria-pressed='true'] + .portrait-hint .hint-front { display: none; }
+.portrait[aria-pressed='true'] + .portrait-hint .hint-back { display: inline; }
+.portrait[aria-pressed='true'] + .portrait-hint::before { content: '\21BA\00A0'; }
+/* Desktop: the hint is held to the frame's width so it cannot widen the portrait
+   column. Stacked, there is no column to widen, and pinning it to 168px only made
+   the Portuguese string wrap. */
+@media (max-width: 1023px) {
+  .portrait-slot { --portrait: 168px; }
+  .portrait-hint { width: auto; }
 }
 
 /* ---------- Bonus stage: the chest ---------- */
@@ -216,4 +264,254 @@
   .loader-caret, #press-start { animation: none; }
   #chest-lid, #chest-loot { transition: none; }
   #loot li.is-landed::after { animation: none; }
+  /* No rotation: the faces cross-fade in place, so the reveal still happens
+     without anything turning in 3D. */
+  .portrait-hint .caret { animation: none; }
+  .portrait-frame, .portrait[aria-pressed='true'] .portrait-frame { transform: none; }
+  .portrait-face { backface-visibility: visible; transition: opacity 0.2s; }
+  .portrait-face.is-real { transform: none; opacity: 0; }
+  .portrait[aria-pressed='true'] .portrait-face.is-pixel { opacity: 0; }
+  .portrait[aria-pressed='true'] .portrait-face.is-real { opacity: 1; }
+}
+
+/* ---------- The cabinet ---------- */
+/* A docked panel, not an overlay. It covers a corner of the screen and nothing
+   else: the page beside it stays scrollable AND clickable, every link and every
+   other launcher still works, and there is no dim to tap through. Anyone who
+   would rather not play simply carries on reading with it open.
+   z-index sits under the HUD (60) so the stage bar is never hidden by it. */
+#cabinet {
+  position: fixed; z-index: 55;
+  inset: auto 0 0 auto;
+  width: min(92vw, 460px); max-height: min(78vh, 760px);
+  margin: 0 1.25rem 1.25rem 0; padding: 0;
+  border: 1px solid var(--stage, var(--dim));
+  background: var(--cabinet); color: var(--phosphor);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.75);
+  overflow: hidden;
+}
+#cabinet[hidden] { display: none; }
+#cabinet::backdrop { background: none; }
+.cabinet-panel {
+  max-height: inherit; overflow: auto; overscroll-behavior: contain;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+.cabinet-panel:focus { outline: none; }
+.cabinet-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.cabinet-title {
+  flex: 1; line-height: 1.05;
+  font-family: var(--display); font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--stage, var(--phosphor));
+}
+.cabinet-close {
+  flex: none; min-width: 44px; min-height: 44px; font-size: 1.25rem;
+  color: var(--coin); border: 1px solid var(--coin);
+  transition: background 0.2s, color 0.2s;
+}
+.cabinet-close:hover { background: var(--coin); color: var(--screen-off); }
+
+.try-it {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 1.25rem; margin-top: 1.5rem;
+  font-family: var(--display); font-size: 1.75rem; line-height: 1;
+  color: var(--coin); border: 1px solid var(--coin);
+  transition: background 0.2s, color 0.2s;
+}
+.try-it:hover, .try-it:focus-visible { background: var(--coin); color: var(--screen-off); }
+.try-it[aria-busy="true"] { opacity: 0.6; }
+.try-it[aria-expanded="true"] { background: var(--coin); color: var(--screen-off); }
+
+/* A completed interaction fills a pip on its HUD segment. */
+.hud-seg span { position: relative; }
+.hud-seg.is-cleared span::after {
+  content: ""; position: absolute; top: -4px; right: -4px;
+  width: 6px; height: 6px; background: var(--coin);
+}
+.cleared-tally {
+  margin-top: 0.5rem;
+  font-family: var(--display); font-size: 1.5rem; color: var(--coin);
+}
+
+.game-hint { color: var(--dim); font-size: var(--small); margin-bottom: 1rem; }
+
+/* ---------- 01 the dummy ---------- */
+.dummy-stage {
+  position: relative; display: grid; place-items: center;
+  min-height: 220px; background: var(--screen-off); border: 1px solid var(--dim);
+}
+.dummy-figure {
+  display: block; width: 128px; height: 128px;
+  /* It is a post on a stand: it pivots at its foot, like the sprite implies. */
+  transform-origin: 50% 100%;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), filter 0.18s;
+}
+.dummy-figure img { width: 100%; height: 100%; image-rendering: pixelated; }
+.dummy-figure.is-hit { transform: translateX(14px) rotate(4deg); filter: brightness(2.2); }
+.dummy-figure.is-rejected { filter: brightness(0.6) saturate(0.3); }
+.dummy-figure.is-phase2 img { filter: hue-rotate(-14deg) saturate(1.45) brightness(1.12); }
+.dummy-figure.is-dead { transform: rotate(74deg); opacity: 0.55; }
+.dummy-pop {
+  position: absolute; left: 50%; top: 40%; pointer-events: none;
+  font-family: var(--display); font-size: 2rem; color: var(--stage, var(--coin));
+  animation: pop 0.6s ease-out forwards;
+}
+@keyframes pop {
+  from { transform: translate(-50%, 0) scale(0.8); opacity: 1; }
+  to { transform: translate(calc(-50% + var(--dx, 0px)), -48px) scale(1.1); opacity: 0; }
+}
+.dummy-meta { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
+.dummy-bar { flex: 1; height: 14px; border: 1px solid var(--dim); }
+.dummy-bar span {
+  display: block; height: 100%; width: calc(var(--hp, 1) * 100%);
+  background: var(--stage, var(--phosphor)); transition: width 0.18s;
+}
+.dummy-phase { font-family: var(--display); font-size: 1.5rem; color: var(--stage); }
+.dummy-log { list-style: none; margin-top: 0.75rem; font-size: var(--small); min-height: 6.5em; }
+.dummy-log-line { color: var(--dim); }
+.dummy-log-line.is-gate { color: var(--coin); }
+.dummy-log-line.is-phase, .dummy-log-line.is-dead { color: var(--stage); font-weight: 700; }
+
+/* ---------- 02 the visor ---------- */
+.visor-field {
+  position: relative; overflow: hidden; aspect-ratio: 16 / 10;
+  touch-action: none; cursor: none;
+  border: 1px solid var(--dim); background: var(--screen-off);
+}
+.visor-field:focus-visible { outline: 2px solid var(--coin); outline-offset: 2px; }
+.visor-scene, .visor-reveal img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+/* Outside the glass, the scene as the naked eye has it: the fog wins, and the
+   figures standing in it are not readable. */
+.visor-scene { filter: brightness(0.5) contrast(0.42) saturate(0.35) blur(4px); }
+.visor-reveal { position: absolute; inset: 0; }
+.visor-lens {
+  position: absolute; left: var(--x, 50%); top: var(--y, 50%);
+  width: var(--lens); height: var(--lens);
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated; pointer-events: none;
+}
+.visor-field.is-swept .visor-scene { filter: brightness(0.7) contrast(0.7) saturate(0.6) blur(2px); }
+.visor-meter { height: 6px; margin-top: 0.75rem; border: 1px solid var(--dim); }
+.visor-meter span {
+  display: block; height: 100%; width: calc(var(--swept, 0) * 100%);
+  background: var(--stage); transition: width 0.2s;
+}
+.visor-caption { margin-top: 0.5rem; font-size: var(--small); color: var(--dim); }
+
+/* ---------- 03 the balance suite ---------- */
+.suite-run {
+  width: 100%; min-height: 56px; padding: 0 1.25rem; line-height: 1;
+  font-family: var(--display); font-size: 2rem;
+  color: var(--coin); border: 1px solid var(--coin);
+  transition: background 0.2s, color 0.2s;
+}
+.suite-run:hover:not(:disabled) { background: var(--coin); color: var(--screen-off); }
+.suite-run:disabled { opacity: 0.5; }
+.suite-rows { margin-top: 1.25rem; }
+.suite-row {
+  display: grid; grid-template-columns: 1.5rem 1fr auto auto;
+  gap: 0.75rem; align-items: baseline; padding: 0.6rem 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--dim) 35%, transparent);
+}
+.suite-mark { font-weight: 700; color: var(--dim); }
+.suite-row.is-pass .suite-mark { color: var(--stage); }
+.suite-row.is-fail .suite-mark { color: var(--coin); }
+.suite-value { font-family: var(--display); font-size: 1.75rem; color: var(--phosphor); }
+.suite-band { font-family: var(--code); font-size: var(--small); color: var(--dim); }
+.suite-timing { margin-top: 1.25rem; font-family: var(--code); font-size: 0.85rem; }
+.timing-row { display: block; color: var(--dim); }
+.timing-row b { color: var(--phosphor); font-size: 1rem; }
+.suite-note { margin-top: 0.75rem; font-size: var(--small); color: var(--dim); }
+
+/* ---------- 04 the damage table ---------- */
+.hk-group-label { margin-top: 1rem; font-size: var(--small); color: var(--dim); }
+.hk-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.hk-chip {
+  min-height: 44px; padding: 0 0.9rem; font-weight: 700; color: var(--phosphor);
+  border: 1px solid var(--dim); transition: border-color 0.2s, background 0.2s;
+}
+.hk-chip[aria-pressed="true"] {
+  border-color: var(--stage);
+  background: color-mix(in oklab, var(--stage) 22%, transparent);
+}
+.hk-chip:hover { border-color: var(--coin); }
+.hk-readout {
+  margin-top: 1.5rem; padding: 1rem;
+  border: 1px solid var(--dim); background: var(--screen-off);
+}
+.hk-formula { font-family: var(--code); font-size: 0.8rem; color: var(--dim); }
+.hk-damage { font-family: var(--display); font-size: 3rem; line-height: 1.1; color: var(--stage); }
+.hk-mitigated { font-size: var(--small); color: var(--dim); }
+.hk-readout.is-wall { border-color: var(--stage); }
+.hk-readout.is-blocked { border-color: var(--coin); }
+.hk-readout.is-blocked .hk-formula { color: var(--coin); font-weight: 700; }
+
+/* ---------- 05 the parser ---------- */
+.kn-picks { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.kn-pick {
+  min-height: 44px; padding: 0 0.9rem; font-weight: 700; color: var(--phosphor);
+  border: 1px solid var(--dim); transition: border-color 0.2s, background 0.2s;
+}
+.kn-pick[aria-pressed="true"] {
+  border-color: var(--stage);
+  background: color-mix(in oklab, var(--stage) 22%, transparent);
+}
+.kn-pick:hover { border-color: var(--coin); }
+/* The dialogue box, following ParserBox.aseprite: dark plate, coloured rule. */
+.kn-box {
+  margin-top: 1.25rem; min-height: 190px; padding: 1.25rem;
+  border: 1px solid var(--stage); border-radius: 10px; background: #262329;
+}
+.kn-name { font-family: var(--display); font-size: 1.5rem; color: var(--stage); }
+.kn-text { margin-top: 0.5rem; }
+.kn-choices { list-style: none; margin-top: 1rem; }
+.kn-choices li { padding: 0.35rem 0; color: var(--coin); }
+.kn-choices li::before { content: "\25B8\00A0"; }
+.kn-box.is-error { border-color: var(--coin); }
+.kn-error-head { font-weight: 700; color: var(--coin); }
+.kn-error-line { margin-top: 0.5rem; font-family: var(--code); font-size: 0.8rem; }
+.kn-script {
+  margin-top: 1rem; padding: 0.9rem; overflow-x: auto;
+  border: 1px solid var(--dim); background: var(--screen-off);
+  font-family: var(--code); font-size: 0.75rem; line-height: 1.7;
+}
+.kn-line { display: block; white-space: pre; color: var(--dim); }
+.kn-line.is-bad { color: var(--coin); background: color-mix(in oklab, var(--coin) 14%, transparent); }
+
+/* ---------- 06 the block ---------- */
+.block-game { text-align: center; }
+.block { display: block; width: 112px; margin: 0.5rem auto 0; }
+.block svg { width: 100%; height: auto; }
+.block-body { fill: var(--stage); }
+.block-rivets rect { fill: color-mix(in oklab, var(--stage) 55%, black); }
+.block-mark { fill: var(--screen-off); }
+.block.is-bounce { animation: block-bounce 0.28s ease-out 1; }
+@keyframes block-bounce { 50% { transform: translateY(-14px); } }
+.block.is-empty .block-body { fill: color-mix(in oklab, var(--stage) 30%, var(--cabinet)); }
+.block.is-empty .block-mark { fill: color-mix(in oklab, var(--stage) 45%, var(--cabinet)); }
+.block-caption { margin-top: 0.75rem; font-family: var(--display); font-size: 1.5rem; color: var(--coin); }
+.block-out { list-style: none; margin-top: 1rem; text-align: left; }
+.block-out li {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--dim) 30%, transparent);
+}
+
+/* Phones: the cabinet takes the whole screen rather than floating in it. */
+@media (max-width: 1023px) {
+  /* A bottom sheet. It stops short of the top so the HUD, and a strip of the
+     stage behind it, stay visible — you can always see what you are reading. */
+  #cabinet {
+    inset: auto 0 0 0; width: auto; margin: 0;
+    max-height: min(74dvh, 720px);
+    border-left: 0; border-right: 0; border-bottom: 0;
+  }
+  .dummy-figure { width: 96px; height: 96px; }
+  .hk-damage { font-size: 2.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dummy-figure, .dummy-bar span, .visor-meter span { transition: none; }
+  .dummy-pop { animation: none; opacity: 1; }
+  .block.is-bounce { animation: none; }
 }

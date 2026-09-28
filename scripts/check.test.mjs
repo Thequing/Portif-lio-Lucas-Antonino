@@ -117,3 +117,47 @@ test('reports a data-i18n key defined nowhere', () => {
   assert.ok(errors.some((e) => /hero\.ghost/.test(e)));
   rmSync(dir, { recursive: true, force: true });
 });
+
+// aria-label is localised through data-i18n-label, which apply() writes as an
+// attribute rather than textContent. The English lives in the aria-label itself,
+// so the same "markup must match copy.en" rule holds for it.
+test('passes when an aria-label matches copy.en', () => {
+  const dir = fixture(
+    `<button aria-label="Gameplay Programmer" data-i18n-label="hero.role"></button>`,
+    GOOD_I18N
+  );
+  assert.deepEqual(checkAll(dir).errors, []);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('reports an aria-label drifting from copy.en', () => {
+  const dir = fixture(
+    `<button aria-label="Gameplay Developer" data-i18n-label="hero.role"></button>`,
+    GOOD_I18N
+  );
+  const { errors } = checkAll(dir);
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /hero\.role/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('reports a data-i18n-label key defined nowhere', () => {
+  const dir = fixture(
+    `<button aria-label="Ghost" data-i18n-label="hero.ghost"></button>`,
+    GOOD_I18N
+  );
+  const { errors } = checkAll(dir);
+  assert.ok(errors.some((e) => /hero\.ghost/.test(e)));
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('reports a data-i18n-label with no aria-label to localise', () => {
+  const dir = fixture(
+    `<button data-i18n-label="hero.role"></button>`,
+    GOOD_I18N
+  );
+  const { errors } = checkAll(dir);
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /aria-label/);
+  rmSync(dir, { recursive: true, force: true });
+});

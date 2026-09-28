@@ -105,12 +105,21 @@
 .viewer .code { margin-top: 0.75rem; }
 #source .links { margin-top: 2rem; }
 
+/* Portrait beside the text on desktop, stacked above it on phones. The text
+   column keeps roughly the 72ch it had before the portrait moved in. */
 .profile {
-  max-width: 72ch;
+  max-width: 92ch;
   padding: clamp(1.25rem, 3vw, 2rem);
   border: 1px solid var(--dim);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
 }
-.profile > * + * { margin-top: 1rem; }
+@media (max-width: 1023px) {
+  .profile { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+}
+.profile-text > * + * { margin-top: 1rem; }
 .profile-class { font-weight: 700; font-size: 1.25rem; }
 .profile-edu { color: var(--dim); }
 .profile-edu { list-style: none; }

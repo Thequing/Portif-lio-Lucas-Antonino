@@ -2,6 +2,8 @@ import { initI18n } from './i18n.js';
 import { initMedia } from './media.js';
 import { initHud } from './hud.js';
 import { initChest } from './chest.js';
+import { initPortrait } from './portrait.js';
+import { initArcade } from './arcade.js';
 import { initScroll } from './scroll.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -48,6 +50,8 @@ async function boot() {
   initMedia({ reducedMotion });
   initHud();
   initChest({ reducedMotion });
+  initPortrait();
+  initArcade({ reducedMotion });
   pressStart();
 
   if (reducedMotion) {
@@ -68,3 +72,14 @@ async function boot() {
 }
 
 boot();
+
+// The offline shell. Registered after boot so it never competes with the first
+// paint, and only over http(s) — opening index.html from the filesystem has no
+// service worker and does not need one.
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch((err) => {
+      console.warn('service worker not registered', err);
+    });
+  });
+}

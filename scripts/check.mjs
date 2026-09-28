@@ -8,6 +8,11 @@ import { fileURLToPath } from 'node:url';
 // scripts/check.test.mjs locks both behaviours in.
 const SRC_HREF = /\b(?:src|href|poster)\s*=\s*"([^"]+)"/g;
 const I18N_EL = /<([a-z0-9]+)\b[^>]*\bdata-i18n\s*=\s*"([^"]+)"[^>]*>([\s\S]*?)<\/\1>/gi;
+// apply() writes data-i18n-label into aria-label rather than textContent, so the
+// English sits in the attribute. `data-i18n` cannot match here: the character after
+// it is a hyphen, not `=`, so I18N_EL skips these elements and this pattern owns them.
+const I18N_LABEL_EL = /<[a-z0-9]+\b((?:"[^"]*"|[^>"])*\bdata-i18n-label\s*=\s*"[^"]+"(?:"[^"]*"|[^>"])*)>/gi;
+const ATTR = (name, attrs) => attrs.match(new RegExp(`\\b${name}\\s*=\\s*"([^"]*)"`))?.[1];
 const EXTERNAL = /^(?:https?:|mailto:|tel:|data:|#|\/\/)/i;
 
 // Parses `en: { 'k': 'v', ... }` out of the dictionary without importing it,
@@ -79,6 +84,25 @@ export function checkAll(rootDir) {
       if (actual !== expected) {
         errors.push(
           `data-i18n="${key}" drift:\n  markup: ${actual}\n  copy.en: ${expected}`
+        );
+      }
+    }
+
+    // 2b. inline aria-label matches copy.en
+    for (const [, attrs] of html.matchAll(I18N_LABEL_EL)) {
+      const key = ATTR('data-i18n-label', attrs);
+      const label = ATTR('aria-label', attrs);
+      if (label === undefined) {
+        errors.push(`data-i18n-label="${key}" has no aria-label to localise`);
+        continue;
+      }
+      if (!(key in en)) {
+        errors.push(`data-i18n-label="${key}" is not defined in copy.en`);
+        continue;
+      }
+      if (normalise(label) !== normalise(en[key])) {
+        errors.push(
+          `data-i18n-label="${key}" drift:\n  markup: ${label}\n  copy.en: ${en[key]}`
         );
       }
     }

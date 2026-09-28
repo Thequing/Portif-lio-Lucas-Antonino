@@ -94,6 +94,69 @@ export const copy = {
     'player.gamedesign': 'Game Design — Udemy',
     'player.database': 'Database Administration — IFRS',
     'player.equipped': 'Equipped',
+    'player.portrait': 'Pixel portrait of Lucas — press to see the real one',
+    'player.flip': "Who's behind the sprite?",
+    'player.flipback': 'Back to the sprite',
+
+    'arcade.try': '▸ Try it ◂',
+    'arcade.close': 'Close',
+    'arcade.cleared': 'cleared',
+
+    'sv.game.hint': 'Hit it. Hitting again too fast is supposed to do nothing — that is the invulnerability gate.',
+    'sv.game.hp': 'Dummy health',
+    'sv.game.phase': 'Phase',
+    'sv.game.iframe': 'i-frame · hit ignored',
+    'sv.game.phasechange': 'phase 2 · health threshold 60%',
+    'sv.game.execution': 'Execution',
+    'sv.game.executionlog': 'execution state',
+    'sv.game.reset': 'dummy reset',
+
+    'mm.game.hint': 'Drag the glass. The scene is only legible through the visor.',
+    'mm.game.label': 'Scene, readable under the magnifying glass',
+    'mm.game.sweep': 'Sweep the scene',
+    'mm.game.done': 'Scene read',
+
+    'fd.game.hint': 'The balance suite, run here in your browser.',
+    'fd.game.run': 'Run 10,000 races',
+    'fd.game.again': 'Run it again',
+    'fd.game.running': 'Running…',
+    'fd.game.winrate': 'Win rate',
+    'fd.game.uplift': 'Promotion uplift',
+    'fd.game.failures': 'Failure rate',
+    'fd.game.inbrowser': 'in your browser (JS port)',
+    'fd.game.incsharp': 'in the C# assembly',
+    'fd.game.note': 'The same code runs in a worker because the simulation has no engine references.',
+
+    'hk.game.hint': 'Pick a damage type and an enemy. The pairings that fail are the interesting ones.',
+    'hk.game.damage': 'Damage type',
+    'hk.game.enemy': 'Enemy',
+    'hk.game.mitigated': 'mitigated',
+    'hk.game.ignores': 'ignores armour and resistance',
+    'hk.game.notarget': 'No valid target',
+    'hk.game.noreach': 'A ground tower cannot reach a flier',
+    'hk.game.type.physical': 'Physical',
+    'hk.game.type.magic': 'Magic',
+    'hk.game.type.true': 'True',
+    'hk.game.type.area': 'Area',
+    'hk.game.enemy.grunt': 'Grunt',
+    'hk.game.enemy.armoured': 'Armoured',
+    'hk.game.enemy.warded': 'Warded',
+    'hk.game.enemy.flier': 'Flier',
+
+    'kn.game.hint': 'Three scripts. Two of them the parser refuses to load.',
+    'kn.game.pick.works': 'A scene that works',
+    'kn.game.pick.dead-jump': 'A dead jump',
+    'kn.game.pick.empty-menu': 'An empty menu',
+    'kn.game.refused': 'Script refused at load:',
+    'kn.game.scriptlabel': 'The script that produced this',
+
+    'dg.game.hint': 'Locked. Press it anyway.',
+    'dg.game.label': 'Locked block',
+    'dg.game.l1': 'An idle resort-builder.',
+    'dg.game.l2': 'Kimu Studios. Coming to Steam.',
+    'dg.game.l3': 'I am on the gameplay team: systems and mechanics.',
+    'dg.game.l4': 'That is all there is to say for now.',
+    'dg.game.empty': 'Come back at BGS',
 
     'continue.heading': 'Continue?',
     'continue.body': 'Open to gameplay and systems programming roles. Find me at BGS 2026.',
@@ -202,6 +265,69 @@ export const copy = {
     'player.gamedesign': 'Game Design — Udemy',
     'player.database': 'Administração de Banco de Dados — IFRS',
     'player.equipped': 'Equipado',
+    'player.portrait': 'Retrato em pixel art do Lucas — aperte para ver o real',
+    'player.flip': 'Quem está por trás do sprite?',
+    'player.flipback': 'Voltar ao sprite',
+
+    'arcade.try': '▸ Experimente ◂',
+    'arcade.close': 'Fechar',
+    'arcade.cleared': 'concluídos',
+
+    'sv.game.hint': 'Bata nele. Bater rápido demais não deve fazer nada — esse é o portão de invulnerabilidade.',
+    'sv.game.hp': 'Vida do boneco',
+    'sv.game.phase': 'Fase',
+    'sv.game.iframe': 'i-frame · golpe ignorado',
+    'sv.game.phasechange': 'fase 2 · limiar de vida 60%',
+    'sv.game.execution': 'Execução',
+    'sv.game.executionlog': 'estado de execução',
+    'sv.game.reset': 'boneco reiniciado',
+
+    'mm.game.hint': 'Arraste a lupa. A cena só fica legível pelo visor.',
+    'mm.game.label': 'Cena, legível sob a lupa',
+    'mm.game.sweep': 'Varra a cena',
+    'mm.game.done': 'Cena lida',
+
+    'fd.game.hint': 'A suíte de balanceamento, rodando aqui no seu navegador.',
+    'fd.game.run': 'Rodar 10.000 corridas',
+    'fd.game.again': 'Rodar de novo',
+    'fd.game.running': 'Rodando…',
+    'fd.game.winrate': 'Taxa de vitória',
+    'fd.game.uplift': 'Uplift de promoções',
+    'fd.game.failures': 'Taxa de falha',
+    'fd.game.inbrowser': 'no seu navegador (port JS)',
+    'fd.game.incsharp': 'no assembly C#',
+    'fd.game.note': 'O mesmo código roda num worker porque a simulação não tem referências à engine.',
+
+    'hk.game.hint': 'Escolha um tipo de dano e um inimigo. Os pares que falham são os interessantes.',
+    'hk.game.damage': 'Tipo de dano',
+    'hk.game.enemy': 'Inimigo',
+    'hk.game.mitigated': 'mitigado',
+    'hk.game.ignores': 'ignora armadura e resistência',
+    'hk.game.notarget': 'Sem alvo válido',
+    'hk.game.noreach': 'Uma torre terrestre não alcança um voador',
+    'hk.game.type.physical': 'Físico',
+    'hk.game.type.magic': 'Mágico',
+    'hk.game.type.true': 'Verdadeiro',
+    'hk.game.type.area': 'Em área',
+    'hk.game.enemy.grunt': 'Capanga',
+    'hk.game.enemy.armoured': 'Blindado',
+    'hk.game.enemy.warded': 'Protegido',
+    'hk.game.enemy.flier': 'Voador',
+
+    'kn.game.hint': 'Três roteiros. Dois deles o parser se recusa a carregar.',
+    'kn.game.pick.works': 'Uma cena que funciona',
+    'kn.game.pick.dead-jump': 'Um salto morto',
+    'kn.game.pick.empty-menu': 'Um menu vazio',
+    'kn.game.refused': 'Roteiro recusado no carregamento:',
+    'kn.game.scriptlabel': 'O roteiro que gerou isto',
+
+    'dg.game.hint': 'Trancado. Aperte mesmo assim.',
+    'dg.game.label': 'Bloco trancado',
+    'dg.game.l1': 'Um construtor de resort incremental.',
+    'dg.game.l2': 'Kimu Studios. Chegando à Steam.',
+    'dg.game.l3': 'Estou no time de gameplay: sistemas e mecânicas.',
+    'dg.game.l4': 'É tudo o que dá para dizer por enquanto.',
+    'dg.game.empty': 'Nos vemos na BGS',
 
     'continue.heading': 'Continuar?',
     'continue.body': 'Aberto a vagas de programação de gameplay e sistemas. Me encontre na BGS 2026.',
@@ -218,6 +344,13 @@ export const copy = {
 
 const STORAGE_KEY = 'lang';
 let active = 'en';
+
+// Strings for text that is built in JS rather than sitting in the markup —
+// everything inside the stage interactions. Falls back through English to the
+// literal, so a missing key degrades to readable rather than to "undefined".
+export function tr(key, fallback = '') {
+  return copy[active]?.[key] ?? copy.en?.[key] ?? fallback;
+}
 
 export function currentLang() {
   return active;
@@ -239,6 +372,17 @@ function apply(lang) {
       continue; // leave existing text rather than rendering undefined
     }
     el.textContent = value;
+  }
+  // Controls whose whole label is an attribute, not text: the portrait button is
+  // named by its aria-label, so both faces inside it can stay alt="" decorative.
+  for (const el of document.querySelectorAll('[data-i18n-label]')) {
+    const key = el.dataset.i18nLabel;
+    const value = dict[key];
+    if (value === undefined) {
+      console.warn(`i18n: no "${lang}" entry for key "${key}"`);
+      continue;
+    }
+    el.setAttribute('aria-label', value);
   }
   document.documentElement.lang = lang;
   active = lang;
