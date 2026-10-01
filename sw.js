@@ -8,7 +8,7 @@
 // The video clips are deliberately NOT precached: they are megabytes each and
 // they degrade to their posters, which are. A visitor who cannot watch a clip
 // but can still run the balance suite has lost the less interesting half.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = `portfolio-shell-${VERSION}`;
 
 const SHELL = [
